@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="466" viewBox="0 0 820 466" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">Search latency against knowledge-base size, R0 and R1</title>
+<desc id="desc">Log-log chart. R1 p95: 2.3 ms at 91 pages, 3.6 ms at 347, 5.0 ms at 667, 68 ms at 10,027. R0 p95: 333 ms, 1.3 s and 2.9 s on 20 queries, and 21.9 s on only 3 queries (indicative).</desc>
+<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#F6F8FA"/><line x1="0" y1="0" x2="0" y2="6" stroke="#6E7781" stroke-width="2"/></pattern><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#59636E"/></marker></defs>
+<rect x="0.5" y="0.5" width="819" height="465" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="34.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">Search latency against knowledge-base size</text>
+<text x="24.0" y="56.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">95th percentile per query, warm, one process; pages beyond 91 are synthetic, built from real sentences.</text>
+<text x="24.0" y="74.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">Both axes are logarithmic.</text>
+<line x1="90" y1="370.0" x2="780" y2="370.0" stroke="#EAEEF2"/>
+<text x="82.0" y="374.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">1 ms</text>
+<line x1="90" y1="315.2" x2="780" y2="315.2" stroke="#EAEEF2"/>
+<text x="82.0" y="319.2" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">10 ms</text>
+<line x1="90" y1="260.4" x2="780" y2="260.4" stroke="#EAEEF2"/>
+<text x="82.0" y="264.4" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">100 ms</text>
+<line x1="90" y1="205.6" x2="780" y2="205.6" stroke="#EAEEF2"/>
+<text x="82.0" y="209.6" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">1 s</text>
+<line x1="90" y1="150.8" x2="780" y2="150.8" stroke="#EAEEF2"/>
+<text x="82.0" y="154.8" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">10 s</text>
+<line x1="90" y1="96.0" x2="780" y2="96.0" stroke="#EAEEF2"/>
+<text x="82.0" y="100.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">100 s</text>
+<line x1="159.0" y1="96" x2="159.0" y2="370" stroke="#EAEEF2"/>
+<text x="159.0" y="388.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">91</text>
+<line x1="313.1" y1="96" x2="313.1" y2="370" stroke="#EAEEF2"/>
+<text x="313.1" y="388.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">347</text>
+<line x1="388.4" y1="96" x2="388.4" y2="370" stroke="#EAEEF2"/>
+<text x="388.4" y="388.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">667</text>
+<line x1="700.5" y1="96" x2="700.5" y2="370" stroke="#EAEEF2"/>
+<text x="700.5" y="388.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">10,027</text>
+<text x="435.0" y="408.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="middle">pages</text>
+<path d="M159.0,231.8 L313.1,199.2 L388.4,180.4" fill="none" stroke="#8C959F" stroke-width="2"/>
+<path d="M388.4,180.4 L700.5,132.1" fill="none" stroke="#8C959F" stroke-width="2" stroke-dasharray="5 4"/>
+<circle cx="159.0" cy="231.8" r="3.5" fill="#8C959F" stroke="#8C959F" stroke-width="1.5"/>
+<text x="166.0" y="248.8" font-size="11" fill="#1F2328" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" paint-order="stroke">333 ms  (20 queries)</text>
+<circle cx="313.1" cy="199.2" r="3.5" fill="#8C959F" stroke="#8C959F" stroke-width="1.5"/>
+<text x="320.1" y="216.2" font-size="11" fill="#1F2328" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" paint-order="stroke">1.3 s  (20 queries)</text>
+<circle cx="388.4" cy="180.4" r="3.5" fill="#8C959F" stroke="#8C959F" stroke-width="1.5"/>
+<text x="395.4" y="197.4" font-size="11" fill="#1F2328" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" paint-order="stroke">2.9 s  (20 queries)</text>
+<circle cx="700.5" cy="132.1" r="3.5" fill="#FFFFFF" stroke="#8C959F" stroke-width="1.5"/>
+<text x="694.5" y="122.1" font-size="11" fill="#1F2328" font-weight="normal" text-anchor="end" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" paint-order="stroke">21.9 s  (3 queries, indicative)</text>
+<path d="M159.0,350.0 L313.1,339.3 L388.4,331.6 L700.5,269.7" fill="none" stroke="#0969DA" stroke-width="2"/>
+<circle cx="159.0" cy="350.0" r="3.5" fill="#0969DA" stroke="#0969DA" stroke-width="1.5"/>
+<text x="166.0" y="367.0" font-size="11" fill="#1F2328" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" paint-order="stroke">2.3 ms</text>
+<circle cx="313.1" cy="339.3" r="3.5" fill="#0969DA" stroke="#0969DA" stroke-width="1.5"/>
+<text x="320.1" y="356.3" font-size="11" fill="#1F2328" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" paint-order="stroke">3.6 ms</text>
+<circle cx="388.4" cy="331.6" r="3.5" fill="#0969DA" stroke="#0969DA" stroke-width="1.5"/>
+<text x="395.4" y="348.6" font-size="11" fill="#1F2328" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" paint-order="stroke">5.0 ms</text>
+<circle cx="700.5" cy="269.7" r="3.5" fill="#0969DA" stroke="#0969DA" stroke-width="1.5"/>
+<text x="707.5" y="286.7" font-size="11" fill="#1F2328" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="5" stroke-linejoin="round" paint-order="stroke">68 ms</text>
+<line x1="90" y1="422" x2="110" y2="422" stroke="#8C959F" stroke-width="2"/>
+<text x="116.0" y="426.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">R0 (1.0): reads every page per query</text>
+<line x1="420" y1="422" x2="440" y2="422" stroke="#0969DA" stroke-width="2"/>
+<text x="446.0" y="426.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">R1 (2.0): persistent index (100 queries)</text>
+<text x="90.0" y="448.0" font-size="11.5" fill="#59636E" font-weight="normal" text-anchor="start">R0 was timed on the first 20 of R1's 100 questions, and on the first 3 at 10,027 pages (dashed, hollow: indicative only).</text>
+</svg>

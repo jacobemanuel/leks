@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="568" viewBox="0 0 1180 568" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">LEKS 2.0 architecture</title>
+<desc id="desc">On the developer's Mac: source files, evidence layer, knowledge layer, search and delivery, and a band of checks and hooks. Components added in 2.0 are marked. Obsidian and the AI coding agent are separate applications; the agent requests answer packs over MCP, and its model runs locally or in the cloud.</desc>
+<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#F6F8FA"/><line x1="0" y1="0" x2="0" y2="6" stroke="#6E7781" stroke-width="2"/></pattern><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#59636E"/></marker></defs>
+<rect x="0.5" y="0.5" width="1179" height="567" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="34.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">LEKS 2.0: architecture</text>
+<text x="24.0" y="54.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">Dashed boundary: the developer's Mac. Grey boxes: LEKS tools and the files they read; a static check of the</text>
+<text x="24.0" y="72.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">source finds no networking imports in its Python tools. White boxes: separate applications, with their own network behaviour.</text>
+<rect x="18" y="82" width="1146" height="432" fill="none" stroke="#818B98" stroke-dasharray="6 4"/>
+<text x="30.0" y="100.0" font-size="12" fill="#59636E" font-weight="600" text-anchor="start">Developer's Mac</text>
+<text x="34.0" y="122.0" font-size="11" fill="#818B98" font-weight="600" text-anchor="start">SOURCES</text>
+<text x="244.0" y="122.0" font-size="11" fill="#818B98" font-weight="600" text-anchor="start">EVIDENCE LAYER</text>
+<text x="454.0" y="122.0" font-size="11" fill="#818B98" font-weight="600" text-anchor="start">KNOWLEDGE LAYER</text>
+<text x="664.0" y="122.0" font-size="11" fill="#818B98" font-weight="600" text-anchor="start">SEARCH AND DELIVERY</text>
+<rect x="34" y="132" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="46.0" y="150.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Source files</text>
+<text x="46.0" y="166.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">documents, notes, images</text>
+<rect x="34" y="186" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="46.0" y="204.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Unity project</text>
+<text x="46.0" y="220.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">C# and scenes, reference</text>
+<rect x="34" y="240" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="46.0" y="258.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Blender add-on</text>
+<text x="46.0" y="274.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">bounded reference</text>
+<rect x="34" y="294" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="46.0" y="312.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Images and PDFs</text>
+<text x="46.0" y="328.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">on-device text recognition</text>
+<rect x="244" y="132" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="256.0" y="150.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Source registry</text>
+<text x="256.0" y="166.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">IDs, SHA-256, revisions</text>
+<rect x="244" y="186" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="244" y="186" width="4" height="44" fill="#0969DA"/>
+<text x="256.0" y="204.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Evidence store</text>
+<text x="256.0" y="220.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">exact copies, outside</text>
+<rect x="244" y="240" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="244" y="240" width="4" height="44" fill="#0969DA"/>
+<text x="256.0" y="258.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Journal and incidents</text>
+<text x="256.0" y="274.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">hash chain, open until resolved</text>
+<rect x="244" y="294" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="244" y="294" width="4" height="44" fill="#0969DA"/>
+<text x="256.0" y="312.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">File-system flags</text>
+<text x="256.0" y="328.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">immutable, on by default</text>
+<rect x="454" y="132" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="466.0" y="150.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Pages</text>
+<text x="466.0" y="166.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">compiled, archived apart</text>
+<rect x="454" y="186" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="466.0" y="204.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Claims</text>
+<text x="466.0" y="220.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">confidence, evidence date</text>
+<rect x="454" y="240" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="454" y="240" width="4" height="44" fill="#0969DA"/>
+<text x="466.0" y="258.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Evidence anchors</text>
+<text x="466.0" y="274.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">line range + excerpt hash</text>
+<rect x="454" y="294" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="454" y="294" width="4" height="44" fill="#0969DA"/>
+<text x="466.0" y="312.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Typed facts and time</text>
+<text x="466.0" y="328.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">valid and record time</text>
+<rect x="454" y="348" width="180" height="44" fill="#FFFFFF" stroke="#59636E"/>
+<text x="466.0" y="366.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Obsidian</text>
+<text x="466.0" y="382.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">separate app: pages, graph</text>
+<rect x="664" y="132" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="664" y="132" width="4" height="44" fill="#0969DA"/>
+<text x="676.0" y="150.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Search index R1</text>
+<text x="676.0" y="166.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">persistent, incremental</text>
+<rect x="664" y="186" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="676.0" y="204.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Answer pack</text>
+<text x="676.0" y="220.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">passages, claims, status</text>
+<rect x="664" y="240" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="676.0" y="258.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">MCP server</text>
+<text x="676.0" y="274.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">9 read-only tools, stdio</text>
+<rect x="664" y="294" width="180" height="44" fill="#FFFFFF" stroke="#6E7781" stroke-dasharray="4 3"/>
+<text x="676.0" y="312.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Model helper</text>
+<text x="676.0" y="328.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">R4, R5; sandbox, no network</text>
+<line x1="216" y1="234" x2="240" y2="234" stroke="#59636E" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="426" y1="234" x2="450" y2="234" stroke="#59636E" stroke-width="1.3" marker-end="url(#arrow)"/>
+<line x1="636" y1="234" x2="660" y2="234" stroke="#59636E" stroke-width="1.3" marker-end="url(#arrow)"/>
+<text x="34.0" y="444.0" font-size="11" fill="#818B98" font-weight="600" text-anchor="start">CHECKS AND HOOKS</text>
+<rect x="34" y="452" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="46.0" y="470.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Session-start hook</text>
+<text x="46.0" y="486.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">rules, state, protection</text>
+<rect x="244" y="452" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="256.0" y="470.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Pre-tool check</text>
+<text x="256.0" y="486.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">agent actions, fails closed</text>
+<rect x="454" y="452" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="466.0" y="470.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">Stop check</text>
+<text x="466.0" y="486.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">integrity, blocks once</text>
+<rect x="664" y="452" width="180" height="44" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="664" y="452" width="4" height="44" fill="#0969DA"/>
+<text x="676.0" y="470.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">doctor and setup</text>
+<text x="676.0" y="486.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">diagnose, bring up to date</text>
+<rect x="940" y="226" width="200" height="120" fill="#FFFFFF" stroke="#59636E"/>
+<text x="952.0" y="248.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">AI coding agent</text>
+<text x="952.0" y="266.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">separate app, in the editor;</text>
+<text x="952.0" y="282.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">requests answer packs</text>
+<text x="952.0" y="298.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">over MCP. Its model runs</text>
+<text x="952.0" y="314.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">locally or in the cloud,</text>
+<text x="952.0" y="330.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">per its own configuration.</text>
+<line x1="846" y1="262" x2="936" y2="262" stroke="#59636E" stroke-width="1.3" marker-end="url(#arrow)"/>
+<text x="852.0" y="254.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">answer packs</text>
+<path d="M846,474 H1040 V350" fill="none" stroke="#59636E" stroke-width="1.3" marker-end="url(#arrow)"/>
+<text x="852.0" y="466.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">hooks run around its tool calls</text>
+<rect x="24" y="532" width="22" height="14" fill="#F6F8FA" stroke="#D0D7DE"/>
+<rect x="24" y="532" width="4" height="14" fill="#0969DA"/>
+<text x="54.0" y="543.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">added in 2.0</text>
+<rect x="170" y="532" width="22" height="14" fill="#F6F8FA" stroke="#D0D7DE"/>
+<text x="200.0" y="543.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">from 1.0 (some extended in 2.0)</text>
+<rect x="430" y="532" width="22" height="14" fill="#FFFFFF" stroke="#6E7781" stroke-dasharray="4 3"/>
+<text x="460.0" y="543.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">optional, experimental, off by default</text>
+<rect x="730" y="532" width="22" height="14" fill="#FFFFFF" stroke="#59636E"/>
+<text x="760.0" y="543.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">separate application</text>
+</svg>

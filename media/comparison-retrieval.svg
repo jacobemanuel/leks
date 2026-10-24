@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="466" viewBox="0 0 960 466" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">Frozen benchmark: deployed R1 against experimental R4</title>
+<desc id="desc">Horizontal bars for three measures on 280 answerable questions. Relevant page first: 59.3 % against 62.1 %. Within the top 5 results: 79.3 % against 86.4 %, a significant difference of 7.1 points. Every answer key in the pack: 62.1 % against 65.7 %. Unanswerable questions recognised: none.</desc>
+<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#F6F8FA"/><line x1="0" y1="0" x2="0" y2="6" stroke="#6E7781" stroke-width="2"/></pattern><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#59636E"/></marker></defs>
+<rect x="0.5" y="0.5" width="959" height="465" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="36.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">Frozen benchmark: deployed R1 and the experimental R4</text>
+<text x="24.0" y="60.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">320 questions, frozen before any engine was scored on them: 280 answerable, 40 without an answer. Evaluated once.</text>
+<text x="24.0" y="79.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">R0 (1.0) and R1 (2.0) give identical results on every question. Share of the 280 answerable questions.</text>
+<rect x="24" y="96" width="14" height="10" fill="#0969DA"/>
+<text x="44.0" y="105.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">R1, deployed (identical to R0)</text>
+<rect x="230" y="96" width="14" height="10" fill="url(#hatch)" stroke="#6E7781"/>
+<text x="250.0" y="105.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">R4: local embedding hybrid, experimental, not deployed</text>
+<text x="724.0" y="105.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">R4 minus R1</text>
+<line x1="300.0" y1="138" x2="300.0" y2="334" stroke="#EAEEF2"/>
+<text x="300.0" y="350.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0 %</text>
+<line x1="390.0" y1="138" x2="390.0" y2="334" stroke="#EAEEF2"/>
+<text x="390.0" y="350.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">25 %</text>
+<line x1="480.0" y1="138" x2="480.0" y2="334" stroke="#EAEEF2"/>
+<text x="480.0" y="350.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">50 %</text>
+<line x1="570.0" y1="138" x2="570.0" y2="334" stroke="#EAEEF2"/>
+<text x="570.0" y="350.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">75 %</text>
+<line x1="660.0" y1="138" x2="660.0" y2="334" stroke="#EAEEF2"/>
+<text x="660.0" y="350.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">100 %</text>
+<text x="24.0" y="166.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Relevant page ranked first</text>
+<rect x="300" y="150" width="213.5" height="14" fill="#0969DA"/>
+<text x="519.5" y="162.0" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">59.3 %</text>
+<rect x="300" y="169" width="223.6" height="14" fill="url(#hatch)" stroke="#6E7781"/>
+<text x="529.6" y="181.0" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">62.1 %</text>
+<text x="724.0" y="163.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">+2.9 points</text>
+<text x="724.0" y="180.0" font-size="11.5" fill="#59636E" font-weight="normal" text-anchor="start">not established</text>
+<text x="24.0" y="232.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Relevant page within the top 5 results</text>
+<rect x="300" y="216" width="285.5" height="14" fill="#0969DA"/>
+<text x="591.5" y="228.0" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">79.3 %</text>
+<rect x="300" y="235" width="311.0" height="14" fill="url(#hatch)" stroke="#6E7781"/>
+<text x="617.0" y="247.0" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">86.4 %</text>
+<text x="724.0" y="229.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="start">+7.1 points, significant</text>
+<text x="724.0" y="246.0" font-size="11.5" fill="#59636E" font-weight="normal" text-anchor="start">95 % interval 4.0 to 10.5</text>
+<text x="724.0" y="261.0" font-size="11.5" fill="#59636E" font-weight="normal" text-anchor="start">Holm p = 0.0007</text>
+<text x="24.0" y="298.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Every answer key inside the answer pack</text>
+<rect x="300" y="282" width="223.6" height="14" fill="#0969DA"/>
+<text x="529.6" y="294.0" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">62.1 %</text>
+<rect x="300" y="301" width="236.5" height="14" fill="url(#hatch)" stroke="#6E7781"/>
+<text x="542.5" y="313.0" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">65.7 %</text>
+<text x="724.0" y="295.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">+3.6 points</text>
+<text x="724.0" y="312.0" font-size="11.5" fill="#59636E" font-weight="normal" text-anchor="start">not established</text>
+<line x1="24" y1="370" x2="936" y2="370" stroke="#EAEEF2"/>
+<text x="24.0" y="390.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Questions without an answer recognised: 0 of 40 for both engines.</text>
+<text x="24.0" y="412.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">R1 stays the default: it passes all 108 routing regression cases (R4: 104), and R4 with the MCP server needs</text>
+<text x="24.0" y="430.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">316 to 319 MB against about 51 MB for R1. R5 (reranking) was measured on development data only and is not shown.</text>
+<text x="24.0" y="452.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="start">Details and statistics: docs/benchmarks.md.</text>
+</svg>
