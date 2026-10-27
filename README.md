@@ -145,7 +145,7 @@ More in [efficiency](docs/efficiency.md).
 
 ## Known limitations
 
-- **Retrieval quality is the same as in 1.0.** R1 changes speed but not rankings. Paraphrased questions are still the weak spot, with 43.8 % in the top 5.
+- **Retrieval quality is the same as in 1.0.** R1 is faster and returns exactly the same rankings. Paraphrased questions are still the weak spot, with 43.8 % in the top 5.
 - **Unanswerable questions aren't recognised.** None of the 40 was. Instead every pack says its passages aren't a confirmed answer.
 - **Distractors hurt.** Adding 10,000 synthetic pages built from real sentences drops top 5 on the development set from 77.9 % to 36.5 %.
 - **Typed facts cover only part of the knowledge.** Many claims are still prose with sources rather than typed facts.
