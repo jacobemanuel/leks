@@ -1,0 +1,23 @@
+name: engine tests
+
+on:
+  push:
+    paths:
+      - 'engine/**'
+      - '.github/workflows/engine-tests.yml'
+  pull_request:
+    paths:
+      - 'engine/**'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run the tests
+        working-directory: engine
+        run: python -m unittest discover -s tools -p 'test_*.py'

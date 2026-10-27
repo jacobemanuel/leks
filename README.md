@@ -6,6 +6,10 @@ I built it for a long-running engineering project where a small team works toget
 - **One folder for everything.** What the project knows lives in one folder: Markdown pages for decisions, deliveries and designs, plus the registered source files they're based on. LEKS keeps that folder consistent and makes every source file recoverable.
 - **Two interfaces.** AI coding agents get short, cited answer packs through a local MCP server (Model Context Protocol). People read and edit the same pages in Obsidian, which also shows how they link together.
 
+**The engine's code is public** in [`engine/`](engine/): the search, the evidence store, the claims and the MCP server, without any project data. Its 124 tests run on GitHub's macOS machines on every change:
+
+[![engine tests](https://github.com/jacobemanuel/leks/actions/workflows/engine-tests.yml/badge.svg)](https://github.com/jacobemanuel/leks/actions/workflows/engine-tests.yml)
+
 This page is about **LEKS 2.0**, the current version. Version **1.0** was the first one I published here (under the title "Engineering knowledge base") and [its README is archived](docs/history/README-1.0.md). Version 2.0 returns the same search results as 1.0 and rebuilds what sits underneath: indexing, evidence storage, recovery and checks.
 
 Below I compare 2.0 with 1.0. Then I compare the default search engine with an experimental local AI engine I tested but didn't ship.
@@ -170,7 +174,7 @@ The full list is in [known limitations](docs/limitations.md).
 
 ## Notes
 
-- This repository describes the system and its measurements. It doesn't contain the code or the project's content.
+- The engine's code is in [`engine/`](engine/). The project's content and the benchmark questions aren't in this repository.
 - The figures describe only the tooling. Project names are left out.
 
 © 2026 Jakub Majewski. Text and media: all rights reserved.
