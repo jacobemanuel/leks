@@ -50,7 +50,7 @@ More in [architecture](docs/architecture.md).
 | **R4** | Experimental hybrid: R1's lexical ranking fused with a small local embedding model (`bge-small-en-v1.5`, ONNX Runtime on the CPU, in the sandboxed model helper) | Evaluated on the frozen benchmark, not deployed |
 | **R5** | Experimental reranking: a small local cross-encoder reorders R4's top 20 results | Development set only, not deployed |
 
-The numbers come from the evaluation protocol. It was fixed before any engine was built. R2 is the embedding model on its own (one half of R4) and was measured only on the development set. There's no R3 in the protocol. "Top 5" in the tables and charts is a measure, not an engine. It means the relevant page is among the first five search results.
+The numbers come from the evaluation protocol. It was fixed before any engine was built. R2 is the embedding model on its own (one half of R4) and was measured only on the development set. There's no R3 in the protocol. "Top 5" in the tables and charts means the relevant page is among the first five search results. It's a measure and has nothing to do with R5.
 
 ## Version 2.0 compared with 1.0
 
@@ -72,7 +72,7 @@ R1 gives exactly the same rankings as R0:
 - I checked this on all 941 questions of the development and benchmark sets, including the 177 questions of the 1.0 benchmark.
 - It also holds on every item of the frozen benchmark. The answer packs come out the same there too.
 
-So the speed-up changes nothing about what gets retrieved. The only visible difference is in the answer pack. In 2.0 it names its engine and carries a fixed note saying its passages are the closest matches, not a confirmed answer. That makes packs about 2 % longer. Re-running the development evaluation with these additions didn't change any ranking, coverage or verdict.
+So the speed-up changes nothing about what gets retrieved. The only visible difference is in the answer pack. In 2.0 it names its engine and carries a fixed note saying its passages are only the closest matches and may not answer the question. That makes packs about 2 % longer. Re-running the development evaluation with these additions didn't change any ranking, coverage or verdict.
 
 ### Performance: same machine, same knowledge base, same questions
 
@@ -136,7 +136,7 @@ R5 did even better on the development set. But it costs 0.5 to 1 s per query and
 | Search and answer packs | 2.9 to 176 times faster than version 1.0, with identical rankings | measured |
 | Memory of the full integrity check | 1,602 MB → 82 MB | measured |
 | Index updates | After one page changes, the next search takes 0.014 s at 91 pages and 0.077 s at 10,027 pages (91 real, the rest synthetic) | measured |
-| Scaling | At 10,027 pages, R1 search p95 is 68 ms on 100 queries. R0 took about 22 s per query there. But only 3 queries were timed, so read it as an order of magnitude, not a precise factor. | measured, with [limits](docs/efficiency.md#measurement-limits) |
+| Scaling | At 10,027 pages, R1 search p95 is 68 ms on 100 queries. R0 took about 22 s per query there. But only 3 queries were timed, so treat the 22 s as a rough figure. | measured, with [limits](docs/efficiency.md#measurement-limits) |
 | Context per question | Answer pack about 2,800 tokens in version 1.0 and 2,860 in version 2.0 (engine field and fixed note). Session start about 2,500 in both | measured (characters / 4) |
 | Agent steps per question | 3.40 with the engine that R0 replaced and no answer pack, 2.31 with R0 and the 1.0 answer pack | modelled, 1.0 only |
 | Fewer agent steps, tokens or cost in 2.0 | Not claimed. The step model wasn't re-run for 2.0 and no agent sessions were measured. Version 2.0 makes the local work faster. The agent still reads about the same amount of context. | not verified |
@@ -151,7 +151,7 @@ More in [efficiency](docs/efficiency.md).
 - **Typed facts cover only part of the knowledge.** Many claims are still prose with sources rather than typed facts.
 - **Protection has limits:**
   - The immutable flags stop accidental writes. But any process running as the same user can remove them on purpose.
-  - The pre-tool check is a heuristic, not a security boundary.
+  - The pre-tool check is a heuristic and can't be relied on as a security boundary.
   - Network access is checked statically for the LEKS tools and with a probe for the model helper. The other applications aren't checked.
   - The evidence store sits on the same disk, so an off-disk backup is still needed.
 - **The question authors are AI agents.** Their independence is procedural and the answer keys reflect their choices.
@@ -171,6 +171,6 @@ The full list is in [known limitations](docs/limitations.md).
 ## Notes
 
 - This repository describes the system and its measurements. It doesn't contain the code or the project's content.
-- The figures describe the tooling, not the project. Project names are left out.
+- The figures describe only the tooling. Project names are left out.
 
 © 2026 Jakub Majewski. Text and media: all rights reserved.
