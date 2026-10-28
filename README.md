@@ -10,7 +10,7 @@ I built it for a long-running engineering project where a small team works toget
 
 [![engine tests](https://github.com/jacobemanuel/leks/actions/workflows/engine-tests.yml/badge.svg)](https://github.com/jacobemanuel/leks/actions/workflows/engine-tests.yml)
 
-This page is about **LEKS 2.0**, the current version. Version **1.0** was the first one I published here (under the title "Engineering knowledge base") and [its README is archived](docs/history/README-1.0.md). Version 2.0 returns the same search results as 1.0 and rebuilds what sits underneath: indexing, evidence storage, recovery and checks.
+This page is about **LEKS 2.0**, the current version. Version **1.0** was published earlier under the title "Engineering knowledge base", and [its README is archived](docs/history/README-1.0.md) in this repository. Version 2.0 returns the same search results as 1.0 and rebuilds what sits underneath: indexing, evidence storage, recovery and checks.
 
 Below I compare 2.0 with 1.0. Then I compare the default search engine with an experimental local AI engine I tested but didn't ship.
 
@@ -161,6 +161,28 @@ More in [efficiency](docs/efficiency.md).
 - **The question authors are AI agents.** Their independence is procedural and the answer keys reflect their choices.
 
 The full list is in [known limitations](docs/limitations.md).
+
+## Running the engine
+
+From the `engine/` folder, this command runs the tests:
+
+```bash
+python3 -m unittest discover -s tools -p 'test_*.py'
+```
+
+Where Python has no `os.chflags`, as on Linux, the six tests that need the immutable flag are skipped.
+
+The MCP server is `tools/vault_mcp.py`. It takes no arguments, serves the folder above `tools/` as the knowledge base and speaks JSON-RPC 2.0 over stdio, one message per line. In this repository that folder is `engine/`, which holds no project data, so a search there returns nothing. From the knowledge base folder, this command starts the server, which then waits for requests on standard input:
+
+```bash
+python3 tools/vault_mcp.py
+```
+
+MCP clients start the server themselves. In Claude Code, for example, this command registers it under the name `xr-vault`, with the full path to `vault_mcp.py`:
+
+```bash
+claude mcp add xr-vault -- python3 /path/to/knowledge-base/tools/vault_mcp.py
+```
 
 ## Documentation
 
