@@ -6,6 +6,10 @@ I built it for a long-running engineering project where a small team works toget
 - **One folder for everything.** What the project knows lives in one folder: Markdown pages for decisions, deliveries and designs, plus the registered source files they're based on. LEKS keeps that folder consistent and makes every source file recoverable.
 - **Two interfaces.** AI coding agents get short, cited answer packs through a local MCP server (Model Context Protocol). People read and edit the same pages in Obsidian, which also shows how they link together.
 
+![The knowledge graph in 3D in Obsidian, with one page selected and another previewed](media/graph-3d.gif)
+
+*The knowledge graph in 3D, in Obsidian.*
+
 **The engine's code is public** in [`engine/`](engine/): the search, the evidence store, the claims and the MCP server, without any project data. Its 124 tests run on GitHub's macOS machines on every change:
 
 [![engine tests](https://github.com/jacobemanuel/leks/actions/workflows/engine-tests.yml/badge.svg)](https://github.com/jacobemanuel/leks/actions/workflows/engine-tests.yml)
@@ -40,7 +44,7 @@ Below I compare 2.0 with 1.0. Then I compare the default search engine with an e
 | Typed facts and time | Typed facts with valid time and record time, plus contradiction checks and freshness rules | 2.0 |
 | Search index (R1) | A persistent in-memory BM25 index with R0's ranking rules, updated page by page | 2.0 |
 | Answer pack | Passages of the four best pages, their claims, the next pages to read, and a note that the passages are not a confirmed answer | 1.0, extended in 2.0 |
-| MCP server | Nine read-only tools over stdio | 1.0 |
+| MCP server | Nine read-only tools over stdio, seven of them in the public engine | 1.0 |
 | Hooks and checks | Session-start hook, pre-tool check of agent actions and stop check, plus `doctor` and `setup` | 1.0, extended in 2.0 |
 
 More in [architecture](docs/architecture.md).

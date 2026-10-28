@@ -11,7 +11,7 @@ The benchmark questions and answers are project content and are not published. O
 
 | Term | Meaning |
 |---|---|
-| 1.0, 2.0 | Versions of LEKS. 1.0 was published here first, under the title "Engineering knowledge base"; 2.0 is the current version. |
+| 1.0, 2.0 | Versions of LEKS. 1.0 was published first, under the title "Engineering knowledge base", and 2.0 is the current version. |
 | R0, R1, R4, R5 | Search engines (see the [README](../README.md#search-engines-r0-r1-r4-r5)). R0 is the engine of 1.0, R1 the deployed engine of 2.0, R4 and R5 experiments. R2 is the embedding model on its own, one half of R4. |
 | Top 1, top 5, top 10 | Share of answerable questions whose relevant page (the gold page or an accepted alternative) is ranked first, or appears within the first 5 or 10 results. In the literature this is called Recall@k. |
 | Complete answer pack | Every answer key of the question appears in the pack's page passages, in the best page's title or summary, or in the claims the pack includes. This definition is used for the frozen benchmark; the 1.0 benchmark used the harness of 1.0. |

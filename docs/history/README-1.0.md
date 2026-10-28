@@ -1,4 +1,4 @@
-> **Archived README of version 1.0**, published here under the title "Engineering knowledge base". Kept as published, apart from image paths and a few small edits. Its figures describe 1.0; [the version history](../version-history.md) records what changed in 2.0 and which statements were superseded.
+> **Archived README of version 1.0**, published earlier under the title "Engineering knowledge base". Kept as published, apart from image paths and a few small edits. Its figures describe 1.0; [the version history](../version-history.md) records what changed in 2.0 and which statements were superseded.
 
 ![Engineering knowledge base](../../media/hero.jpg)
 

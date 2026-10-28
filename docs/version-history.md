@@ -55,7 +55,7 @@ See [known limitations](limitations.md).
 
 ## 1.0
 
-Published here first, under the title "Engineering knowledge base":
+Published first, under the title "Engineering knowledge base":
 - source registry with hashes and revisions;
 - compiled pages and claims with confidence;
 - R0 search (BM25, domain thesaurus, archive rules);

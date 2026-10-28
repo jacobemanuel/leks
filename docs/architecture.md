@@ -30,7 +30,7 @@ The agent rules and the pre-tool check limit which files an agent may change. Th
 | Build | Compiles indexes, the link graph and the search index snapshot. Deterministic. |
 | Search | R1 by default (below). Source full-text search uses SQLite FTS5. |
 | Answer pack | For a question:<br>• the matching passages of the four best pages (weights 1, 0.6, 0.4, 0.3), limited to 1,800 estimated tokens (7,200 characters);<br>• the claims of those pages and the next pages to read;<br>• since 2.0, a field naming the engine and a fixed note that the passages are the closest matches, not a confirmed answer.<br>A whole pack is about 11,000 to 11,500 characters, or about 2,800 to 2,900 estimated tokens. |
-| MCP server | Nine read-only tools over JSON-RPC on stdio. Arguments are validated against the published schemas. |
+| MCP server | Nine read-only tools over JSON-RPC on stdio, seven of them in the public engine. Arguments are validated against the published schemas. |
 | Hooks | Session-start hook: rules, current state and the evidence-protection status. Pre-tool check: before each tool call, a check of the agent's action against the write rules. Stop check: when an agent stops, the fast integrity check runs and blocks the turn once if the knowledge base is inconsistent. |
 | Integrity check | The full mode hashes every source file; the fast mode trusts unchanged size and time stamps. Both validate links, anchors, metadata and indexes. |
 | Evidence store | Exact copies of every registered source file, addressed by hash, outside the knowledge base, with registry checkpoints |

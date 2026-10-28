@@ -34,4 +34,4 @@ python3 -m unittest discover -s tools -p 'test_*.py'
 
 The project's pages, sources and claims, the retrieval benchmarks (their questions come from the project), the dense helper and its model, the integrations with Unity, Blender and Obsidian, and the pre-tool guard hook, which is tied to the folders of one machine.
 
-© 2026 Jakub Majewski. All rights reserved.
+© 2026 Jakub Majewski. The code is under the [MIT licence](../LICENSE).
