@@ -199,4 +199,4 @@ claude mcp add xr-vault -- python3 /path/to/knowledge-base/tools/vault_mcp.py
 - The engine's code is in [`engine/`](engine/). The project's content and the benchmark questions aren't in this repository.
 - The figures describe only the tooling. Project names are left out.
 
-© 2026 Jakub Majewski. Text and media: all rights reserved.
+The code in [`engine/`](engine/) is under the [MIT licence](LICENSE). Text and media: © 2026 Jakub Majewski, all rights reserved.
