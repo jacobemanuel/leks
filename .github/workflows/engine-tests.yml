@@ -10,6 +10,9 @@ on:
       - 'engine/**'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: macos-latest
