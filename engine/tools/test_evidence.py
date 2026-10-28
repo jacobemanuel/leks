@@ -18,6 +18,10 @@ import vault_fixture as vf
 PY = sys.executable
 TOOLS = Path(__file__).resolve().parent
 
+# the flag tests need bsd file flags (os.chflags + UF_IMMUTABLE). macos has them, linux doesn't, so they skip there
+HAS_FLAGS = es.flags_supported()
+NO_FLAGS = 'needs file flags (os.chflags and stat.UF_IMMUTABLE), which this platform does not have'
+
 
 def sha(path):
     return es.sha256_file(path)
@@ -144,6 +148,7 @@ class RestoreScenarios(unittest.TestCase):
         self.assertEqual(es.verify_store(self.root, deep=True)['errors'], [])
 
 
+@unittest.skipUnless(HAS_FLAGS, NO_FLAGS)
 class Flags(unittest.TestCase):
     def setUp(self):
         self.base, self.root = vf.make_vault(protect=True)
@@ -197,6 +202,7 @@ class ProtectionAtStartup(unittest.TestCase):
                               env=env, cwd=str(self.root), timeout=120)
         return json.loads(done.stdout or '{}').get('additionalContext', '')
 
+    @unittest.skipUnless(HAS_FLAGS, NO_FLAGS)
     def test_session_start_relocks_and_reports(self):
         self.base, self.root = vf.make_vault(protect=True)
         es.protect(self.root, 'apply')
@@ -207,6 +213,7 @@ class ProtectionAtStartup(unittest.TestCase):
         self.assertIn('Evidence protection: on; 3 registered raw files immutable; 1 re-locked at session start.', context)
         self.assertNotIn('EVIDENCE PROTECTION', context)
 
+    @unittest.skipUnless(HAS_FLAGS, NO_FLAGS)
     def test_a_missing_flag_fails_check_and_doctor(self):
         self.base, self.root = vf.make_vault(protect=True)
         es.protect(self.root, 'apply')
