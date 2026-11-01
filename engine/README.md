@@ -16,7 +16,7 @@ The tests build a small synthetic vault in a temporary folder, so everything her
 | `tools/freshness.py` | Rules that flag pages whose evidence has moved on |
 | `tools/doctor.py` | Diagnosis and setup |
 | `tools/vault_mcp.py` | A read-only MCP server (stdio, JSON-RPC 2.0) for AI coding agents |
-| `tools/dense_client.py` | Client for the optional on-device embedding search; without it, search falls back to BM25 |
+| `tools/dense_client.py` | Client for the optional on-device embedding search. Without it, search falls back to BM25 |
 | `tools/hooks/` | Session hooks: the start-up context and an end-of-turn integrity check |
 | `tools/vault_fixture.py` | The synthetic test vault |
 | `tools/test_*.py` | 124 tests |

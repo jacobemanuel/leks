@@ -1,4 +1,4 @@
-> **Archived README of version 1.0**, published earlier under the title "Engineering knowledge base". Kept as published, apart from image paths and a few small edits. Its figures describe 1.0; [the version history](../version-history.md) records what changed in 2.0 and which statements were superseded.
+> **Archived README of version 1.0**, published earlier under the title "Engineering knowledge base". Kept as published, apart from image paths and a few small edits. Its figures describe 1.0. [The version history](../version-history.md) records what changed in 2.0 and which statements were superseded.
 
 ![Engineering knowledge base](../../media/hero.jpg)
 
@@ -93,7 +93,7 @@ flowchart LR
 
 A 3D view of the knowledge graph, built as a local extension of a graph plugin: instanced planets with custom GLSL materials, camera fitting that reads the physics engine's packed position buffer, a guided tour, a note inspector and support for reduced motion. One colour configuration drives every view of the vault, and a check reports any drift.
 
-[![Orbit around the knowledge graph](../../media/graph-orbit-preview.jpg)](../../media/graph-orbit.mp4)
+[![Orbit around the knowledge graph](../../media/graph-orbit.gif)](../../media/graph-orbit.mp4)
 
 [Open the orbit video](../../media/graph-orbit.mp4)
 
