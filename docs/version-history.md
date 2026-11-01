@@ -55,12 +55,12 @@ See [known limitations](limitations.md).
 
 ## 1.0
 
-Published here first, under the title "Engineering knowledge base":
+Published first, under the title "Engineering knowledge base":
 - source registry with hashes and revisions;
 - compiled pages and claims with confidence;
 - R0 search (BM25, domain thesaurus, archive rules);
 - a one-call answer pack with the passages of the four best pages;
-- an MCP server, three hooks, and Unity and Blender references;
+- an MCP server, three hooks, and code and asset references;
 - on-device text recognition for images and PDFs;
 - nine agent roles and fourteen skills.
 
@@ -86,6 +86,6 @@ Its README is [archived](history/README-1.0.md) as published, apart from the sma
 | One MCP call returns the passages of the four best pages within 1,800 tokens | current, clarified | 1,800 estimated tokens is the budget for the page passages. A whole pack, with claims, next pages and status fields, is about 2,800 estimated tokens in version 1.0 and about 2,860 in version 2.0, which adds a field naming the engine and a fixed note that the passages are not a confirmed answer. |
 | Context loaded at session start about 4,800 tokens | different scope | That figure counted everything the knowledge base adds to each request, including tool descriptions. The session-start files alone are about 2,500 tokens in both versions. |
 | Key rules in code: session-start hook, pre-tool check, stop check | current, extended | The pre-tool check now fails closed; the stop check catches in-place edits of source files. |
-| Roslyn, scene, prefab and Blender references; Unity Editor bridge; OCR (99.42 % character accuracy) | current | Unchanged and not re-measured |
+| Roslyn and asset references; editor bridge; OCR (99.42 % character accuracy) | current | Unchanged and not re-measured |
 | Nine agent roles, fourteen skills, one writer, attribution by model name | current | Unchanged |
 | Graph view and orbit video | current | Unchanged; shown in the archived README of 1.0 |

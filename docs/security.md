@@ -11,7 +11,7 @@
 - A process of the same user that deliberately removes every layer.
 - Loss of the whole disk; an off-disk backup is still needed.
 - What an AI coding agent does with text it has read, including where its model runs. LEKS controls which files an agent may change, not how the agent handles what it reads.
-- The network behaviour of other applications in the workflow (Obsidian, Unity, Blender, the code editor).
+- The network behaviour of other applications in the workflow (Obsidian, the code editor, other development tools).
 
 ## Layers
 

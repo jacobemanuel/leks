@@ -27,7 +27,7 @@
 - **Network checks are limited:**
   - A static check covers the imports of the Python tools, not their behaviour at run time.
   - A sandbox probe covers the model helper.
-  - Obsidian, Unity, Blender, the code editor and the AI coding agent are separate applications whose network behaviour is not checked.
+  - Obsidian, the code editor, other development tools and the AI coding agent are separate applications whose network behaviour is not checked.
 
 ## Evaluation
 
