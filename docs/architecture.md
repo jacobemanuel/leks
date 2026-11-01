@@ -13,7 +13,7 @@ LEKS is a command-line tool (Python, standard library) and an MCP server around 
 | LEKS tools: build, checks, search, answer packs, MCP server, hooks, evidence store | the developer's Mac | No networking imports. A static check in the test suite scans the source of these Python modules for networking modules and finds none; it checks the code, not run-time behaviour. They use only the standard library and talk to the agent over stdio. |
 | Text-recognition helper for images and PDFs | the developer's Mac | Its source uses Apple's on-device Vision and PDFKit frameworks and makes no network calls of its own (code review only; no automated check) |
 | Model helper for the optional experimental engines R4 and R5 | the developer's Mac, in a separate process | Denied by a macOS sandbox: a probe confirms that TCP connections, even to the local machine, are refused inside it, while the same probe outside connects. Its installer downloads pinned packages and model files once, at install time. |
-| Obsidian, Unity, Blender, the code editor | the developer's Mac | Separate applications with their own network behaviour (updates, sync, extensions). LEKS does not control or verify it. |
+| Obsidian, the code editor, other development tools | the developer's Mac | Separate applications with their own network behaviour (updates, sync, extensions). LEKS does not control or verify it. |
 | AI coding agent | in the code editor; its model runs locally or in the cloud, depending on the agent | Receives the answer packs it requests over MCP. What it does with them is governed by the agent and its configuration. |
 
 The agent rules and the pre-tool check limit which files an agent may change. They do not control what an agent does with the text it reads.
@@ -37,7 +37,7 @@ The agent rules and the pre-tool check limit which files an agent may change. Th
 | Journal and incidents | A hash-chained log of evidence events whose head is copied outside on every append. Damage opens an incident that is shown at every session start until a person resolves it. |
 | Obsidian | The same folder opened as an Obsidian vault: the interface for people to read and edit pages, with a graph view of the links. One colour configuration drives every view, and a check reports drift. |
 | `doctor` and `setup` | `doctor` checks every layer and names the fix. `setup` brings indexes, the store and the file-system flags up to date, and does nothing on a second run. |
-| Reference tooling | A Roslyn-based extractor turns the Unity project's C# code into a reference that agents query in small slices. Scenes, prefabs and a Blender add-on have bounded references too. A Unity Editor bridge opens the asset a note refers to. |
+| Reference tooling | A Roslyn-based extractor turns the project's C# code into a reference that agents query in small slices. Other project assets have bounded references too. An editor bridge opens the asset a note refers to. |
 | Images and PDFs | The text-recognition helper reads PDF text layers and recognises text in images. The text joins the source full-text index. |
 | Agent setup | Nine agent roles and fourteen skills for recurring procedures. Specialist roles report, and one role writes shared pages. AI work is attributed by model name. |
 

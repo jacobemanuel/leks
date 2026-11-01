@@ -149,7 +149,7 @@ def normalize(text):
     return ''.join(c for c in unicodedata.normalize('NFKD', text) if not unicodedata.combining(c))
 
 STEMS = {'marker':'marker','material':'material','build':'build','anchor':'anchor','texture':'texture',
-         'launch':'launch','package':'package','mirror':'mirror','door':'door','gate':'gate'}
+         'launch':'launch','package':'package','gauge':'gauge','drawer':'drawer','gate':'gate'}
 
 def tokens(text):
     words = re.findall(r'[a-z0-9]+', normalize(text))
@@ -185,12 +185,11 @@ STOP = set('a an the and or of in on for to is are was were be been does do did 
 # Domain vocabulary; never a table mapping benchmark questions to answers.
 ALIASES = {
     'memory': ['footprint','jetsam'],
-    'door':['grip','interactions'], 'steering':['wheel','interactions'],
-    'headset':['avp','device'], 'device':['avp'],
+    'drawer':['grip','interactions'],
+    'headset':['device'],
     'current':['now'], 'latest':['now'], 'today':['now'],
     'engine':['architecture'],
     'format':['package','contract'], 'designer':['publisher'],
-    'car':['vehicle'], 'cars':['vehicle'], 'marker':['placement'], 'anchor':['spatial'],
     'glass':['materials'], 'image':['texture','uv'], 'texture':['uv'], 'flipped':['uv','flip'],
     'rebuild':['architecture','adr'], 'airdrop':['intake','import'],
     'junk':['sources','archive','coverage'], 'conversations':['conversation','sources'],
@@ -253,7 +252,7 @@ def search_scan(root, query, limit=5):
     for word in query_words:
         expanded += tokens(' '.join(ALIASES.get(word, [])))
     expanded = list(dict.fromkeys(expanded))
-    # A quantifier or "own" next to a content word ("own app", "every product") carries meaning that
+    # A quantifier or "own" next to a content word ("own service", "every component") carries meaning that
     # single-word scoring drops, so pages using the same pair get a small bonus.
     all_words = tokens(query)
     phrases = {a+' '+b for a, b in zip(all_words, all_words[1:])
@@ -1008,7 +1007,7 @@ def _check_profiles(root):
         for other in m.get('agents',[]):
             if other not in agentnames: errors.append(name+': unknown delegate '+other)
         if m.get('agents') and 'agent' not in m.get('tools',[]): errors.append(name+': delegates require agent tool')
-        if name not in ['XR-ORCHESTRATOR','XR-KNOWLEDGE'] and any(t in READONLY_FORBIDDEN_TOOLS for t in m.get('tools',[])):
+        if name not in ['LEKS-ORCHESTRATOR','LEKS-KNOWLEDGE'] and any(t in READONLY_FORBIDDEN_TOOLS for t in m.get('tools',[])):
             errors.append(name+': read-only profile has write/execute tool')
     skillcount = 0
     for p in sorted((root/'.agents/skills').glob('*/SKILL.md')):

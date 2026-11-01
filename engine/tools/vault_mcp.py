@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only MCP server for a LEKS vault (stdio, JSON-RPC 2.0, standard library only).
 
-Registered for VS Code in .vscode/mcp.json as "xr-vault". It lets every agent profile, including
+Registered for VS Code in .vscode/mcp.json as "leks". It lets every agent profile, including
 the read-only specialists, search pages, find and resolve sources and read claims without a shell.
 No tool changes the vault's content; vault_search,
 vault_answer_pack and vault_status may refresh derived caches in .brain/ (page index, claim history).
@@ -15,7 +15,7 @@ ROOT = TOOLS_DIR.parent
 sys.path.insert(0, str(TOOLS_DIR))
 import brain  # noqa: E402
 
-SERVER = {'name':'xr-vault','version':'1.0.0'}
+SERVER = {'name':'leks','version':'1.0.0'}
 KNOWN_VERSIONS = ['2025-06-18','2025-03-26','2024-11-05']
 
 def schema(properties, required=()):

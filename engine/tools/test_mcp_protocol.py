@@ -55,8 +55,8 @@ def text(reply):
 VALID = {   # one valid call per tool, on the fixture vault
     'vault_search': {'question': 'Which build is on the headset?', 'limit': 3},
     'vault_answer_pack': {'question': 'Which build is on the headset?'},
-    'vault_source': {'terms': 'mirror note'},
-    'vault_media': {'path_or_words': 'mirror'},
+    'vault_source': {'terms': 'gauge note'},
+    'vault_media': {'path_or_words': 'gauge'},
     'vault_resolve': {'path_or_id': 'wiki/now.md'},
     'vault_claims': {'query': 'C-1'},
     'vault_status': {},
@@ -100,7 +100,7 @@ class ProtocolTests(unittest.TestCase):
         s.send({'jsonrpc': '2.0', 'id': 1, 'method': 'initialize', 'params': {'protocolVersion': '2025-06-18', 'capabilities': {}}})
         init = s.read()
         self.assertEqual(init['result']['protocolVersion'], '2025-06-18')
-        self.assertEqual(init['result']['serverInfo']['name'], 'xr-vault')
+        self.assertEqual(init['result']['serverInfo']['name'], 'leks')
         s.send({'jsonrpc': '2.0', 'method': 'notifications/initialized'})          # no reply to a notification
         s.send({'jsonrpc': '2.0', 'id': 2, 'method': 'initialize', 'params': {'protocolVersion': '1999-01-01'}})
         self.assertEqual(s.read()['result']['protocolVersion'], '2025-06-18')       # unknown version: the server's latest
@@ -161,8 +161,8 @@ class ProtocolTests(unittest.TestCase):
         s = self.server
         cases = [('vault_source', {'terms': 'build', 'content': True, 'limit': 50}),
                  ('vault_claims', {'query': 'build', 'limit': 50}),
-                 ('vault_answer_pack', {'question': 'Which build is installed on the headset and how do the mirrors render?', 'budget': 6000}),
-                 ('vault_search', {'question': 'build installed headset mirrors', 'limit': 50})]
+                 ('vault_answer_pack', {'question': 'Which build is installed on the headset and how do the gauges render?', 'budget': 6000}),
+                 ('vault_search', {'question': 'build installed headset gauges', 'limit': 50})]
         sizes = {}
         for i, (name, args) in enumerate(cases, 1):
             start = time.perf_counter()
@@ -224,7 +224,7 @@ class ErrorPathTests(unittest.TestCase):
             started = time.monotonic()
             server = Server(self.root / 'tools/vault_mcp.py')
             server.send({'jsonrpc': '2.0', 'id': 1, 'method': 'initialize', 'params': {'protocolVersion': '2025-06-18', 'capabilities': {}}})
-            self.assertEqual(server.read()['result']['serverInfo']['name'], 'xr-vault')
+            self.assertEqual(server.read()['result']['serverInfo']['name'], 'leks')
             self.assertFalse(server.call(2, 'vault_status')['result']['isError'])
             self.assertEqual(server.close(), 0, attempt)
             self.assertLess(time.monotonic() - started, 30, attempt)

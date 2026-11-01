@@ -9,7 +9,7 @@ more than the claim text, and names the anchors (indexes into the claim's "ancho
 Attributes (ONE: one value at a time per subject and device):
     build                 subject: app bundle ID; value: build number (12 digits); level: the highest evidence level
                           the claim establishes for that build; device: where it was installed or launched
-    unity-version         ONE; subject: a Unity project or snapshot; value: an editor version such as 6000.3.19f1
+    unity-version         ONE; subject: a Unity project or snapshot; value: an editor version such as 2022.3.20f1
     decision-status       ONE; subject: a decision record (ADR-0007); value: proposed | active | superseded | archived
     owner-verdict         ONE; subject: a build number; value: accepted | not-accepted | partial
     source-changeset      ONE; subject: a build number; value: the version-control changeset it was built from (for example cs:12)
@@ -26,7 +26,7 @@ Rules; a finding is an error for an active claim and a warning for an archived o
     E2  a planned claim (a proposal) establishes nothing above "proposed" and no decision-status "active":
         a proposal is never promoted by its own text
     E3  installed, launched and device-accepted need a verified or reported fact and a cited verified excerpt with
-        the marker of that level, and the cited excerpts must name a device (AVP, Vision Pro, headset, device,
+        the marker of that level, and the cited excerpts must name a device (headset, device,
         devicectl): a build is never proof of deployment, and "tested on the Mac" is no device step
     E4  for a claim with one build fact whose number the claim text names, or with one source-state fact: a step
         its text or scope affirms (built, installed,
@@ -93,10 +93,10 @@ MARKERS = {
 VERBS = {
     'built': r'\bbuilt\b|\b(?:player|app|release|test|official|signed|device|native|new|earlier|final|a|no)\s+(?:\w+\s+)?build\b|\bbuild\s+\d{12}\b',
     'installed': r'\binstall(?:ed|s|ing|ation)?\b',
-    'launched': r'\b(?:launch(?:ed|es|ing)?|smoke-launched|device (?:pass|result|test)\w*)\b|\btest(?:ed|ing)\b(?=[^;.]*\b(?:on|with)\b[^;.]*\b(?:AVP|Vision Pro|headset|device)\b)',
+    'launched': r'\b(?:launch(?:ed|es|ing)?|smoke-launched|device (?:pass|result|test)\w*)\b|\btest(?:ed|ing)\b(?=[^;.]*\b(?:on|with)\b[^;.]*\b(?:headset|device)\b)',
     'device-accepted': r'\baccept(?:ed|ance|s)?\b',
 }
-DEVICE = r'\b(?:AVP|Vision Pro|headset|device|devicectl)\b'
+DEVICE = r'\b(?:headset|device|devicectl)\b'
 NEEDS_DEVICE = ('installed', 'device-accepted')    # "installed-package conversion", "accepted code" are no device steps
 NEGATION = r"\b(?:no|not|never|without|cannot|failed|didn't|wasn't)\b"
 OPEN = r'\b(?:unknown|pending|unverified|not (?:yet|recorded|verified|measured))\b'
@@ -104,7 +104,7 @@ WINDOW, OPEN_WINDOW = 8, 12
 # Critical-claim population rules (see coverage()). v1 was the first rule; v2 replaced it after v1's false
 # positives were inspected, and both are reported.
 CRITICAL = re.compile(r'\b\d{12}\b|\b\d{4}\.\d+\.\d+f\d+\b|\bADR-\d{4}\b|\bcs:\d+\b|'
-                      r'\b(?:install\w*|launch\w*|accept\w*|test(?:ed|ing))\b.*\b(?:AVP|Vision Pro|headset|device)\b', re.I)
+                      r'\b(?:install\w*|launch\w*|accept\w*|test(?:ed|ing))\b.*\b(?:headset|device)\b', re.I)
 IDENTIFIERS = re.compile(r'\b\d{12}\b|\b\d{4}\.\d+\.\d+f\d+\b|\bADR-\d{4}\b|\bcs:\d+\b')
 APP_PAGES = ('wiki/codebase/', 'wiki/projects/', 'wiki/now.md')
 INACTIVE = anchors.INACTIVE

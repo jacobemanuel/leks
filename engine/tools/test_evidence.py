@@ -60,7 +60,7 @@ class RestoreScenarios(unittest.TestCase):
         self.assertEqual(sha(self.src), self.good)
 
     def test_r04_replaced_by_another_source(self):
-        shutil.copyfile(str(self.root / 'raw/docs/mirror-note.md'), str(self.src))
+        shutil.copyfile(str(self.root / 'raw/docs/gauge-note.md'), str(self.src))
         self.assertEqual(self.restore('raw/docs/build-log.md', replace=True)['status'], 'restored')
         self.assertEqual(sha(self.src), self.good)
 
@@ -159,7 +159,7 @@ class Flags(unittest.TestCase):
     def test_protect_blocks_writes_renames_and_deletes(self):
         result = es.protect(self.root, 'apply')
         self.assertEqual(result['protected'], result['files'])
-        target = self.root / 'raw/docs/mirror-note.md'
+        target = self.root / 'raw/docs/gauge-note.md'
         for action in (lambda: target.write_text('x'), lambda: target.unlink(), lambda: os.rename(str(target), str(target) + '.x')):
             with self.assertRaises(PermissionError):
                 action()
@@ -173,9 +173,9 @@ class Flags(unittest.TestCase):
 
     def test_move_manages_flags_and_journals(self):
         es.protect(self.root, 'apply')
-        brain.move_many(self.root, [['raw/docs/mirror-note.md', 'raw/docs/mirrors/mirror-note.md']], 'fixture')
+        brain.move_many(self.root, [['raw/docs/gauge-note.md', 'raw/docs/gauges/gauge-note.md']], 'fixture')
         brain.build(self.root)
-        moved = self.root / 'raw/docs/mirrors/mirror-note.md'
+        moved = self.root / 'raw/docs/gauges/gauge-note.md'
         self.assertTrue(moved.is_file() and es.is_immutable(moved))
         self.assertTrue(es.is_immutable(self.root / 'raw/docs/build-log.md'))
         events = [e['event'] for e in es.journal_lines(self.root)]
@@ -206,7 +206,7 @@ class ProtectionAtStartup(unittest.TestCase):
     def test_session_start_relocks_and_reports(self):
         self.base, self.root = vf.make_vault(protect=True)
         es.protect(self.root, 'apply')
-        loose = self.root / 'raw/docs/mirror-note.md'
+        loose = self.root / 'raw/docs/gauge-note.md'
         es.set_immutable(loose, False)
         context = self.session_context()
         self.assertTrue(es.is_immutable(loose))
@@ -217,7 +217,7 @@ class ProtectionAtStartup(unittest.TestCase):
     def test_a_missing_flag_fails_check_and_doctor(self):
         self.base, self.root = vf.make_vault(protect=True)
         es.protect(self.root, 'apply')
-        es.set_immutable(self.root / 'raw/docs/mirror-note.md', False)
+        es.set_immutable(self.root / 'raw/docs/gauge-note.md', False)
         errors = brain.check(self.root, False)['errors']
         self.assertTrue(any('not immutable although protect_raw is on' in e for e in errors), errors)
         import doctor
@@ -316,24 +316,24 @@ class JournalAndIncidents(unittest.TestCase):
     def test_stop_hook_sees_an_in_place_change_to_existing_evidence(self):
         self.assertTrue(brain.check(self.root, True)['ok'])
         time.sleep(0.05)
-        with open(self.root / 'raw/docs/mirror-note.md', 'a') as f:
+        with open(self.root / 'raw/docs/gauge-note.md', 'a') as f:
             f.write('appended in place\n')
         out = self.run_hook('stop_check.py', {})
         self.assertEqual(out.get('decision'), 'block')
         self.assertIn('raw changed', out.get('reason', ''))
 
     def test_incident_stays_open_until_restored_and_resolved(self):
-        target = self.root / 'raw/docs/mirror-note.md'
+        target = self.root / 'raw/docs/gauge-note.md'
         target.write_text('tampered\n')
         result = brain.check(self.root, True)
         self.assertEqual(len(result['open_incidents']), 1)
         iid = result['open_incidents'][0]['id']
         self.assertIn('INTEGRITY INCIDENTS OPEN', self.run_hook('session_context.py', {}).get('additionalContext', ''))
         self.assertEqual(self.run_hook('stop_check.py', {}).get('decision'), 'block')
-        self.assertIn('integrity', brain.answer_pack(self.root, 'mirrors'))
+        self.assertIn('integrity', brain.answer_pack(self.root, 'gauges'))
         refused = es.resolve_incident(self.root, iid, 'fixture', brain.check(self.root, False)['errors'])
         self.assertEqual(refused['status'], 'refused')
-        self.assertEqual(es.restore(self.root, 'raw/docs/mirror-note.md', replace=True)['status'], 'restored')
+        self.assertEqual(es.restore(self.root, 'raw/docs/gauge-note.md', replace=True)['status'], 'restored')
         resolved = es.resolve_incident(self.root, iid, 'restored from the store', brain.check(self.root, False)['errors'])
         self.assertEqual(resolved['status'], 'resolved')
         self.assertEqual(es.open_incidents(self.root), [])

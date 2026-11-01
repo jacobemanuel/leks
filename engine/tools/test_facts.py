@@ -12,9 +12,9 @@ import knowledge_time as kt
 import vault_fixture as vf
 
 NOTE = ['# Delivery', 'Demo Viewer, com.example.viewer, build 261019120000, Release.',
-        'Installed and launched on the office headset after the owner unlocked it.',
+        'Installed and launched on the test headset after the owner unlocked it.',
         'The owner checked it; everything looks really good.', 'Built and signed only: build 261018010000.',
-        'Unity editor 6000.3.19f1 is used by the project.', 'ADR-0009 status: proposed draft.',
+        'Unity editor 2022.3.20f1 is used by the project.', 'ADR-0009 status: proposed draft.',
         'Editor checks passed; no player build.', '']
 APP = 'com.example.viewer'
 
@@ -74,7 +74,7 @@ class FactTests(unittest.TestCase):
         open_ = claim('D', 'Build 261019120000 was installed on the headset. Launch and acceptance are not yet recorded.',
                       anchors=[self.anchor(2), self.anchor(3)], facts=[build('261019120000', 'launched', (0, 1))])
         self.assertTrue(any('open' in m and '(E4)' in m for m in self.findings([open_])))
-        under = claim('E', 'Build 261019120000 was installed on the office headset.', anchors=[self.anchor(2), self.anchor(3)],
+        under = claim('E', 'Build 261019120000 was installed on the test headset.', anchors=[self.anchor(2), self.anchor(3)],
                       facts=[build('261019120000', 'built', (0, 1))])
         self.assertTrue(any('the text says installed' in m for m in self.findings([under])))
         (self.root / 'raw/docs/mac-note.md').write_text('Build 261019120000 was installed and tested on the Mac.\n', encoding='utf-8')
@@ -99,7 +99,7 @@ class FactTests(unittest.TestCase):
         plan['facts'][0]['value'] = 'proposed'
         self.assertEqual(self.findings([plan]), [])
         unknown = claim('U', 'The Unity version is unknown.', confidence='unknown', anchors=[self.anchor(6)],
-                        facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': '6000.3.19f1', 'anchors': [0]}])
+                        facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': '2022.3.20f1', 'anchors': [0]}])
         self.assertTrue(any('(E6)' in m for m in self.findings([unknown])))
         unknown['facts'][0]['value'] = 'unknown'
         self.assertEqual(self.findings([unknown]), [])
@@ -113,10 +113,10 @@ class FactTests(unittest.TestCase):
                          {'built': 'affirmed', 'installed': 'affirmed', 'launched': 'affirmed'})
         self.assertEqual(w('Build 261019120000 was installed on the headset. Launch and headset acceptance belong to the owner and are not yet recorded.'),
                          {'built': 'affirmed', 'installed': 'affirmed', 'launched': 'open', 'device-accepted': 'open'})
-        self.assertEqual(w('After testing build 261019120000 on the office Apple Vision Pro, the owner said the feature works but is not satisfied.'),
+        self.assertEqual(w('After testing build 261019120000 on the test headset, the owner said the feature works but is not satisfied.'),
                          {'built': 'affirmed', 'launched': 'affirmed'})
         self.assertEqual(w('Editor checks passed.', 'Source only; not a device result'), {'launched': 'negated'})
-        self.assertEqual(w('The final build is not installed on AVP and its headset appearance is unknown.'),
+        self.assertEqual(w('The final build is not installed on the headset and its appearance there is unknown.'),
                          {'built': 'affirmed', 'installed': 'negated'})          # the negation before the verb wins
         self.assertEqual(w('Accepted code remains; installed-package conversion passed; generated build caches removed.'), {})
         state = lambda level, text='Editor checks passed. No player build or new device pass.': claim(
@@ -150,14 +150,14 @@ class FactTests(unittest.TestCase):
         self.assertTrue(any("supports 'active'" in m for m in self.findings([proposal])))
 
     def test_fact_level_verification(self):
-        wrong = claim('W', 'Unity 6000.3.20f1 is used.', anchors=[self.anchor(6)],
-                      facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': '6000.3.20f1', 'anchors': [0]}])
+        wrong = claim('W', 'Unity 2022.3.21f1 is used.', anchors=[self.anchor(6)],
+                      facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': '2022.3.21f1', 'anchors': [0]}])
         self.assertTrue(any('does not occur' in m for m in self.findings([wrong])))
-        uncited = claim('V', 'Unity 6000.3.19f1 is used.', anchors=[self.anchor(6)],
-                        facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': '6000.3.19f1', 'anchors': []}])
+        uncited = claim('V', 'Unity 2022.3.20f1 is used.', anchors=[self.anchor(6)],
+                        facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': '2022.3.20f1', 'anchors': []}])
         self.assertTrue(any('does not occur' in m for m in self.findings([uncited])))
-        broken = claim('Z', 'Unity 6000.3.19f1 is used.', anchors=[dict(self.anchor(6), sha256='0' * 64)],
-                       facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': '6000.3.19f1', 'anchors': [0]}])
+        broken = claim('Z', 'Unity 2022.3.20f1 is used.', anchors=[dict(self.anchor(6), sha256='0' * 64)],
+                       facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': '2022.3.20f1', 'anchors': [0]}])
         self.assertTrue(any('does not occur' in m for m in self.findings([broken])))  # a changed anchor proves nothing
         other_app = claim('O', 'Build 261018010000 was built.', anchors=[self.anchor(5)],
                           facts=[dict(build('261018010000', 'built'), subject='com.example.other')])
@@ -165,7 +165,7 @@ class FactTests(unittest.TestCase):
         prefix = claim('Q', 'Build 261019120000 was built.', anchors=[self.anchor(2)],
                        facts=[dict(build('261019120000', 'built'), subject='com.example.view')])   # a prefix of com.example.viewer
         self.assertTrue(any('subject com.example.view ' in m for m in self.findings([prefix])))
-        self.assertTrue(facts.mentions('6000.3.19f1', 'Unity 6000.3.19f1.') and not facts.mentions('6000.3.19f1', 'Unity 6000.3.19f12'))
+        self.assertTrue(facts.mentions('2022.3.20f1', 'Unity 2022.3.20f1.') and not facts.mentions('2022.3.20f1', 'Unity 2022.3.20f12'))
         self.assertFalse(facts.mentions('26101912000', 'build 261019120000'))
         inferred = claim('I', 'The owner judged the final build good.', confidence='reported', anchors=[self.anchor(4)],
                          facts=[{'subject': '261019120000', 'attribute': 'owner-verdict', 'value': 'accepted', 'anchors': [0],
@@ -177,22 +177,22 @@ class FactTests(unittest.TestCase):
             {'subject': 'project', 'attribute': 'unity-version', 'value': value, 'anchors': []}], **x)
         kinds = lambda claims: sorted((r['kind'], tuple(r['claims'])) for r in facts.contradictions(claims) if r['attribute'] == 'unity-version')
         # a later value closes an open-ended earlier one: a revision
-        self.assertEqual(kinds([v('U1', '6000.0.56f1', '2026-09-01'), v('U2', '6000.3.19f1', '2026-10-08')]), [('revision', ('U1', 'U2'))])
+        self.assertEqual(kinds([v('U1', '2022.3.10f1', '2026-09-01'), v('U2', '2022.3.20f1', '2026-10-08')]), [('revision', ('U1', 'U2'))])
         # the same evidence date with two values: a contradiction
-        self.assertEqual(kinds([v('U1', '6000.0.56f1', '2026-10-08'), v('U2', '6000.3.19f1', '2026-10-08')]), [('contradiction', ('U1', 'U2'))])
+        self.assertEqual(kinds([v('U1', '2022.3.10f1', '2026-10-08'), v('U2', '2022.3.20f1', '2026-10-08')]), [('contradiction', ('U1', 'U2'))])
         # an explicit validity that overlaps the next value: a contradiction
-        self.assertEqual(kinds([v('U1', '6000.0.56f1', '2026-09-01', valid_to='2026-10-15'), v('U2', '6000.3.19f1', '2026-10-08')]),
+        self.assertEqual(kinds([v('U1', '2022.3.10f1', '2026-09-01', valid_to='2026-10-15'), v('U2', '2022.3.20f1', '2026-10-08')]),
                          [('contradiction', ('U1', 'U2'))])
         # supersession and a recorded conflict are history, not new contradictions
-        self.assertEqual(kinds([v('U1', '6000.0.56f1', '2026-10-08', superseded_by='U2', lifecycle='superseded'),
-                                v('U2', '6000.3.19f1', '2026-10-08', supersedes=['U1'])]), [('superseded', ('U1', 'U2'))])
-        self.assertEqual(kinds([v('U1', '6000.0.56f1', '2026-10-08', conflicts=['U2']), v('U2', '6000.3.19f1', '2026-10-08', conflicts=['U1'])]),
+        self.assertEqual(kinds([v('U1', '2022.3.10f1', '2026-10-08', superseded_by='U2', lifecycle='superseded'),
+                                v('U2', '2022.3.20f1', '2026-10-08', supersedes=['U1'])]), [('superseded', ('U1', 'U2'))])
+        self.assertEqual(kinds([v('U1', '2022.3.10f1', '2026-10-08', conflicts=['U2']), v('U2', '2022.3.20f1', '2026-10-08', conflicts=['U1'])]),
                          [('recorded-conflict', ('U1', 'U2'))])
         # an archived value followed by a current one: archived_on bounds validity, so a revision
-        self.assertEqual(kinds([v('U1', '6000.0.56f1', '2026-09-01', lifecycle='archived', archived_on='2026-10-21'),
-                                v('U2', '6000.3.19f1', '2026-10-08')]), [('revision', ('U1', 'U2'))])
+        self.assertEqual(kinds([v('U1', '2022.3.10f1', '2026-09-01', lifecycle='archived', archived_on='2026-10-21'),
+                                v('U2', '2022.3.20f1', '2026-10-08')]), [('revision', ('U1', 'U2'))])
         both = claim('U3', 'x', as_of='2026-10-08', facts=[{'subject': 'project', 'attribute': 'unity-version', 'value': v, 'anchors': []}
-                                                          for v in ('6000.0.56f1', '6000.3.19f1')])
+                                                          for v in ('2022.3.10f1', '2022.3.20f1')])
         self.assertEqual(kinds([both]), [('contradiction', ('U3', 'U3'))])
         # verdicts belong to their build: different builds never contradict
         verdict = lambda cid, b, value: claim(cid, 'x', facts=[{'subject': b, 'attribute': 'owner-verdict', 'value': value, 'anchors': []}])
@@ -255,9 +255,9 @@ class TimeTests(unittest.TestCase):
     def test_valid_and_transaction_time(self):
         b1 = claim('B1', 'Build 261018150000 installed and launched.', as_of='2026-10-18',
                    facts=[build('261018150000', 'launched', device='test headset')])
-        b2 = claim('B2', 'Build 261019120000 installed.', as_of='2026-10-19', facts=[build('261019120000', 'installed', device='office')])
+        b2 = claim('B2', 'Build 261019120000 installed.', as_of='2026-10-19', facts=[build('261019120000', 'installed', device='lab headset')])
         fb = claim('FB', 'Owner tested 261019120000.', as_of='2026-10-19', confidence='reported',
-                   facts=[dict(build('261019120000', 'launched', device='office'), confidence='inferred', basis='owner feedback')])
+                   facts=[dict(build('261019120000', 'launched', device='lab headset'), confidence='inferred', basis='owner feedback')])
         self.record([b1], '2026-10-21T10:00:00+02:00')
         self.record([b1, b2], '2026-10-22T10:00:00+02:00')
         self.record([b1, b2, fb], '2026-10-23T10:00:00+02:00')
@@ -297,8 +297,8 @@ class TimeTests(unittest.TestCase):
         then = kt.evidence(self.root, 'D-1', '2026-10-22')
         self.assertEqual(then['confidence'], 'planned')
         self.assertIn('not recorded', kt.evidence(self.root, 'D-2', '2026-10-22')['status'])
-        archived = claim('A-1', 'Unity 6000.0.56f1.', as_of='2026-09-01', lifecycle='archived', archived_on='2026-10-21',
-                         facts=[{'subject': 'p', 'attribute': 'unity-version', 'value': '6000.0.56f1', 'anchors': []}])
+        archived = claim('A-1', 'Unity 2022.3.10f1.', as_of='2026-09-01', lifecycle='archived', archived_on='2026-10-21',
+                         facts=[{'subject': 'p', 'attribute': 'unity-version', 'value': '2022.3.10f1', 'anchors': []}])
         self.assertIn('archived on 2026-10-21', kt.value_at([archived], 'unity-version', 'p', '2026-10-22')['note'])
 
     def test_uncommitted_edits_and_retrospective_correction(self):

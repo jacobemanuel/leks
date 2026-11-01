@@ -8,7 +8,7 @@ import brain
 
 def page(root, path, title, summary, keywords, sources, status='active', category='Domains', body=''):
     meta = {'title':title,'summary':summary,'category':category,'status':status,'as_of':'2026-10-08',
-            'compiled_on':'2026-10-08','owner':'XR-KNOWLEDGE','keywords':keywords,'sources':sources}
+            'compiled_on':'2026-10-08','owner':'LEKS-KNOWLEDGE','keywords':keywords,'sources':sources}
     fm = '\n'.join(k+': '+json.dumps(v) for k,v in meta.items())
     p = root/path
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -23,10 +23,10 @@ class BrainIntegrityTests(unittest.TestCase):
         (self.root/'system').mkdir()
         (self.root/'raw/source.md').write_text('Original evidence',encoding='utf-8')
         brain.register(self.root,'raw/source.md','fixture')
-        page(self.root,'wiki/doors.md','Door interactions','Grip and pull, not tap.',['doors','grip'],['raw/source.md'],
+        page(self.root,'wiki/drawers.md','Drawer interactions','Grip and pull, not tap.',['drawers','grip'],['raw/source.md'],
              body='[[raw/source]]\n')
         page(self.root,'wiki/now.md','Now','Current fixture state',['current'],[])
-        claims = {'claims':[{'id':'D-1','text':'Grip','page':'wiki/doors.md','confidence':'reported','scope':'fixture',
+        claims = {'claims':[{'id':'D-1','text':'Grip','page':'wiki/drawers.md','confidence':'reported','scope':'fixture',
                              'as_of':'2026-10-08','sources':['raw/source.md']}]}
         brain.save_json(self.root/'system/claims.json',claims)
         brain.build(self.root)
@@ -69,13 +69,13 @@ class BrainIntegrityTests(unittest.TestCase):
         with self.assertRaises(ValueError): brain.register(self.root,'raw/linked','fixture')
 
     def test_changed_page_requires_build_and_broken_link_persists(self):
-        with (self.root/'wiki/doors.md').open('a') as f: f.write('[[wiki/missing]]')
+        with (self.root/'wiki/drawers.md').open('a') as f: f.write('[[wiki/missing]]')
         self.assertIn('build required',self.errors())
         brain.build(self.root)
         self.assertIn('broken wikilink',self.errors())
 
     def test_new_page_not_indexed(self):
-        (self.root/'wiki/new.md').write_text((self.root/'wiki/doors.md').read_text(),encoding='utf-8')
+        (self.root/'wiki/new.md').write_text((self.root/'wiki/drawers.md').read_text(),encoding='utf-8')
         self.assertIn('page missing from index',self.errors())
 
     def test_archived_pages_live_in_archive_with_archive_metadata(self):
@@ -99,19 +99,19 @@ class BrainIntegrityTests(unittest.TestCase):
         self.assertIn('asymmetric conflict',self.errors())
 
     def test_copilot_delegate_requires_agent_and_known_profile(self):
-        p = self.root/'.github/agents/XR-ORCHESTRATOR.agent.md'; p.parent.mkdir(parents=True)
-        p.write_text('---\nname: "XR-ORCHESTRATOR"\ndescription: "Route"\ntools: ["read"]\nagents: ["NOT-FOUND"]\n---\n',encoding='utf-8')
+        p = self.root/'.github/agents/LEKS-ORCHESTRATOR.agent.md'; p.parent.mkdir(parents=True)
+        p.write_text('---\nname: "LEKS-ORCHESTRATOR"\ndescription: "Route"\ntools: ["read"]\nagents: ["NOT-FOUND"]\n---\n',encoding='utf-8')
         self.assertIn('unknown delegate',self.errors())
         self.assertIn('delegates require agent',self.errors())
 
     def test_model_is_chosen_in_vscode_not_pinned(self):
-        p = self.root/'.github/agents/XR-REVIEW.agent.md'; p.parent.mkdir(parents=True)
-        p.write_text('---\nname: "XR-REVIEW"\ndescription: "Review"\nmodel: "Claude Opus 5.5"\ntools: ["read"]\nagents: []\n---\n',encoding='utf-8')
+        p = self.root/'.github/agents/LEKS-REVIEW.agent.md'; p.parent.mkdir(parents=True)
+        p.write_text('---\nname: "LEKS-REVIEW"\ndescription: "Review"\nmodel: "Claude Opus 5.5"\ntools: ["read"]\nagents: []\n---\n',encoding='utf-8')
         self.assertIn('remove the model field',self.errors())
 
     def test_readonly_profile_cannot_execute(self):
-        p = self.root/'.github/agents/XR-REVIEW.agent.md'; p.parent.mkdir(parents=True)
-        p.write_text('---\nname: "XR-REVIEW"\ndescription: "Review"\ntools: ["read", "execute"]\nagents: []\n---\n',encoding='utf-8')
+        p = self.root/'.github/agents/LEKS-REVIEW.agent.md'; p.parent.mkdir(parents=True)
+        p.write_text('---\nname: "LEKS-REVIEW"\ndescription: "Review"\ntools: ["read", "execute"]\nagents: []\n---\n',encoding='utf-8')
         self.assertIn('read-only profile',self.errors())
 
     def test_ui_state_not_knowledge_freshness(self):
@@ -120,7 +120,7 @@ class BrainIntegrityTests(unittest.TestCase):
         self.assertTrue(brain.check(self.root,False)['ok'])
 
     def test_copilot_skill_name_validation(self):
-        p = self.root/'.agents/skills/xr-query/SKILL.md'; p.parent.mkdir(parents=True)
+        p = self.root/'.agents/skills/vault-query/SKILL.md'; p.parent.mkdir(parents=True)
         p.write_text('---\nname: "different-name"\ndescription: "query"\n---\n',encoding='utf-8')
         self.assertIn('invalid skill name',self.errors())
 
@@ -132,7 +132,7 @@ class BrainIntegrityTests(unittest.TestCase):
         self.assertIn('needs "version": 1',self.errors())
 
     def test_register_rejects_outside_raw(self):
-        with self.assertRaises(ValueError): brain.register(self.root,'wiki/doors.md','wrong')
+        with self.assertRaises(ValueError): brain.register(self.root,'wiki/drawers.md','wrong')
 
     def test_ai_work_is_attributed_by_model_name_only(self):
         (self.root/'raw/opinion.md').write_text('An opinion',encoding='utf-8')
@@ -145,36 +145,36 @@ class BrainIntegrityTests(unittest.TestCase):
         self.assertIn('names an AI client tool',self.errors())
 
     def test_search_routes_without_raw_dump(self):
-        hits = brain.search(self.root,'how do we open the doors',5)
-        self.assertEqual(hits[0]['path'],'wiki/doors.md')
+        hits = brain.search(self.root,'how do we open the drawers',5)
+        self.assertEqual(hits[0]['path'],'wiki/drawers.md')
 
     def test_topic_page_outranks_change_log_hub(self):
         page(self.root,'wiki/log.md','Knowledge change log','Chronological record.',['log'],[],category='Start',
-             body=('Door grip pull interactions changed. '*40))
+             body=('Drawer grip pull interactions changed. '*40))
         brain.build(self.root)
-        self.assertEqual(brain.search(self.root,'door grip interactions',5)[0]['path'],'wiki/doors.md')
+        self.assertEqual(brain.search(self.root,'drawer grip interactions',5)[0]['path'],'wiki/drawers.md')
 
     def test_archived_page_ranks_below_current_unless_asked(self):
-        page(self.root,'wiki/archive/doors-draft.md','Door interactions draft','Draft door plan.',['doors','grip'],[],
-             status='archived',category='Archive',body='Doors grip pull plan.')
+        page(self.root,'wiki/archive/drawers-draft.md','Drawer interactions draft','Draft drawer plan.',['drawers','grip'],[],
+             status='archived',category='Archive',body='Drawers grip pull plan.')
         brain.build(self.root)
-        self.assertEqual(brain.search(self.root,'door grip',5)[0]['path'],'wiki/doors.md')
-        self.assertEqual(brain.search(self.root,'archived door draft',5)[0]['path'],'wiki/archive/doors-draft.md')
+        self.assertEqual(brain.search(self.root,'drawer grip',5)[0]['path'],'wiki/drawers.md')
+        self.assertEqual(brain.search(self.root,'archived drawer draft',5)[0]['path'],'wiki/archive/drawers-draft.md')
 
     def test_newer_delivery_record_outranks_older_one(self):
-        page(self.root,'wiki/codebase/2026-10-17-mirror-pass-one.md','Mirror pass one','Mirrors first pass.',['mirrors'],[],
-             body='Mirrors first pass mirrors.')
-        page(self.root,'wiki/codebase/2026-10-19-mirror-pass-two.md','Mirror pass two','Mirrors second pass.',['mirrors'],[],
-             body='Mirrors second pass.')
+        page(self.root,'wiki/codebase/2026-10-17-gauge-pass-one.md','Gauge pass one','Gauges first pass.',['gauges'],[],
+             body='Gauges first pass gauges.')
+        page(self.root,'wiki/codebase/2026-10-19-gauge-pass-two.md','Gauge pass two','Gauges second pass.',['gauges'],[],
+             body='Gauges second pass.')
         brain.build(self.root)
-        self.assertEqual(brain.search(self.root,'mirrors',5)[0]['path'],'wiki/codebase/2026-10-19-mirror-pass-two.md')
+        self.assertEqual(brain.search(self.root,'gauges',5)[0]['path'],'wiki/codebase/2026-10-19-gauge-pass-two.md')
 
     def test_review_ranks_below_knowledge_unless_asked(self):
-        page(self.root,'wiki/reviews/2026-10-15-door-review.md','Door interactions review','Door grip review.',['doors','grip'],[],
-             category='Workspace and method',body='Door grip pull grip doors.')
+        page(self.root,'wiki/reviews/2026-10-15-drawer-review.md','Drawer interactions review','Drawer grip review.',['drawers','grip'],[],
+             category='Workspace and method',body='Drawer grip pull grip drawers.')
         brain.build(self.root)
-        self.assertEqual(brain.search(self.root,'door grip',5)[0]['path'],'wiki/doors.md')
-        self.assertEqual(brain.search(self.root,'door grip review',5)[0]['path'],'wiki/reviews/2026-10-15-door-review.md')
+        self.assertEqual(brain.search(self.root,'drawer grip',5)[0]['path'],'wiki/drawers.md')
+        self.assertEqual(brain.search(self.root,'drawer grip review',5)[0]['path'],'wiki/reviews/2026-10-15-drawer-review.md')
 
     def test_how_do_i_question_prefers_procedure_pages(self):
         (self.root/'system/WORKFLOWS.md').write_text('---\ntitle: "Workflows"\nsummary: "Procedures."\nkeywords: ["record a build"]\n---\n'
@@ -188,94 +188,94 @@ class BrainIntegrityTests(unittest.TestCase):
     def test_prior_intent_counts_stop_words_such_as_when(self):
         brain.save_json(self.root/'system/vault-config.json',{'search_hub_priors':{'wiki/timeline.md':[0.5,['when']]}})
         page(self.root,'wiki/timeline.md','Timeline','Periods of the project.',['timeline'],[],category='Start',
-             body='Door grip changed in July. Door grip pull changed again in October.')
+             body='Drawer grip changed in July. Drawer grip pull changed again in October.')
         brain.build(self.root)
         def timeline_score(q):
             return next(h['score'] for h in brain.search(self.root,q,5) if h['path']=='wiki/timeline.md')
-        self.assertEqual(brain.search(self.root,'door grip changed',5)[0]['path'],'wiki/doors.md')
+        self.assertEqual(brain.search(self.root,'drawer grip changed',5)[0]['path'],'wiki/drawers.md')
         # "when" is a stop word for scoring, but it still lifts the timeline prior.
-        self.assertGreater(timeline_score('when was the door grip changed'), 1.5*timeline_score('door grip changed'))
+        self.assertGreater(timeline_score('when was the drawer grip changed'), 1.5*timeline_score('drawer grip changed'))
 
     def test_skill_files_answer_procedure_questions(self):
-        skill = self.root/'.agents/skills/xr-render-check/SKILL.md'
+        skill = self.root/'.agents/skills/render-check/SKILL.md'
         skill.parent.mkdir(parents=True)
-        skill.write_text('---\nname: "xr-render-check"\ndescription: "Compares renders with reference images."\n'
+        skill.write_text('---\nname: "render-check"\ndescription: "Compares renders with reference images."\n'
                          'argument-hint: "what to compare"\n---\n# Render check\nCompare renders with references.\n'
-                         '\n---\nRules: doors grip doors grip doors grip.\n', encoding='utf-8')
-        page(self.root,'wiki/renders.md','Render results','Renders of the car.',['renders'],[],body='Renders compared once.')
+                         '\n---\nRules: drawers grip drawers grip drawers grip.\n', encoding='utf-8')
+        page(self.root,'wiki/renders.md','Render results','Renders of the model.',['renders'],[],body='Renders compared once.')
         brain.build(self.root)
-        self.assertEqual(brain.search(self.root,'which skill compares renders with reference images',5)[0]['path'],'.agents/skills/xr-render-check/SKILL.md')
+        self.assertEqual(brain.search(self.root,'which skill compares renders with reference images',5)[0]['path'],'.agents/skills/render-check/SKILL.md')
         self.assertEqual(brain.search(self.root,'renders',5)[0]['path'],'wiki/renders.md')
         # The shared rules footer of a skill is not indexed.
-        self.assertNotIn('.agents/skills/xr-render-check/SKILL.md',[h['path'] for h in brain.search(self.root,'doors grip',5)])
+        self.assertNotIn('.agents/skills/render-check/SKILL.md',[h['path'] for h in brain.search(self.root,'drawers grip',5)])
 
     def test_quantifier_phrase_rewards_the_page_that_uses_it(self):
-        page(self.root,'wiki/apps.md','Apps','Products and apps.',['apps'],[],body='Every product was shipped as its own app.')
+        page(self.root,'wiki/services.md','Services','Components and services.',['services'],[],body='Every component was shipped as its own service.')
         page(self.root,'wiki/apps-other.md','Apps overview','Products and apps.',['apps'],[],body='The product app was shipped; own work.')
         brain.build(self.root)
-        self.assertEqual(brain.search(self.root,'why did every product become its own app',5)[0]['path'],'wiki/apps.md')
+        self.assertEqual(brain.search(self.root,'why did every component become its own service',5)[0]['path'],'wiki/services.md')
 
     def test_answer_pack_returns_passages_facts_and_next_pages(self):
-        page(self.root,'wiki/mirrors.md','Mirrors','Mirror status.',['mirrors'],['raw/source.md'],
-             body='## Status\nThe mirrors work but are not yet accepted.\n\n## History\nUnrelated paragraph about doors.\n')
+        page(self.root,'wiki/gauges.md','Gauges','Gauge status.',['gauges'],['raw/source.md'],
+             body='## Status\nThe gauges work but are not yet accepted.\n\n## History\nUnrelated paragraph about drawers.\n')
         claims = brain.read_json(self.root/'system/claims.json')
-        claims['claims'].append({'id':'M-1','text':'The mirrors are not yet accepted.','page':'wiki/mirrors.md','confidence':'reported',
+        claims['claims'].append({'id':'M-1','text':'The gauges are not yet accepted.','page':'wiki/gauges.md','confidence':'reported',
                                  'scope':'fixture','as_of':'2026-10-08','sources':['raw/source.md']})
         brain.save_json(self.root/'system/claims.json',claims)
         brain.build(self.root)
-        pack = brain.answer_pack(self.root,'Why are the mirrors not accepted?',budget=40)
-        self.assertEqual(pack['page']['path'],'wiki/mirrors.md')
+        pack = brain.answer_pack(self.root,'Why are the gauges not accepted?',budget=40)
+        self.assertEqual(pack['page']['path'],'wiki/gauges.md')
         self.assertIn('not yet accepted',pack['excerpt'])
         self.assertNotIn('Unrelated paragraph',pack['excerpt'])
         self.assertEqual(pack['facts'][0]['id'],'M-1')
 
     def test_answer_pack_adds_marked_passages_of_the_next_page(self):
-        page(self.root,'wiki/mirrors.md','Mirrors','Mirror status.',['mirrors'],[],body='## Status\nThe mirrors work.\n')
+        page(self.root,'wiki/gauges.md','Gauges','Gauge status.',['gauges'],[],body='## Status\nThe gauges work.\n')
         page(self.root,'wiki/delivery.md','Delivery record','What was delivered.',['delivery'],[],
-             body='## Acceptance\nThe reviewer accepted the mirrors on 12 October.\n\n## Other\nNothing else about doors.\n')
+             body='## Acceptance\nThe reviewer accepted the gauges on 12 October.\n\n## Other\nNothing else about drawers.\n')
         brain.build(self.root)
-        pack = brain.answer_pack(self.root,'Who accepted the mirrors?')
-        self.assertEqual(pack['page']['path'],'wiki/mirrors.md')
-        self.assertEqual(pack['sources'],['wiki/mirrors.md','wiki/delivery.md'])
-        self.assertIn('[wiki/delivery.md]\n## Acceptance\nThe reviewer accepted the mirrors on 12 October.',pack['excerpt'])
-        self.assertNotIn('Nothing else about doors',pack['excerpt'])
+        pack = brain.answer_pack(self.root,'Who accepted the gauges?')
+        self.assertEqual(pack['page']['path'],'wiki/gauges.md')
+        self.assertEqual(pack['sources'],['wiki/gauges.md','wiki/delivery.md'])
+        self.assertIn('[wiki/delivery.md]\n## Acceptance\nThe reviewer accepted the gauges on 12 October.',pack['excerpt'])
+        self.assertNotIn('Nothing else about drawers',pack['excerpt'])
         self.assertNotIn('wiki/delivery.md',[p['path'] for p in pack['also']])
 
     def test_media_text_is_searchable_with_confidence_copies_and_mentions(self):
         (self.root/'raw/shots').mkdir()
-        (self.root/'raw/shots/mirror.png').write_bytes(b'png fixture')
-        (self.root/'raw/shots/copy-of-mirror.png').write_bytes(b'png fixture')
-        (self.root/'raw/shots/report.md').write_text('# Report\nThe capture fix is visible in mirror.png after the rebuild.\n',encoding='utf-8')
-        for f in ('raw/shots/mirror.png','raw/shots/copy-of-mirror.png','raw/shots/report.md'):
+        (self.root/'raw/shots/gauge.png').write_bytes(b'png fixture')
+        (self.root/'raw/shots/copy-of-gauge.png').write_bytes(b'png fixture')
+        (self.root/'raw/shots/report.md').write_text('# Report\nThe capture fix is visible in gauge.png after the rebuild.\n',encoding='utf-8')
+        for f in ('raw/shots/gauge.png','raw/shots/copy-of-gauge.png','raw/shots/report.md'):
             brain.register(self.root,f,'fixture')
         sha = brain.read_json(self.root/'system/source-registry.json')['files']
-        sha = next(r['sha256'] for r in sha if r['path'] == 'raw/shots/mirror.png')
+        sha = next(r['sha256'] for r in sha if r['path'] == 'raw/shots/gauge.png')
         (self.root/'.brain').mkdir(exist_ok=True)
-        (self.root/brain.MEDIA_CACHE).write_text(json.dumps({'sha256':sha,'path':'raw/shots/mirror.png','kind':'image-ocr','pages':1,
+        (self.root/brain.MEDIA_CACHE).write_text(json.dumps({'sha256':sha,'path':'raw/shots/gauge.png','kind':'image-ocr','pages':1,
             'chars':31,'lines':2,'mean_confidence':0.96,'low_confidence_lines':0,'text':'Capture mask fixed\nMirror material slot'})+'\n',encoding='utf-8')
         brain.save_json(self.root/brain.MEDIA_CONTEXT, brain.media_context(self.root, brain.media_records(self.root)))
         brain.build(self.root)
-        hits = brain.source_search(self.root,'mirror material slot',5,content=True)
+        hits = brain.source_search(self.root,'gauge material slot',5,content=True)
         self.assertEqual(hits[0]['text_from'],'image-ocr')
         self.assertEqual(hits[0]['ocr_confidence'],0.96)
         self.assertEqual(hits[0]['copies'],2)                      # the identical copy collapses into one hit
-        info = brain.media_info(self.root,'raw/shots/mirror.png')['files'][0]
+        info = brain.media_info(self.root,'raw/shots/gauge.png')['files'][0]
         self.assertIn('Capture mask fixed',info['text'])
-        self.assertEqual(info['same_content'],['raw/shots/copy-of-mirror.png'])
+        self.assertEqual(info['same_content'],['raw/shots/copy-of-gauge.png'])
         self.assertEqual(info['mentioned_in']['mentions'][0]['file'],'raw/shots/report.md')
-        self.assertIn('visible in mirror.png',info['mentioned_in']['mentions'][0]['line'])
+        self.assertIn('visible in gauge.png',info['mentioned_in']['mentions'][0]['line'])
         found = brain.media_info(self.root,'capture mask')
-        self.assertIn(found['matches'][0]['path'],{'raw/shots/mirror.png','raw/shots/copy-of-mirror.png'})
+        self.assertIn(found['matches'][0]['path'],{'raw/shots/gauge.png','raw/shots/copy-of-gauge.png'})
 
     def test_source_search_prefers_phrases_and_collapses_identical_copies(self):
-        (self.root/'raw/a.md').write_text('the steering wheel locks with a pinch gesture',encoding='utf-8')
+        (self.root/'raw/a.md').write_text('the control dial locks with a pinch gesture',encoding='utf-8')
         (self.root/'raw/archive').mkdir()
-        (self.root/'raw/archive/a-copy.md').write_text('the steering wheel locks with a pinch gesture',encoding='utf-8')
-        (self.root/'raw/b.md').write_text('pinch the wheel; the steering gesture locks it'+' filler'*30,encoding='utf-8')
+        (self.root/'raw/archive/a-copy.md').write_text('the control dial locks with a pinch gesture',encoding='utf-8')
+        (self.root/'raw/b.md').write_text('pinch the dial; the control gesture locks it'+' filler'*30,encoding='utf-8')
         for f in ('raw/a.md','raw/archive/a-copy.md','raw/b.md'):
             brain.register(self.root,f,'fixture')
         brain.build(self.root)
-        hits = brain.source_search(self.root,'steering wheel locks with a pinch',5,content=True)
+        hits = brain.source_search(self.root,'control dial locks with a pinch',5,content=True)
         self.assertIn(hits[0]['path'],('raw/a.md','raw/archive/a-copy.md'))
         self.assertEqual(hits[0].get('copies'),2)
         self.assertEqual(len([h for h in hits if h['path'] in ('raw/a.md','raw/archive/a-copy.md')]),1)
@@ -294,15 +294,15 @@ class BrainIntegrityTests(unittest.TestCase):
             brain.ALIASES['contradict'] = saved
 
     def test_evaluate_reports_rank1(self):
-        brain.save_json(self.root/'system/retrieval-cases.json',[{'question':'How do the doors open?','expected':['wiki/doors.md']}])
+        brain.save_json(self.root/'system/retrieval-cases.json',[{'question':'How do the drawers open?','expected':['wiki/drawers.md']}])
         report = brain.evaluate(self.root)
         self.assertEqual((report['pass'],report['rank1'],report['total']),(1,1,1))
 
     def test_table_wikilinks_require_escaped_aliases(self):
         p = self.root/'00_HOME.md'
-        p.write_text('| Topic | Link |\n|---|---|\n| Doors | [[wiki/doors|Doors]] |\n',encoding='utf-8')
+        p.write_text('| Topic | Link |\n|---|---|\n| Drawers | [[wiki/drawers|Drawers]] |\n',encoding='utf-8')
         self.assertIn('unescaped wikilink alias',self.errors())
-        p.write_text(p.read_text().replace('doors|Doors','doors\\|Doors'),encoding='utf-8')
+        p.write_text(p.read_text().replace('drawers|Drawers','drawers\\|Drawers'),encoding='utf-8')
         brain.build(self.root)
         self.assertTrue(brain.check(self.root,False)['ok'])
 
@@ -328,9 +328,9 @@ class BrainIntegrityTests(unittest.TestCase):
         (self.root/'raw/source.md').rename(self.root/'raw/renamed.md')
         registry['files'][0].update({'path':'raw/renamed.md','former_paths':['raw/source.md']})
         brain.save_json(self.root/'system/source-registry.json',registry)
-        doors = self.root/'wiki/doors.md'
-        doors.write_text(doors.read_text(encoding='utf-8').replace('raw/source','raw/renamed'),encoding='utf-8')
-        brain.save_json(self.root/'system/claims.json',{'claims':[{'id':'D-1','text':'Grip','page':'wiki/doors.md',
+        drawers = self.root/'wiki/drawers.md'
+        drawers.write_text(drawers.read_text(encoding='utf-8').replace('raw/source','raw/renamed'),encoding='utf-8')
+        brain.save_json(self.root/'system/claims.json',{'claims':[{'id':'D-1','text':'Grip','page':'wiki/drawers.md',
             'confidence':'reported','scope':'fixture','as_of':'2026-10-08','sources':['raw/renamed.md']}]})
         brain.build(self.root)
         self.assertTrue(brain.check(self.root,False)['ok'])
@@ -387,8 +387,8 @@ class BrainMoveTests(unittest.TestCase):
              body='Read [[raw/packs/v2/README|the pack]] and `raw/packs/v2/tree.md`.\n')
         page(self.root,'wiki/now.md','Now','Current state.',['now'],[],category='Start',
              body='[[wiki/architecture/target|Target]]\n')
-        (self.root/'.github/agents/XR-ARCHITECT.agent.md').write_text(
-            '---\nname: "XR-ARCHITECT"\ndescription: "ADRs"\ntools: ["read"]\nagents: []\n---\n[target](../../wiki/architecture/target.md)\n',encoding='utf-8')
+        (self.root/'.github/agents/LEKS-ARCHITECT.agent.md').write_text(
+            '---\nname: "LEKS-ARCHITECT"\ndescription: "ADRs"\ntools: ["read"]\nagents: []\n---\n[target](../../wiki/architecture/target.md)\n',encoding='utf-8')
         brain.save_json(self.root/'system/claims.json',{'claims':[{'id':'A-8','text':'Draft','page':'wiki/architecture/target.md',
             'confidence':'planned','scope':'proposal','as_of':'2026-10-11','sources':['raw/packs/v2/README.md']}]})
         brain.build(self.root)
@@ -415,7 +415,7 @@ class BrainMoveTests(unittest.TestCase):
         self.assertEqual(meta['sources'],['raw/archive/proposal-packs/v2/README.md'])
         self.assertIn('raw/archive/proposal-packs/v2/tree.md',target.read_text())
         self.assertIn('[[wiki/archive/proposal-target|Target]]',(self.root/'wiki/now.md').read_text())
-        self.assertIn('(../../wiki/archive/proposal-target.md)',(self.root/'.github/agents/XR-ARCHITECT.agent.md').read_text())
+        self.assertIn('(../../wiki/archive/proposal-target.md)',(self.root/'.github/agents/LEKS-ARCHITECT.agent.md').read_text())
         claims = brain.read_json(self.root/'system/claims.json')['claims']
         self.assertEqual(claims[0]['page'],'wiki/archive/proposal-target.md')
         self.assertEqual(claims[0]['sources'],['raw/archive/proposal-packs/v2/README.md'])

@@ -1,6 +1,6 @@
 # LEKS: Local Engineering Knowledge System
 
-A local system for organizing, searching and checking engineering knowledge across project documentation, Unity, Blender and AI development workflows.
+A local system for organizing, searching and checking engineering knowledge across project documentation, source code and AI development workflows.
 
 [See this project on majewski.studio](https://majewski.studio/#p5)
 
@@ -28,7 +28,7 @@ Below I compare 2.0 with 1.0. Then I compare the default search engine with an e
 - **The experimental engines R4 and R5 are optional.**
   - They run in a separate process (the model helper) inside a macOS sandbox with no network access. A probe shows that TCP connections are refused inside the sandbox, even to the local machine, and succeed outside it.
   - Their installer downloads pinned packages and model files once at install time.
-- **Obsidian, Unity, Blender and the code editor** are separate programs with their own network behaviour. LEKS doesn't control or check it.
+- **Obsidian, the code editor and the other development tools** are separate programs with their own network behaviour. LEKS doesn't control or check it.
 - **AI coding agents** get answer packs from the MCP server when they ask for them. What an agent then does with that text depends on the agent and how it's configured. That includes whether its model runs locally or in the cloud.
 
 ## Architecture
@@ -184,10 +184,10 @@ The MCP server is `tools/vault_mcp.py`. It takes no arguments, serves the folder
 python3 tools/vault_mcp.py
 ```
 
-MCP clients start the server themselves. In Claude Code, for example, this command registers it under the name `xr-vault`, with the full path to `vault_mcp.py`.
+MCP clients start the server themselves. In Claude Code, for example, this command registers it under the name `leks`, with the full path to `vault_mcp.py`.
 
 ```bash
-claude mcp add xr-vault -- python3 /path/to/knowledge-base/tools/vault_mcp.py
+claude mcp add leks -- python3 /path/to/knowledge-base/tools/vault_mcp.py
 ```
 
 ## Documentation

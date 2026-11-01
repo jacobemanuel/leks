@@ -9,7 +9,7 @@ import evidence_store
 import vault_fixture as vf
 
 NOTE = ['# Delivery notes', '', '## Build', 'Build 261019120000 was signed with the team certificate.',
-        'It was installed on the office headset with devicectl.', '', '## Build', 'A second section with the same heading.',
+        'It was installed on the test headset with devicectl.', '', '## Build', 'A second section with the same heading.',
         'Launch was reported by the owner on 19 October.', '']
 
 
@@ -136,7 +136,7 @@ class AnchorTests(unittest.TestCase):
         self.assertTrue(any('superseded evidence' in w for w in found[1]))
 
     def test_proposals_rank_the_excerpt_with_the_build_number(self):
-        claim = {'id': 'X', 'text': 'Build 261019120000 was installed on the office headset.', 'sources': ['raw/docs/delivery-note.md']}
+        claim = {'id': 'X', 'text': 'Build 261019120000 was installed on the test headset.', 'sources': ['raw/docs/delivery-note.md']}
         best = anchors.propose(self.root, brain, claim)[0]
         self.assertEqual(best['source'], self.sid)
         self.assertIn('261019120000', best['excerpt'])

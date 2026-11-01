@@ -17,7 +17,7 @@ It runs locally next to the project it documents: standard-library Python, no ex
 | **114** | claims with confidence, scope, evidence date and sources |
 | **105** | automated tests; key rules enforced by hooks, not only by prompts |
 
-**Stack:** Python (standard library, SQLite FTS5) · Model Context Protocol (JSON-RPC over stdio) · C# (Roslyn, Unity Editor) · Swift (Vision, PDFKit) · JavaScript (Three.js, GLSL) · custom agents, skills and hooks for AI coding assistants
+**Stack:** Python (standard library, SQLite FTS5) · Model Context Protocol (JSON-RPC over stdio) · C# (Roslyn) · Swift (Vision, PDFKit) · JavaScript (Three.js, GLSL) · custom agents, skills and hooks for AI coding assistants
 
 ## How it works
 
@@ -75,9 +75,9 @@ flowchart LR
 
 ### Code that agents can query without loading it
 
-- A Roslyn extractor (C#, .NET) parses every C# file of the Unity project under several preprocessor configurations (no symbols, all symbols, each symbol alone) and merges the syntax trees by span, so platform-specific `#if` branches are covered too.
+- A Roslyn extractor (C#, .NET) parses every C# file of the project under several preprocessor configurations (no symbols, all symbols, each symbol alone) and merges the syntax trees by span, so platform-specific `#if` branches are covered too.
 - Scenes and prefabs are read from their serialized form, and a drift check compares the reference with the source snapshot it was built from.
-- Agents query bounded slices (a class, a method, a scene object) through the same MCP server instead of reading files. The Blender tooling has an equivalent reference, and a Unity Editor bridge opens the asset a note refers to.
+- Agents query bounded slices (a class, a method, a scene object) through the same MCP server instead of reading files. Other asset tooling has an equivalent reference, and an editor bridge opens the asset a note refers to.
 
 ### Images and PDFs are searchable, on the device
 
@@ -85,7 +85,7 @@ flowchart LR
 
 ### Many specialists, one writer
 
-- Nine agent roles (architecture, Unity, Blender, content, product, research, review, knowledge, orchestration) and fourteen skills for recurring procedures: ingesting a source, recording a decision or a delivery, propagating a changed fact, handing off a session.
+- Nine agent roles (architecture, engine, assets, content, product, research, review, knowledge, orchestration) and fourteen skills for recurring procedures: ingesting a source, recording a decision or a delivery, propagating a changed fact, handing off a session.
 - Specialists return reports and one role merges them into shared pages, for the same reason a database serialises writes.
 - Agents propose; people decide. AI contributions are attributed by model name.
 

@@ -56,12 +56,12 @@ class FreshnessTests(unittest.TestCase):
         self.assertEqual(self.rules('wiki/delivery.md'), [('wiki/delivery.md', 'S1'), ('wiki/delivery.md', 'S2')])
 
     def test_edits_after_compiled_on_and_mechanical_commits(self):
-        page = 'wiki/mirrors.md'
-        self.edit(page, 'keywords: ["mirrors"]', 'keywords: ["mirrors", "stereo"]')          # front matter only
+        page = 'wiki/gauges.md'
+        self.edit(page, 'keywords: ["gauges"]', 'keywords: ["gauges", "analog"]')          # front matter only
         self.commit('2026-10-10T12:00:00+02:00')
-        self.edit(page, '# Mirrors\n', '# Mirrors\nSee [[wiki/delivery|the delivery]].\n')
+        self.edit(page, '# Gauges\n', '# Gauges\nSee [[wiki/delivery|the delivery]].\n')
         self.commit('2026-10-11T12:00:00+02:00')
-        self.assertEqual(self.rules(page), [('wiki/mirrors.md', 'S4')])          # a new sentence is a real edit
+        self.assertEqual(self.rules(page), [('wiki/gauges.md', 'S4')])          # a new sentence is a real edit
         self.edit(page, 'compiled_on: "2026-10-08"', 'compiled_on: "2026-10-12"')
         self.commit('2026-10-12T12:00:00+02:00')
         self.assertEqual(self.rules(page), [])                                   # compiled again
@@ -76,21 +76,21 @@ class FreshnessTests(unittest.TestCase):
 
     def test_claim_corrections(self):
         data = json.loads((self.root / 'system/claims.json').read_text())
-        data['claims'][1]['text'] = 'He saw mirrors per eye.'                    # C-2 is on wiki/mirrors.md
+        data['claims'][1]['text'] = 'He saw gauges per panel.'                    # C-2 is on wiki/gauges.md
         brain.save_json(self.root / 'system/claims.json', data)
         self.commit('2026-10-09T12:00:00+02:00')
-        data['claims'][1]['text'] = 'The owner saw mirrors per eye.'             # wording only
+        data['claims'][1]['text'] = 'The owner saw gauges per panel.'             # wording only
         brain.save_json(self.root / 'system/claims.json', data)
         self.commit('2026-10-10T12:00:00+02:00')
-        self.assertEqual(self.rules('wiki/mirrors.md'), [])
-        data['claims'][1]['text'] = 'The owner did not see mirrors per eye on build 261019120000.'
+        self.assertEqual(self.rules('wiki/gauges.md'), [])
+        data['claims'][1]['text'] = 'The owner did not see gauges per panel on build 261019120000.'
         data['claims'][1]['anchors'] = []                                        # metadata changes alone never count
         brain.save_json(self.root / 'system/claims.json', data)
         self.commit('2026-10-11T12:00:00+02:00')
-        self.assertEqual(self.rules('wiki/mirrors.md'), [('wiki/mirrors.md', 'S5')])
-        self.edit('wiki/mirrors.md', '# Mirrors\n', '# Mirrors\nThe owner did not see mirrors per eye.\n')
+        self.assertEqual(self.rules('wiki/gauges.md'), [('wiki/gauges.md', 'S5')])
+        self.edit('wiki/gauges.md', '# Gauges\n', '# Gauges\nThe owner did not see gauges per panel.\n')
         self.commit('2026-10-12T12:00:00+02:00')
-        self.assertEqual(self.rules('wiki/mirrors.md'), [('wiki/mirrors.md', 'S4')])   # edited since: S5 resolved
+        self.assertEqual(self.rules('wiki/gauges.md'), [('wiki/gauges.md', 'S4')])   # edited since: S5 resolved
 
     def test_per_type_rules(self):
         data = json.loads((self.root / 'system/claims.json').read_text())

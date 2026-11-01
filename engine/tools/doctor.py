@@ -24,7 +24,7 @@ import brain  # noqa: E402
 import evidence_store  # noqa: E402
 import retrieval  # noqa: E402
 
-JSON_FILES = ('system/vault-config.json', 'system/source-registry.json', 'system/claims.json', '.github/hooks/xr-vault.json',
+JSON_FILES = ('system/vault-config.json', 'system/source-registry.json', 'system/claims.json', '.github/hooks/leks.json',
               '.vscode/mcp.json')
 EXPECTED_TOOLS = 7
 LOW_DISK = 2 * 1024 ** 3
@@ -107,13 +107,13 @@ def run_hook(root, command, payload, timeout=60):
 
 
 def check_hooks(root):
-    p = root / '.github/hooks/xr-vault.json'
+    p = root / '.github/hooks/leks.json'
     if not p.is_file():
-        return [finding('hooks', 'warn', 'no hook configuration (.github/hooks/xr-vault.json)', 'the vault\'s hooks only run when it is configured')]
+        return [finding('hooks', 'warn', 'no hook configuration (.github/hooks/leks.json)', 'the vault\'s hooks only run when it is configured')]
     try:
         hooks = json.loads(p.read_text(encoding='utf-8'))['hooks']
     except (ValueError, KeyError, TypeError):
-        return [finding('hooks', 'fail', 'unreadable hook configuration', 'repair .github/hooks/xr-vault.json')]
+        return [finding('hooks', 'fail', 'unreadable hook configuration', 'repair .github/hooks/leks.json')]
     commands = {event: entry['command'] for event, entries in hooks.items() for entry in entries if entry.get('type') == 'command'}
     out = []
     for event, command in sorted(commands.items()):
@@ -147,12 +147,12 @@ def check_hooks(root):
 def check_mcp(root):
     p = root / '.vscode/mcp.json'
     if not p.is_file():
-        return finding('mcp server', 'warn', 'no .vscode/mcp.json', 'VS Code needs it to start the xr-vault MCP server')
+        return finding('mcp server', 'warn', 'no .vscode/mcp.json', 'VS Code needs it to start the leks MCP server')
     try:
-        server = json.loads(p.read_text(encoding='utf-8'))['servers']['xr-vault']
+        server = json.loads(p.read_text(encoding='utf-8'))['servers']['leks']
         argv = [server['command']] + [a.replace('${workspaceFolder}', str(root)) for a in server.get('args', [])]
     except (ValueError, KeyError, TypeError):
-        return finding('mcp server', 'fail', 'no usable "xr-vault" entry in .vscode/mcp.json', 'restore .vscode/mcp.json from git')
+        return finding('mcp server', 'fail', 'no usable "leks" entry in .vscode/mcp.json', 'restore .vscode/mcp.json from git')
     messages = [{'jsonrpc': '2.0', 'id': 1, 'method': 'initialize', 'params': {'protocolVersion': '2025-06-18', 'capabilities': {}}},
                 {'jsonrpc': '2.0', 'method': 'notifications/initialized'}, {'jsonrpc': '2.0', 'id': 2, 'method': 'tools/list'}]
     started = time.monotonic()

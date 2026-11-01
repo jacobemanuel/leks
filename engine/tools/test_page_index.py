@@ -9,20 +9,20 @@ import brain
 import page_index
 import vault_fixture as vf
 
-QUESTIONS = ['latest build on the headset', 'mirrors render per eye', 'archived proposal plan', 'mirrors',
-             'what is the current state now', 'why did every product become its own app', 'How do I record a build?',
-             'door grip review', 'old plan shared app', 'mirror pass one two']
+QUESTIONS = ['latest build on the headset', 'gauges render per panel', 'archived proposal plan', 'gauges',
+             'what is the current state now', 'why did every component become its own service', 'How do I record a build?',
+             'drawer grip review', 'old plan shared service', 'gauge pass one two']
 
 
 class PageIndexTests(unittest.TestCase):
     def setUp(self):
         self.base, self.root = vf.make_vault(store=False)
-        vf.page(self.root, 'wiki/codebase/2026-10-17-mirror-pass-one.md', 'Mirror pass one', 'Mirrors first pass.', ['mirrors'], [],
-                body='Mirrors first pass mirrors. Every product became its own app.\n')
-        vf.page(self.root, 'wiki/codebase/2026-10-19-mirror-pass-two.md', 'Mirror pass two', 'Mirrors second pass.',
-                ['mirrors'], [], body='Mirrors second pass on the headset.\n')
-        vf.page(self.root, 'wiki/reviews/2026-10-15-door-review.md', 'Door interactions review', 'Door grip review.',
-                ['doors', 'grip'], [], category='Workspace and method', body='Door grip pull grip doors.\n')
+        vf.page(self.root, 'wiki/codebase/2026-10-17-gauge-pass-one.md', 'Gauge pass one', 'Gauges first pass.', ['gauges'], [],
+                body='Gauges first pass gauges. Every component became its own service.\n')
+        vf.page(self.root, 'wiki/codebase/2026-10-19-gauge-pass-two.md', 'Gauge pass two', 'Gauges second pass.',
+                ['gauges'], [], body='Gauges second pass on the headset.\n')
+        vf.page(self.root, 'wiki/reviews/2026-10-15-drawer-review.md', 'Drawer interactions review', 'Drawer grip review.',
+                ['drawers', 'grip'], [], category='Workspace and method', body='Drawer grip pull grip drawers.\n')
         (self.root / 'system/WORKFLOWS.md').write_text('# Workflows\nRecord a build with the delivery skill.\n', encoding='utf-8')
         page_index._cache.clear()
 
@@ -36,34 +36,34 @@ class PageIndexTests(unittest.TestCase):
 
     def test_rankings_equal_scan_engine(self):
         self.assertSameAsScan()
-        order = [h['path'] for h in brain.search(self.root, 'mirrors', 10)]
-        self.assertLess(order.index('wiki/codebase/2026-10-19-mirror-pass-two.md'),
-                        order.index('wiki/codebase/2026-10-17-mirror-pass-one.md'))    # dated decay applies
+        order = [h['path'] for h in brain.search(self.root, 'gauges', 10)]
+        self.assertLess(order.index('wiki/codebase/2026-10-19-gauge-pass-two.md'),
+                        order.index('wiki/codebase/2026-10-17-gauge-pass-one.md'))    # dated decay applies
 
     def test_in_place_edit_with_same_size_and_mtime_is_seen(self):
-        path = self.root / 'wiki/mirrors.md'
-        vf.page(self.root, 'wiki/mirrors.md', 'Mirrors', 'Stereo mirrors', ['mirrors'], [], body='alpha marker\n')
-        brain.search(self.root, 'mirrors', 5)
+        path = self.root / 'wiki/gauges.md'
+        vf.page(self.root, 'wiki/gauges.md', 'Gauges', 'Analog gauges', ['gauges'], [], body='alpha marker\n')
+        brain.search(self.root, 'gauges', 5)
         before = os.stat(path)
         path.write_text(path.read_text(encoding='utf-8').replace('alpha', 'omega'), encoding='utf-8')
         os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))     # an editor that restores the time stamp
         after = os.stat(path)
         self.assertEqual((after.st_size, after.st_mtime_ns), (before.st_size, before.st_mtime_ns))
-        self.assertEqual(brain.search(self.root, 'omega', 5)[0]['path'], 'wiki/mirrors.md')
+        self.assertEqual(brain.search(self.root, 'omega', 5)[0]['path'], 'wiki/gauges.md')
         self.assertEqual(brain.search(self.root, 'alpha', 5), [])
         self.assertSameAsScan()
 
     def test_new_and_removed_pages_change_results_and_lengths(self):
-        brain.search(self.root, 'mirrors', 5)
-        vf.page(self.root, 'wiki/long.md', 'Long page', 'Many words.', ['long'], [], body='mirrors headset build ' * 200)
-        self.assertIn('wiki/long.md', [h['path'] for h in brain.search(self.root, 'mirrors', 10)])
+        brain.search(self.root, 'gauges', 5)
+        vf.page(self.root, 'wiki/long.md', 'Long page', 'Many words.', ['long'], [], body='gauges headset build ' * 200)
+        self.assertIn('wiki/long.md', [h['path'] for h in brain.search(self.root, 'gauges', 10)])
         self.assertSameAsScan()                                           # average length and its norms changed
         (self.root / 'wiki/long.md').unlink()
-        self.assertNotIn('wiki/long.md', [h['path'] for h in brain.search(self.root, 'mirrors', 10)])
+        self.assertNotIn('wiki/long.md', [h['path'] for h in brain.search(self.root, 'gauges', 10)])
         self.assertSameAsScan()
 
     def test_snapshot_is_reused_only_for_the_same_engine_code(self):
-        brain.search(self.root, 'mirrors', 5)
+        brain.search(self.root, 'gauges', 5)
         page_index.get(brain._namespace(), self.root, save=True)
         fingerprint = page_index._fingerprint()
         root = str(self.root.resolve())
@@ -77,11 +77,11 @@ class PageIndexTests(unittest.TestCase):
         self.assertSameAsScan()
 
     def test_plain_ablation_uses_bm25_alone(self):
-        vf.page(self.root, 'wiki/vision.md', 'Vision', 'Apple device notes.', ['avp'], [], body='The avp runs the viewer.\n')
+        vf.page(self.root, 'wiki/viewer.md', 'Viewer', 'Device notes.', ['device'], [], body='The device runs the viewer.\n')
         ns = brain._namespace()
-        self.assertIn('wiki/vision.md', [h['path'] for h in brain.search(self.root, 'headset', 10)])    # alias headset -> avp
-        self.assertNotIn('wiki/vision.md', [h['path'] for h in page_index.search(ns, self.root, 'headset', 10, plain=True)])
-        plain = page_index.search(ns, self.root, 'mirrors', 10, plain=True)
+        self.assertIn('wiki/viewer.md', [h['path'] for h in brain.search(self.root, 'headset', 10)])    # alias headset -> device
+        self.assertNotIn('wiki/viewer.md', [h['path'] for h in page_index.search(ns, self.root, 'headset', 10, plain=True)])
+        plain = page_index.search(ns, self.root, 'gauges', 10, plain=True)
         self.assertEqual([h['score'] for h in plain], sorted((h['score'] for h in plain), reverse=True))
         self.assertSameAsScan()
 
@@ -100,7 +100,7 @@ class PageIndexTests(unittest.TestCase):
     def test_scan_paths_are_relative_for_any_root_spelling(self):
         root = str(self.root.resolve())
         expected = page_index._scan(root)
-        self.assertIn('wiki/mirrors.md', expected)
+        self.assertIn('wiki/gauges.md', expected)
         self.assertIn('system/WORKFLOWS.md', expected)
         self.assertNotIn('wiki/index.md', expected)
         for spelling in (root + '/', os.path.join(root, 'wiki', '..'), os.path.relpath(root)):
