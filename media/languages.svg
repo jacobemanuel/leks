@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="454" viewBox="0 0 820 454" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">Right answer in the top five by question language, LEKS 2.0 default against LEKS 3.0 as shipped</title>
+<desc id="desc">120 fresh questions, each asked in five forms. English: 2.0 46.7%, 3.0 83.3%; German, as asked: 2.0 32.5%, 3.0 84.2%; Polish, as asked: 2.0 7.5%, 3.0 70.0%; German, put into English: 2.0 46.7%, 3.0 84.2%; Polish, put into English: 2.0 47.5%, 3.0 82.5%.</desc>
+<rect x="0.5" y="0.5" width="819" height="453" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="34.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">Right answer in the top five, by question language</text>
+<text x="24.0" y="56.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">120 fresh questions (80 with a note as the answer, 40 with a PDF page), each asked five ways</text>
+<text x="24.0" y="74.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">German and Polish as a person would type them, and the same questions put back into English</text>
+<circle cx="30" cy="100" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<text x="42.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">LEKS 2.0 default, word search</text>
+<circle cx="250" cy="100" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="262.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">LEKS 3.0 as shipped</text>
+<line x1="270.0" y1="128.0" x2="270.0" y2="380.0" stroke="#EAEEF2"/>
+<text x="270.0" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0%</text>
+<line x1="395.0" y1="128.0" x2="395.0" y2="380.0" stroke="#EAEEF2"/>
+<text x="395.0" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">25%</text>
+<line x1="520.0" y1="128.0" x2="520.0" y2="380.0" stroke="#EAEEF2"/>
+<text x="520.0" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">50%</text>
+<line x1="645.0" y1="128.0" x2="645.0" y2="380.0" stroke="#EAEEF2"/>
+<text x="645.0" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">75%</text>
+<line x1="770.0" y1="128.0" x2="770.0" y2="380.0" stroke="#EAEEF2"/>
+<text x="770.0" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">100%</text>
+<text x="24.0" y="154.5" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">English</text>
+<line x1="503.5" y1="150.0" x2="686.5" y2="150.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="503.5" cy="150.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="686.5" cy="150.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="491.5" y="154.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">46.7%</text>
+<text x="698.5" y="154.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">83.3%</text>
+<text x="24.0" y="206.5" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">German, as asked</text>
+<line x1="432.5" y1="202.0" x2="691.0" y2="202.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="432.5" cy="202.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="691.0" cy="202.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="420.5" y="206.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">32.5%</text>
+<text x="703.0" y="206.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">84.2%</text>
+<text x="24.0" y="258.5" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Polish, as asked</text>
+<line x1="307.5" y1="254.0" x2="620.0" y2="254.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="307.5" cy="254.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="620.0" cy="254.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="295.5" y="258.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">7.5%</text>
+<text x="632.0" y="258.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">70.0%</text>
+<text x="24.0" y="310.5" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">German, put into English</text>
+<line x1="503.5" y1="306.0" x2="691.0" y2="306.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="503.5" cy="306.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="691.0" cy="306.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="491.5" y="310.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">46.7%</text>
+<text x="703.0" y="310.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">84.2%</text>
+<text x="24.0" y="362.5" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Polish, put into English</text>
+<line x1="507.5" y1="358.0" x2="682.5" y2="358.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="507.5" cy="358.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="682.5" cy="358.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="495.5" y="362.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">47.5%</text>
+<text x="694.5" y="362.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">82.5%</text>
+<text x="24.0" y="436.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="start">2.0 reads no PDFs, so it misses all 40 PDF questions in every form. Scored once, details in docs/report-3.0.md section 4.4</text>
+</svg>

@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "leks"
+version = "3.0.0"
+description = "Local, offline search over a project's own notes, documents and code, served to AI coding agents over MCP."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "Jakub Majewski"}]
+dependencies = []
+keywords = ["search", "mcp", "local", "offline", "retrieval", "embeddings", "reranker", "claude-code", "github-copilot"]
+classifiers = [
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.13",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX :: Linux",
+  "Intended Audience :: Developers",
+  "Topic :: Text Processing :: Indexing",
+]
+
+[project.urls]
+Homepage = "https://github.com/jacobemanuel/leks"
+Report = "https://github.com/jacobemanuel/leks/blob/main/docs/report-3.0.md"
+
+[project.optional-dependencies]
+models = ["torch", "transformers", "safetensors", "tokenizers", "numpy", "huggingface_hub"]
+pdf = ["pypdf"]
+test = ["numpy", "pypdf"]
+
+[project.scripts]
+leks = "leks.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["leks*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+leks = ["ocr/*.swift"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+# pyflakes, the pycodestyle error set, warnings and bugbear
+select = ["E4", "E7", "E9", "F", "B", "W"]

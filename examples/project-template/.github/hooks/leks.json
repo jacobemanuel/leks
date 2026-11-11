@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {"type": "command", "bash": "python3 -m leks hook brief", "env": {"LEKS_PROFILE": "architect"}, "timeoutSec": 10},
+      {"type": "command", "bash": "python3 -m leks hook update", "env": {"LEKS_PROFILE": "architect"}, "timeoutSec": 10}
+    ],
+    "agentStop": [
+      {"type": "command", "bash": "python3 -m leks check", "cwd": ".", "env": {"LEKS_PROFILE": "architect"}, "timeoutSec": 20}
+    ]
+  }
+}

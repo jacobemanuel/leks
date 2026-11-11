@@ -1,0 +1,22 @@
+{
+  "version": 3,
+  "roots": [
+    {"name": "notes", "path": "corpus/notes", "kind": "notes"},
+    {"name": "code", "path": "corpus/code", "kind": "code"},
+    {"name": "docs", "path": "corpus/docs", "kind": "docs"}
+  ],
+  "profiles": {
+    "architect": {"roots": ["notes", "docs"]},
+    "orchestrator": {"roots": ["notes", "code", "docs"]}
+  },
+  "default_profile": "orchestrator",
+  "classify": {
+    "state": ["**/STATE.md", "**/NOW.md", "**/*_STATE.md"],
+    "rule": ["**/CLAUDE.md", "**/AGENTS.md", ".claude/**", ".github/copilot-instructions.md"],
+    "decision": ["**/decisions/**", "**/adr/**", "**/DEC-*", "**/ADR-*"],
+    "result": ["**/results/**"],
+    "history": ["**/archive/**", "**/history/**", "**/*_HISTORY*"]
+  },
+  "models": {"backend": "torch", "device": "auto", "weights_dir": null, "embedder": null, "reranker": null},
+  "ocr": {"enabled": "off", "images": false, "helper": null, "max_pages": 40}
+}

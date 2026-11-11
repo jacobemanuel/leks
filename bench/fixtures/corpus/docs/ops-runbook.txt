@@ -1,0 +1,16 @@
+Operations runbook
+
+Ingest queue stalls
+Check the lag with the status command of the worker. If the lag stays above 20 minutes, restart the worker. It replays from the last checkpoint, so no record is lost. If the queue still does not move, look for the pause flag described in the backpressure note.
+
+Dead letter queue grows
+If the dead letter queue grows by more than 500 records per hour, stop fetching from that provider and open a ticket with the error codes. Do not replay the records before the cause is fixed.
+
+Docs site build fails
+Open the link report of the last run. Fix the broken internal links and start the build again. A failed nightly build leaves the previous site online.
+
+Build cache is full
+Run the prune step of the build script. It removes cache entries older than 30 days. If the cache is still full after that, lower the expiry in small steps and tell the team.
+
+Shader cold start is slow
+Check that the shader cache folder exists and is writable. A missing folder means every start compiles from scratch, which takes about three seconds.

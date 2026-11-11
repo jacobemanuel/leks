@@ -1,0 +1,35 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unittest:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.10", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      # pdf and test extras; the model extra (torch) stays out, the tests use a stand-in model backend
+      # on macOS the suite also compiles the OCR helper with swiftc
+      - run: python -m pip install -e ".[pdf,test]"
+      - run: python -B -m unittest discover -s tests -t .
+      - run: python -B bench/run_bench.py --models none
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m pip install ruff==0.17.4
+      - run: ruff check .

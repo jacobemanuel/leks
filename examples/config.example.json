@@ -1,0 +1,166 @@
+{
+  "version": 3,
+  "home": "~/.leks",
+  "roots": [
+    {
+      "name": "notes",
+      "path": "~/projects/example/notes",
+      "kind": "notes",
+      "include": [
+        "**/*.md"
+      ],
+      "exclude": [
+        "drafts/**"
+      ]
+    },
+    {
+      "name": "code",
+      "path": "~/projects/example/src",
+      "kind": "code",
+      "exclude": [
+        "**/build/**"
+      ]
+    },
+    {
+      "name": "docs",
+      "path": "~/projects/example/docs",
+      "kind": "docs"
+    },
+    {
+      "name": "misc",
+      "path": "~/projects/example/misc",
+      "kind": "mixed",
+      "follow_links": false
+    }
+  ],
+  "profiles": {
+    "architect": {
+      "roots": [
+        "notes",
+        "docs"
+      ]
+    },
+    "orchestrator": {
+      "roots": [
+        "notes",
+        "code",
+        "docs"
+      ]
+    }
+  },
+  "default_profile": "default",
+  "classify": {
+    "state": [
+      "**/STATE.md",
+      "**/NOW.md",
+      "**/*_STATE.md"
+    ],
+    "rule": [
+      "**/CLAUDE.md",
+      "**/AGENTS.md",
+      ".claude/**",
+      ".github/copilot-instructions.md"
+    ],
+    "decision": [
+      "**/decisions/**",
+      "**/adr/**",
+      "**/DEC-*",
+      "**/ADR-*"
+    ],
+    "result": [
+      "**/results/**"
+    ],
+    "history": [
+      "**/archive/**",
+      "**/history/**",
+      "**/*_HISTORY*"
+    ]
+  },
+  "models": {
+    "backend": "torch",
+    "device": "auto",
+    "weights_dir": null,
+    "embedder": {
+      "key": "mdense",
+      "hf_id": "lightonai/mDenseOn",
+      "revision": "a5fdb000f7a21da96c3bddde3a782ef777316df3",
+      "op": "embed",
+      "pooling": "cls",
+      "normalize": true,
+      "prefixes": {
+        "q": "query: ",
+        "d": "document: "
+      },
+      "dim": 768,
+      "max_length": 512,
+      "dtype": "float32"
+    },
+    "reranker": {
+      "key": "mlate",
+      "hf_id": "lightonai/mLateOn",
+      "revision": "bbd883ae1fadb563056ff73b1061ae8172a3fcda",
+      "op": "maxsim",
+      "pooling": "maxsim",
+      "normalize": true,
+      "prefixes": {
+        "q": "[Q] ",
+        "d": "[D] "
+      },
+      "dim": 128,
+      "max_length": 512,
+      "dtype": "float32",
+      "projection": [
+        {
+          "src": "1_Dense",
+          "in": 768,
+          "out": 1536,
+          "residual": true
+        },
+        {
+          "src": "2_Dense",
+          "in": 1536,
+          "out": 768,
+          "residual": true
+        },
+        {
+          "src": "3_Dense",
+          "in": 768,
+          "out": 128,
+          "residual": false
+        }
+      ]
+    }
+  },
+  "budgets": {
+    "embed": 45.0,
+    "rerank": 8.0,
+    "cold_rerank": 30.0,
+    "cold_after": 600.0,
+    "connect": 10.0,
+    "ping": 2.0
+  },
+  "daemon": {
+    "idle_exit": 3600,
+    "sandbox": "auto"
+  },
+  "update": {
+    "min_interval": 1800
+  },
+  "ocr": {
+    "enabled": "auto",
+    "images": true,
+    "helper": null,
+    "max_pages": 40,
+    "label_results": true
+  },
+  "limits": {
+    "max_file_bytes": 1500000,
+    "chunk_chars": 1000,
+    "pdf_max_bytes": 209715200,
+    "office_max_bytes": 419430400,
+    "max_names": 500000
+  },
+  "server": {
+    "always_load": true
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "home": "~/.leks-demo",
+  "roots": [
+    {"name": "notes", "path": "../bench/fixtures/corpus/notes", "kind": "notes"},
+    {"name": "code", "path": "../bench/fixtures/corpus/code", "kind": "code"},
+    {"name": "docs", "path": "../bench/fixtures/corpus/docs", "kind": "docs"}
+  ],
+  "profiles": {
+    "architect": {"roots": ["notes", "docs"]},
+    "orchestrator": {"roots": ["notes", "code", "docs"]}
+  },
+  "default_profile": "orchestrator",
+  "models": {"backend": "torch", "device": "auto", "weights_dir": null, "embedder": null, "reranker": null}
+}

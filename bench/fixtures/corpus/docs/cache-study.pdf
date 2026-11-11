@@ -1,0 +1,61 @@
+%PDF-1.4
+%ÿþýü
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 447 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 56 800.00 Tm (Tile cache replay study) Tj
+1 0 0 1 56 786.00 Tm (Method: 200 recorded camera paths were replayed against caches of 128, 256, 512 and 1024 tiles.) Tj
+1 0 0 1 56 772.00 Tm (Hit rate with least recently used eviction:) Tj
+1 0 0 1 56 758.00 Tm (128 tiles 71 percent) Tj
+1 0 0 1 56 744.00 Tm (256 tiles 84 percent) Tj
+1 0 0 1 56 730.00 Tm (512 tiles 95 percent) Tj
+1 0 0 1 56 716.00 Tm (1024 tiles 97 percent) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 412 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 56 800.00 Tm (Eviction policies at 256 tiles) Tj
+1 0 0 1 56 786.00 Tm (Least recently used 84 percent) Tj
+1 0 0 1 56 772.00 Tm (First in, first out 77 percent) Tj
+1 0 0 1 56 758.00 Tm (Random replacement 73 percent) Tj
+1 0 0 1 56 744.00 Tm (Conclusion: keep least recently used with a pinned viewport set.) Tj
+1 0 0 1 56 730.00 Tm (Above 512 tiles extra capacity adds under 2 points.) Tj
+ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000224 00000 n 
+0000000350 00000 n 
+0000000847 00000 n 
+0000000973 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+1435
+%%EOF

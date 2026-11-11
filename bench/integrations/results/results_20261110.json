@@ -1,0 +1,767 @@
+{
+  "runs": [
+    {
+      "tool": "blender",
+      "run": "1",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 7,
+      "wall_s": 25.9,
+      "usd": 0.1569,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/STATE.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "2",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 6,
+      "wall_s": 16.8,
+      "usd": 0.0685,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "3",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 6,
+      "wall_s": 14.9,
+      "usd": 0.0686,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "4",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 6,
+      "wall_s": 18.3,
+      "usd": 0.0686,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "5",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 6,
+      "wall_s": 15.3,
+      "usd": 0.0663,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "6",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 6,
+      "wall_s": 21.4,
+      "usd": 0.0676,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "7",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 6,
+      "wall_s": 16.8,
+      "usd": 0.069,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "8",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 7,
+      "wall_s": 22.5,
+      "usd": 0.0691,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/STATE.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "9",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 6,
+      "wall_s": 16.0,
+      "usd": 0.0683,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "blender",
+      "run": "10",
+      "all_checks_passed": true,
+      "checks": 10,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 7,
+      "wall_s": 29.5,
+      "usd": 0.0701,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/STATE.md"
+      ],
+      "tool_calls": [
+        "execute_blender_code_for_cli"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "1",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 7,
+      "wall_s": 19.1,
+      "usd": 0.1755,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/STATE.md"
+      ],
+      "tool_calls": [
+        "execute_code"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 3,
+      "first_search_rank_d03": 2,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "2",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 7,
+      "wall_s": 17.4,
+      "usd": 0.0801,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/STATE.md"
+      ],
+      "tool_calls": [
+        "execute_code"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "3",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 13,
+      "wall_s": 23.9,
+      "usd": 0.1104,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "display pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "manage_scene",
+        "manage_material",
+        "manage_asset",
+        "manage_material",
+        "manage_gameobject",
+        "manage_material",
+        "manage_material",
+        "manage_scene"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 2,
+      "first_search_rank_d03": 1,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "4",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 15,
+      "wall_s": 27.4,
+      "usd": 0.1218,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/decisions/D-05_lighting.md"
+      ],
+      "tool_calls": [
+        "manage_scene",
+        "manage_material",
+        "manage_asset",
+        "manage_material",
+        "manage_gameobject",
+        "manage_material",
+        "manage_material",
+        "manage_scene"
+      ],
+      "other_calls": [
+        "ToolSearch",
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 3,
+      "first_search_rank_d03": 2,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "5",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 6,
+      "wall_s": 13.2,
+      "usd": 0.0802,
+      "leks_calls": [
+        "state",
+        "search",
+        "read"
+      ],
+      "leks_searches": [
+        "pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md"
+      ],
+      "tool_calls": [
+        "execute_code"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 3,
+      "first_search_rank_d03": 2,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "6",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 15,
+      "wall_s": 33.4,
+      "usd": 0.129,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/decisions/D-05_lighting.md"
+      ],
+      "tool_calls": [
+        "manage_scene",
+        "manage_gameobject",
+        "manage_material",
+        "manage_asset",
+        "manage_material",
+        "manage_material",
+        "manage_material",
+        "manage_scene"
+      ],
+      "other_calls": [
+        "ToolSearch",
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 3,
+      "first_search_rank_d03": 2,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "7",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 14,
+      "wall_s": 32.9,
+      "usd": 0.1164,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/STATE.md"
+      ],
+      "tool_calls": [
+        "manage_scene",
+        "manage_gameobject",
+        "manage_material",
+        "manage_asset",
+        "manage_material",
+        "manage_material",
+        "manage_material",
+        "manage_scene"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 3,
+      "first_search_rank_d03": 2,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "8",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 7,
+      "wall_s": 13.7,
+      "usd": 0.0833,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/STATE.md"
+      ],
+      "tool_calls": [
+        "execute_code"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 3,
+      "first_search_rank_d03": 2,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "9",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 14,
+      "wall_s": 37.6,
+      "usd": 0.1193,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/decisions/D-05_lighting.md"
+      ],
+      "tool_calls": [
+        "manage_scene",
+        "manage_gameobject",
+        "manage_material",
+        "manage_asset",
+        "manage_material",
+        "manage_material",
+        "manage_material",
+        "manage_scene"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 3,
+      "first_search_rank_d03": 2,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    },
+    {
+      "tool": "unity",
+      "run": "10",
+      "all_checks_passed": true,
+      "checks": 12,
+      "failed_checks": [],
+      "session_ok": true,
+      "turns": 13,
+      "wall_s": 24.9,
+      "usd": 0.114,
+      "leks_calls": [
+        "state",
+        "search",
+        "read",
+        "read"
+      ],
+      "leks_searches": [
+        "pedestal spec dimensions"
+      ],
+      "leks_reads": [
+        "notes/decisions/D-07_pedestal.md",
+        "notes/STATE.md"
+      ],
+      "tool_calls": [
+        "manage_scene",
+        "manage_gameobject",
+        "manage_material",
+        "manage_material",
+        "manage_material",
+        "manage_material",
+        "manage_scene"
+      ],
+      "other_calls": [
+        "ToolSearch"
+      ],
+      "permission_denials": 0,
+      "first_search_rank_d07": 3,
+      "first_search_rank_d03": 2,
+      "answer_names_d07": true,
+      "answer_calls_d03_superseded": true
+    }
+  ],
+  "totals": {
+    "blender": {
+      "sessions": 10,
+      "all_checks_passed": 10,
+      "wilson_95": [
+        0.722,
+        1.0
+      ],
+      "median_wall_s": 17.55,
+      "median_turns": 6.0,
+      "median_usd": 0.0686,
+      "total_usd": 0.773,
+      "median_leks_calls": 3.0,
+      "median_tool_calls": 1.0,
+      "sessions_with_denials": 0,
+      "first_search_d03_above_d07": 10,
+      "answers_naming_d07": 10,
+      "answers_calling_d03_superseded": 10
+    },
+    "unity": {
+      "sessions": 10,
+      "all_checks_passed": 10,
+      "wilson_95": [
+        0.722,
+        1.0
+      ],
+      "median_wall_s": 24.4,
+      "median_turns": 13.0,
+      "median_usd": 0.1152,
+      "total_usd": 1.13,
+      "median_leks_calls": 4.0,
+      "median_tool_calls": 7.5,
+      "sessions_with_denials": 0,
+      "first_search_d03_above_d07": 10,
+      "answers_naming_d07": 10,
+      "answers_calling_d03_superseded": 10
+    }
+  }
+}

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="454" viewBox="0 0 820 454" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">Right note in the top five, LEKS 2.0 against LEKS 3.0 on the held-out and fresh question sets</title>
+<desc id="desc">Both engines on the same questions, notes and scoring. Held-out, English, 158 questions: 61.4% against 85.4%; Held-out, asked in Polish, the same 158 questions: 9.5% against 69.0%; Fresh, English, 120 questions written after the switch: 46.7% against 83.3%; Fresh, answer in a note, 80 of the 120: 70.0% against 77.5%; Fresh, answer on a PDF page, 40 of the 120, 2.0 reads no PDFs: 0.0% against 95.0%.</desc>
+<rect x="0.5" y="0.5" width="819" height="453" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="34.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">LEKS 2.0 against 3.0 on the same questions</text>
+<text x="24.0" y="56.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">Right note in the top five. Both engines on the same questions, notes and scoring</text>
+<text x="24.0" y="74.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">Held-out: 158 questions loaded only after the finalists were drawn. Fresh: 120 written after the switch</text>
+<circle cx="30.0" cy="100.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<text x="42.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">LEKS 2.0 as it ships (R1)</text>
+<circle cx="330.0" cy="100.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="342.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">LEKS 3.0</text>
+<line x1="300.0" y1="128.0" x2="300.0" y2="380.0" stroke="#EAEEF2"/>
+<text x="300.0" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0%</text>
+<line x1="397.5" y1="128.0" x2="397.5" y2="380.0" stroke="#EAEEF2"/>
+<text x="397.5" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">25%</text>
+<line x1="495.0" y1="128.0" x2="495.0" y2="380.0" stroke="#EAEEF2"/>
+<text x="495.0" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">50%</text>
+<line x1="592.5" y1="128.0" x2="592.5" y2="380.0" stroke="#EAEEF2"/>
+<text x="592.5" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">75%</text>
+<line x1="690.0" y1="128.0" x2="690.0" y2="380.0" stroke="#EAEEF2"/>
+<text x="690.0" y="398.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">100%</text>
+<text x="24.0" y="147.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Held-out, English</text>
+<text x="24.0" y="163.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">158 questions</text>
+<line x1="539.5" y1="150.0" x2="633.1" y2="150.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="539.5" cy="150.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="633.1" cy="150.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="527.5" y="154.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">61.4%</text>
+<text x="645.1" y="154.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">85.4%</text>
+<text x="24.0" y="199.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Held-out, asked in Polish</text>
+<text x="24.0" y="215.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">the same 158 questions</text>
+<line x1="337.1" y1="202.0" x2="569.1" y2="202.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="337.1" cy="202.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="569.1" cy="202.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="325.1" y="206.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">9.5%</text>
+<text x="581.1" y="206.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">69.0%</text>
+<text x="24.0" y="251.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Fresh, English</text>
+<text x="24.0" y="267.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">120 questions written after the switch</text>
+<line x1="482.1" y1="254.0" x2="624.9" y2="254.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="482.1" cy="254.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="624.9" cy="254.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="470.1" y="258.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">46.7%</text>
+<text x="636.9" y="258.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">83.3%</text>
+<text x="24.0" y="303.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Fresh, answer in a note</text>
+<text x="24.0" y="319.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">80 of the 120</text>
+<line x1="573.0" y1="306.0" x2="602.2" y2="306.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="573.0" cy="306.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="602.2" cy="306.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="561.0" y="310.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">70.0%</text>
+<text x="614.2" y="310.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">77.5%</text>
+<text x="24.0" y="355.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Fresh, answer on a PDF page</text>
+<text x="24.0" y="371.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">40 of the 120, 2.0 reads no PDFs</text>
+<line x1="300.0" y1="358.0" x2="670.5" y2="358.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="300.0" cy="358.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="670.5" cy="358.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="288.0" y="362.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">0.0%</text>
+<text x="682.5" y="362.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">95.0%</text>
+<text x="24.0" y="436.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="start">Held-out: 42 questions only 3.0 finds against 4 only 2.0. Fresh: 46 against 2, Holm p &lt; 0.0001</text>
+</svg>

@@ -1,0 +1,19 @@
+Tile renderer design overview
+
+1. Goals
+The renderer shows a large tiled map at the display rate of the device. The reference target is a laptop class GPU with 6 GiB of memory. Smooth panning matters more than the last bit of image quality.
+
+2. The tile pyramid
+The map is stored as a pyramid of tiles, one level per zoom step. Each level has four times the tiles of the level above. Tiles are compressed offline and decoded on load.
+
+3. The frame loop
+Every frame runs the same steps in this order: read input, request missing tiles, upload decoded tiles, draw, present. Requests and uploads are limited per frame so that drawing always gets its share of the budget.
+
+4. Missing tiles
+When the exact tile has not arrived yet, the renderer draws the parent tile from the level above, scaled up. The picture is blurry for a moment and sharpens when the exact tile lands. The screen never shows a hole while the parent is cached.
+
+5. Caches
+Decoded tiles live in the tile cache. Compiled shaders live in a separate disk cache. Both are bounded in megabytes and both drop the oldest entries first.
+
+6. Failure modes
+A failed request is retried twice with a growing delay. After that the tile stays red in the debug overlay until the user pans away and back.

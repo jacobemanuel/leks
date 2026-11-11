@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="506" viewBox="0 0 820 506" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">Right answers and passed tasks of a coding agent with LEKS 3.0 and without it</title>
+<desc id="desc">End-to-end tests of a coding agent, right answers or passed tasks without LEKS against with LEKS 3.0. 35 project questions, one fresh session per question: 28 of 35 against 32 of 35; Two long sessions, 26 turns each, with a forced compaction: 39 of 52 against 49 of 52; &quot;Was this tried before&quot; turns, inside those two sessions: 1 of 6 against 5 of 6; Ten development tasks, in scratch clones, passed: 7 of 10 against 9 of 10; Three working days, answers, a cold cache every morning: 75 of 100 against 89 of 100; Three working days, tasks, passed: 12 of 14 against 14 of 14.</desc>
+<rect x="0.5" y="0.5" width="819" height="505" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="34.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">The agent at work, with LEKS and without</text>
+<text x="24.0" y="56.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">Claude Code on my record, a fresh session per question and arm, graded blind</text>
+<text x="24.0" y="74.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">The judge saw the answers shuffled and unlabelled, a second blind pass agreed on 131 of 140</text>
+<circle cx="30.0" cy="100.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<text x="42.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">without LEKS, the agent's own file tools</text>
+<circle cx="330.0" cy="100.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="342.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">with LEKS 3.0</text>
+<line x1="300.0" y1="128.0" x2="300.0" y2="432.0" stroke="#EAEEF2"/>
+<text x="300.0" y="450.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0%</text>
+<line x1="397.5" y1="128.0" x2="397.5" y2="432.0" stroke="#EAEEF2"/>
+<text x="397.5" y="450.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">25%</text>
+<line x1="495.0" y1="128.0" x2="495.0" y2="432.0" stroke="#EAEEF2"/>
+<text x="495.0" y="450.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">50%</text>
+<line x1="592.5" y1="128.0" x2="592.5" y2="432.0" stroke="#EAEEF2"/>
+<text x="592.5" y="450.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">75%</text>
+<line x1="690.0" y1="128.0" x2="690.0" y2="432.0" stroke="#EAEEF2"/>
+<text x="690.0" y="450.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">100%</text>
+<text x="24.0" y="147.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">35 project questions</text>
+<text x="24.0" y="163.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">one fresh session per question</text>
+<line x1="612.0" y1="150.0" x2="656.6" y2="150.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="612.0" cy="150.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="656.6" cy="150.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="600.0" y="154.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">28 of 35</text>
+<text x="668.6" y="154.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">32 of 35</text>
+<text x="24.0" y="199.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Two long sessions</text>
+<text x="24.0" y="215.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">26 turns each, with a forced compaction</text>
+<line x1="592.5" y1="202.0" x2="667.5" y2="202.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="592.5" cy="202.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="667.5" cy="202.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="580.5" y="206.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">39 of 52</text>
+<text x="679.5" y="206.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">49 of 52</text>
+<text x="24.0" y="251.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">&quot;Was this tried before&quot; turns</text>
+<text x="24.0" y="267.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">inside those two sessions</text>
+<line x1="365.0" y1="254.0" x2="625.0" y2="254.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="365.0" cy="254.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="625.0" cy="254.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="353.0" y="258.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">1 of 6</text>
+<text x="637.0" y="258.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">5 of 6</text>
+<text x="24.0" y="303.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Ten development tasks</text>
+<text x="24.0" y="319.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">in scratch clones, passed</text>
+<line x1="573.0" y1="306.0" x2="651.0" y2="306.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="573.0" cy="306.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="651.0" cy="306.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="561.0" y="310.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">7 of 10</text>
+<text x="663.0" y="310.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">9 of 10</text>
+<text x="24.0" y="355.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Three working days, answers</text>
+<text x="24.0" y="371.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">a cold cache every morning</text>
+<line x1="592.5" y1="358.0" x2="647.1" y2="358.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="592.5" cy="358.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="647.1" cy="358.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="580.5" y="362.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">75 of 100</text>
+<text x="659.1" y="362.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">89 of 100</text>
+<text x="24.0" y="407.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Three working days, tasks</text>
+<text x="24.0" y="423.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">passed</text>
+<line x1="634.3" y1="410.0" x2="690.0" y2="410.0" stroke="#8C959F" stroke-width="2"/>
+<circle cx="634.3" cy="410.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"/>
+<circle cx="690.0" cy="410.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="622.3" y="414.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="end">12 of 14</text>
+<text x="702.0" y="414.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">14 of 14</text>
+<text x="24.0" y="488.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="start">Working days: 18 turns only the LEKS sessions got right against 4, Holm p 0.0043, at 0.85 of the bill</text>
+</svg>

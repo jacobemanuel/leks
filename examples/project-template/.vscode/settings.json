@@ -1,0 +1,13 @@
+{
+  // Copilot's Explore subagent does its reading and searching on a small model
+  // by default: the first available entry of its fallback list, which starts
+  // with "Claude Haiku 4.5 (copilot)". docs/hosts.md in the LEKS repository
+  // has what we measured with a small reader. To pick the model yourself,
+  // remove the slashes from the next line and put in a name from the model picker.
+  // "github.copilot.chat.exploreAgent.model": "Claude Haiku 4.5 (copilot)",
+
+  // Copilot runs the LEKS hooks from .github/hooks/leks.json. VS Code can also
+  // run the Claude Code hooks in .claude/settings.json. Keep that off, or the
+  // brief and the notes check run twice.
+  "chat.useClaudeHooks": false
+}

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="666" viewBox="0 0 820 666" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">Cost of the agent with LEKS as a share of the cost without it</title>
+<desc id="desc">Cost of the agent with LEKS 3.0 as a share of its cost without LEKS, with 95% bootstrap intervals; below 1 is cheaper. Per right answer, 35 questions, sonnet: 0.72 (0.56 to 0.88); Working days, the bill, three days, a cold cache every morning: 0.85 (0.80 to 0.90); Working days, the time, the same three days: 0.86 (0.79 to 0.93); A small model as the agent, haiku, per right answer: 0.49 (0.27 to 0.81); per right answer by model and effort: sonnet, low: 0.58 (0.28 to 0.89); sonnet, medium: 0.45 (0.16 to 0.80); sonnet, high: 0.75 (0.59 to 0.90); sonnet, xhigh: 0.50 (0.27 to 0.73); sonnet, max: 0.85 (0.62 to 1.15); opus, low: 0.66 (0.33 to 0.94); opus, medium: 0.77 (0.60 to 0.92); opus, high: 0.77 (0.49 to 1.05); opus, max: 0.85 (0.70 to 1.03).</desc>
+<rect x="0.5" y="0.5" width="819" height="665" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="34.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">What the agent costs with LEKS, as a share of the cost without it</text>
+<text x="24.0" y="56.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">Below 1 the agent is cheaper with LEKS. Dots are the measured ratio, bars the 95% interval</text>
+<text x="24.0" y="74.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">Priced from the Claude Code CLI's own cost report at API list prices</text>
+<circle cx="30.0" cy="100.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="42.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">measured ratio, with LEKS over without</text>
+<line x1="300.0" y1="136.0" x2="300.0" y2="588.0" stroke="#EAEEF2"/>
+<text x="300.0" y="606.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0</text>
+<line x1="365.6" y1="136.0" x2="365.6" y2="588.0" stroke="#EAEEF2"/>
+<text x="365.6" y="606.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0.25</text>
+<line x1="431.2" y1="136.0" x2="431.2" y2="588.0" stroke="#EAEEF2"/>
+<text x="431.2" y="606.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0.5</text>
+<line x1="496.8" y1="136.0" x2="496.8" y2="588.0" stroke="#EAEEF2"/>
+<text x="496.8" y="606.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0.75</text>
+<line x1="562.4" y1="136.0" x2="562.4" y2="588.0" stroke="#EAEEF2"/>
+<text x="562.4" y="606.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">1</text>
+<line x1="628.0" y1="136.0" x2="628.0" y2="588.0" stroke="#EAEEF2"/>
+<text x="628.0" y="606.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">1.25</text>
+<line x1="562.4" y1="136.0" x2="562.4" y2="588.0" stroke="#59636E" stroke-dasharray="4 3"/>
+<text x="556.4" y="132.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="end">same cost as without</text>
+<text x="24.0" y="157.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Per right answer</text>
+<text x="24.0" y="173.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">35 questions, sonnet</text>
+<line x1="446.9" y1="160.0" x2="530.9" y2="160.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="446.9" y1="155.0" x2="446.9" y2="165.0" stroke="#0969DA" stroke-width="1.5"/><line x1="530.9" y1="155.0" x2="530.9" y2="165.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="488.9" cy="160.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="164.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">0.72<tspan fill="#818B98" font-weight="normal" font-size="11">  0.56 to 0.88</tspan></text>
+<text x="24.0" y="201.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Working days, the bill</text>
+<text x="24.0" y="217.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">three days, a cold cache every morning</text>
+<line x1="509.9" y1="204.0" x2="536.2" y2="204.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="509.9" y1="199.0" x2="509.9" y2="209.0" stroke="#0969DA" stroke-width="1.5"/><line x1="536.2" y1="199.0" x2="536.2" y2="209.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="523.0" cy="204.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="208.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">0.85<tspan fill="#818B98" font-weight="normal" font-size="11">  0.80 to 0.90</tspan></text>
+<text x="24.0" y="245.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">Working days, the time</text>
+<text x="24.0" y="261.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">the same three days</text>
+<line x1="507.3" y1="248.0" x2="544.0" y2="248.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="507.3" y1="243.0" x2="507.3" y2="253.0" stroke="#0969DA" stroke-width="1.5"/><line x1="544.0" y1="243.0" x2="544.0" y2="253.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="525.7" cy="248.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="252.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">0.86<tspan fill="#818B98" font-weight="normal" font-size="11">  0.79 to 0.93</tspan></text>
+<text x="24.0" y="289.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="start">A small model as the agent</text>
+<text x="24.0" y="305.0" font-size="11.5" fill="#818B98" font-weight="normal" text-anchor="start">haiku, per right answer</text>
+<line x1="370.8" y1="292.0" x2="512.5" y2="292.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="370.8" y1="287.0" x2="370.8" y2="297.0" stroke="#0969DA" stroke-width="1.5"/><line x1="512.5" y1="287.0" x2="512.5" y2="297.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="428.6" cy="292.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="296.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">0.49<tspan fill="#818B98" font-weight="normal" font-size="11">  0.27 to 0.81</tspan></text>
+<line x1="24" y1="324.0" x2="796" y2="324.0" stroke="#EAEEF2" stroke-dasharray="3 3"/>
+<text x="24.0" y="344.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="start">Per right answer, two models, effort from low to max</text>
+<text x="24.0" y="368.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">sonnet, low</text>
+<line x1="373.5" y1="364.0" x2="533.5" y2="364.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="373.5" y1="359.0" x2="373.5" y2="369.0" stroke="#0969DA" stroke-width="1.5"/><line x1="533.5" y1="359.0" x2="533.5" y2="369.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="452.2" cy="364.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="368.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.58<tspan fill="#818B98" font-size="11">  0.28 to 0.89</tspan></text>
+<text x="24.0" y="394.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">sonnet, medium</text>
+<line x1="342.0" y1="390.0" x2="509.9" y2="390.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="342.0" y1="385.0" x2="342.0" y2="395.0" stroke="#0969DA" stroke-width="1.5"/><line x1="509.9" y1="385.0" x2="509.9" y2="395.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="418.1" cy="390.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="394.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.45<tspan fill="#818B98" font-size="11">  0.16 to 0.80</tspan></text>
+<text x="24.0" y="420.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">sonnet, high</text>
+<line x1="454.8" y1="416.0" x2="536.2" y2="416.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="454.8" y1="411.0" x2="454.8" y2="421.0" stroke="#0969DA" stroke-width="1.5"/><line x1="536.2" y1="411.0" x2="536.2" y2="421.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="496.8" cy="416.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="420.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.75<tspan fill="#818B98" font-size="11">  0.59 to 0.90</tspan></text>
+<text x="24.0" y="446.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">sonnet, xhigh</text>
+<line x1="370.8" y1="442.0" x2="491.6" y2="442.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="370.8" y1="437.0" x2="370.8" y2="447.0" stroke="#0969DA" stroke-width="1.5"/><line x1="491.6" y1="437.0" x2="491.6" y2="447.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="431.2" cy="442.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="446.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.50<tspan fill="#818B98" font-size="11">  0.27 to 0.73</tspan></text>
+<text x="24.0" y="472.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">sonnet, max</text>
+<line x1="462.7" y1="468.0" x2="601.8" y2="468.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="462.7" y1="463.0" x2="462.7" y2="473.0" stroke="#0969DA" stroke-width="1.5"/><line x1="601.8" y1="463.0" x2="601.8" y2="473.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="523.0" cy="468.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="472.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.85<tspan fill="#818B98" font-size="11">  0.62 to 1.15</tspan></text>
+<text x="24.0" y="498.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">opus, low</text>
+<line x1="386.6" y1="494.0" x2="546.7" y2="494.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="386.6" y1="489.0" x2="386.6" y2="499.0" stroke="#0969DA" stroke-width="1.5"/><line x1="546.7" y1="489.0" x2="546.7" y2="499.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="473.2" cy="494.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="498.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.66<tspan fill="#818B98" font-size="11">  0.33 to 0.94</tspan></text>
+<text x="24.0" y="524.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">opus, medium</text>
+<line x1="457.4" y1="520.0" x2="541.4" y2="520.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="457.4" y1="515.0" x2="457.4" y2="525.0" stroke="#0969DA" stroke-width="1.5"/><line x1="541.4" y1="515.0" x2="541.4" y2="525.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="502.0" cy="520.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="524.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.77<tspan fill="#818B98" font-size="11">  0.60 to 0.92</tspan></text>
+<text x="24.0" y="550.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">opus, high</text>
+<line x1="428.6" y1="546.0" x2="575.5" y2="546.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="428.6" y1="541.0" x2="428.6" y2="551.0" stroke="#0969DA" stroke-width="1.5"/><line x1="575.5" y1="541.0" x2="575.5" y2="551.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="502.0" cy="546.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="550.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.77<tspan fill="#818B98" font-size="11">  0.49 to 1.05</tspan></text>
+<text x="24.0" y="576.5" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">opus, max</text>
+<line x1="483.7" y1="572.0" x2="570.3" y2="572.0" stroke="#0969DA" stroke-width="2" stroke-linecap="round"/><line x1="483.7" y1="567.0" x2="483.7" y2="577.0" stroke="#0969DA" stroke-width="1.5"/><line x1="570.3" y1="567.0" x2="570.3" y2="577.0" stroke="#0969DA" stroke-width="1.5"/>
+<circle cx="523.0" cy="572.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
+<text x="648.0" y="576.5" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">0.85<tspan fill="#818B98" font-size="11">  0.70 to 1.03</tspan></text>
+<text x="24.0" y="648.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="start">Cheaper per right answer in all nine settings. Intervals: 95% bootstrap over questions</text>
+</svg>

@@ -1,0 +1,21 @@
+{
+  "env": {"LEKS_PROFILE": "architect"},
+  "hooks": {
+    "SessionStart": [
+      {"hooks": [
+        {"type": "command", "command": "python3 -m leks hook brief", "timeout": 10},
+        {"type": "command", "command": "python3 -m leks hook update", "timeout": 10}
+      ]}
+    ],
+    "PreToolUse": [
+      {"matcher": "mcp__leks__search|mcp__leks__tried", "hooks": [
+        {"type": "command", "command": "python3 -m leks hook warm", "timeout": 10}
+      ]}
+    ],
+    "Stop": [
+      {"hooks": [
+        {"type": "command", "command": "python3 -m leks check", "timeout": 20}
+      ]}
+    ]
+  }
+}
