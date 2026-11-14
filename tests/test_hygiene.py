@@ -14,7 +14,7 @@ SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.venv', 'venv', 'build', 'd
              '.ruff_cache', '.mypy_cache', '.tox', '.nox', 'htmlcov'}
 # in a git worktree .git is a file that holds the absolute path of the main clone
 SKIP_FILES = {'SPEC.md', '.git', 'coverage.xml'}
-SKIP_SUFFIX = ('.pyc', '.sqlite', '.f32', '.png', '.jpg', '.jpeg', '.gif', '.pdf', '.docx', '.zip', '.gz')
+SKIP_SUFFIX = ('.pyc', '.sqlite', '.f32', '.png', '.jpg', '.jpeg', '.gif', '.webp', '.pdf', '.docx', '.zip', '.gz')
 
 # built from parts so this file does not trip its own scan
 EM = chr(0x2014)

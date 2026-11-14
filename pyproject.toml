@@ -45,7 +45,7 @@ include = ["leks*"]
 namespaces = false
 
 [tool.setuptools.package-data]
-leks = ["ocr/*.swift"]
+"leks.ocr" = ["*.swift"]
 
 [tool.ruff]
 target-version = "py310"

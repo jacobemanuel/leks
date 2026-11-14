@@ -268,8 +268,8 @@ The memory column is the largest resident size of each run as the operating syst
 models it adds the search process and the model helper, sampled every 0.1 s in a second run of the same
 questions that returned the same hits. Memory a run keeps on the GPU may not show in a resident size, so the
 three GPU runs (qmd vsearch, qmd query and LEKS with models) can read low here: measured the way the
-[README](../README.md#scope) does it, the LEKS model helper holds about 6.8 GiB under load. What these
-searches change in an agent's bill is in the [README](../README.md#cost).
+[results](results.md#scope) does it, the LEKS model helper holds about 6.8 GiB under load. What these
+searches change in an agent's bill is in the [results](results.md#cost).
 
 ## 5. Limits
 

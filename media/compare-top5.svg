@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="524" viewBox="0 0 820 524" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">How often each tool finds the right PEP in its first 5 results</title>
+<desc id="desc">Share of 695 questions with the right PEP among the first 5 results: LEKS 3.1 with models 93.4%; qmd query 86.5%; knowledge-rag hybrid 83.3%; MemPalace hybrid 81.2%; MemPalace default 79.7%; LEKS 3.1, words only 76.3%; qmd vsearch 72.9%; BM25 66.2%; qmd search 16.7%</desc>
+<rect x="0.5" y="0.5" width="819" height="523" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="40.0" font-size="17" fill="#1F2328" font-weight="600" text-anchor="start">How often each tool finds the right PEP in its first 5 results</text>
+<text x="24.0" y="64.0" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">695 questions about Python&#8217;s design documents (the PEPs), all written down before any tool ran</text>
+<text x="24.0" y="84.0" font-size="12.5" fill="#59636E" font-weight="normal" text-anchor="start">Each tool with its own defaults on one Mac</text>
+<rect x="24" y="99" width="12" height="12" rx="2" fill="#0969DA"/>
+<text x="42.0" y="110.0" font-size="12.5" fill="#1F2328" font-weight="normal" text-anchor="start">LEKS</text>
+<rect x="98" y="99" width="12" height="12" rx="2" fill="#8C959F"/>
+<text x="116.0" y="110.0" font-size="12.5" fill="#1F2328" font-weight="normal" text-anchor="start">other local search tools</text>
+<line x1="222.0" y1="124.0" x2="222.0" y2="432.0" stroke="#EAEEF2"/>
+<text x="222.0" y="448.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0%</text>
+<line x1="341.5" y1="124.0" x2="341.5" y2="432.0" stroke="#EAEEF2"/>
+<text x="341.5" y="448.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">25%</text>
+<line x1="461.0" y1="124.0" x2="461.0" y2="432.0" stroke="#EAEEF2"/>
+<text x="461.0" y="448.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">50%</text>
+<line x1="580.5" y1="124.0" x2="580.5" y2="432.0" stroke="#EAEEF2"/>
+<text x="580.5" y="448.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">75%</text>
+<line x1="700.0" y1="124.0" x2="700.0" y2="432.0" stroke="#EAEEF2"/>
+<text x="700.0" y="448.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">100%</text>
+<text x="210.0" y="147.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="end">LEKS 3.1 with models</text>
+<path d="M222.0 132.0 H664.4 A4.0 4.0 0 0 1 668.4 136.0 V148.0 A4.0 4.0 0 0 1 664.4 152.0 H222.0 Z" fill="#0969DA"/>
+<text x="676.4" y="147.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">93.4%</text>
+<text x="210.0" y="181.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="end">qmd query</text>
+<path d="M222.0 166.0 H631.3 A4.0 4.0 0 0 1 635.3 170.0 V182.0 A4.0 4.0 0 0 1 631.3 186.0 H222.0 Z" fill="#8C959F"/>
+<text x="643.3" y="181.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">86.5%</text>
+<text x="210.0" y="215.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="end">knowledge-rag hybrid</text>
+<path d="M222.0 200.0 H616.2 A4.0 4.0 0 0 1 620.2 204.0 V216.0 A4.0 4.0 0 0 1 616.2 220.0 H222.0 Z" fill="#8C959F"/>
+<text x="628.2" y="215.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">83.3%</text>
+<text x="210.0" y="249.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="end">MemPalace hybrid</text>
+<path d="M222.0 234.0 H605.9 A4.0 4.0 0 0 1 609.9 238.0 V250.0 A4.0 4.0 0 0 1 605.9 254.0 H222.0 Z" fill="#8C959F"/>
+<text x="617.9" y="249.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">81.2%</text>
+<text x="210.0" y="283.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="end">MemPalace default</text>
+<path d="M222.0 268.0 H599.0 A4.0 4.0 0 0 1 603.0 272.0 V284.0 A4.0 4.0 0 0 1 599.0 288.0 H222.0 Z" fill="#8C959F"/>
+<text x="611.0" y="283.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">79.7%</text>
+<text x="210.0" y="317.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="end">LEKS 3.1, words only</text>
+<path d="M222.0 302.0 H582.5 A4.0 4.0 0 0 1 586.5 306.0 V318.0 A4.0 4.0 0 0 1 582.5 322.0 H222.0 Z" fill="#0969DA"/>
+<text x="594.5" y="317.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">76.3%</text>
+<text x="210.0" y="351.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="end">qmd vsearch</text>
+<path d="M222.0 336.0 H566.7 A4.0 4.0 0 0 1 570.7 340.0 V352.0 A4.0 4.0 0 0 1 566.7 356.0 H222.0 Z" fill="#8C959F"/>
+<text x="578.7" y="351.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">72.9%</text>
+<text x="210.0" y="385.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="end">BM25</text>
+<path d="M222.0 370.0 H534.4 A4.0 4.0 0 0 1 538.4 374.0 V386.0 A4.0 4.0 0 0 1 534.4 390.0 H222.0 Z" fill="#8C959F"/>
+<text x="546.4" y="385.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">66.2%</text>
+<text x="210.0" y="419.0" font-size="13" fill="#1F2328" font-weight="normal" text-anchor="end">qmd search</text>
+<path d="M222.0 404.0 H297.8 A4.0 4.0 0 0 1 301.8 408.0 V420.0 A4.0 4.0 0 0 1 297.8 424.0 H222.0 Z" fill="#8C959F"/>
+<text x="309.8" y="419.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start" stroke="#FFFFFF" stroke-width="4" stroke-linejoin="round" paint-order="stroke">16.7%</text>
+<text x="24.0" y="484.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">LEKS with models is ahead of every other tool, and every gap is statistically significant (p 1.2e-6 or lower)</text>
+<text x="24.0" y="503.0" font-size="12" fill="#818B98" font-weight="normal" text-anchor="start">First places, times and every run: docs/comparison.md</text>
+</svg>

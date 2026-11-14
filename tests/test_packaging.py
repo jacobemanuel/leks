@@ -101,6 +101,7 @@ class PackagingTests(unittest.TestCase):
         r = run([sys.executable, '-m', 'build', '--outdir', dist, src])
         if r.returncode != 0:
             raise RuntimeError('python -m build failed:\n' + (r.out + r.err)[-2000:])
+        cls.build_log = r.out + r.err
         wheels = glob.glob(os.path.join(dist, '*.whl'))
         sdists = glob.glob(os.path.join(dist, '*.tar.gz'))
         if len(wheels) != 1 or len(sdists) != 1:
@@ -168,6 +169,11 @@ class PackagingTests(unittest.TestCase):
         with tarfile.open(self.sdist) as t:
             in_sdist = sorted(os.path.basename(n) for n in t.getnames() if '/leks/ocr/' in n and n.endswith('.swift'))
         self.assertEqual(in_sdist, want)
+
+    def test_build_leaves_no_folder_out(self):
+        # setuptools prints a long banner when a folder inside leks/ can be imported but isn't listed as
+        # a package, and says a later setuptools would drop its files. 3.1 had it for leks/ocr
+        self.assertNotIn('absent from the `packages` configuration', self.build_log)
 
     def test_wheel_holds_the_package_and_nothing_else(self):
         want = pyproject_version()

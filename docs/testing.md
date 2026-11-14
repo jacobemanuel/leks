@@ -29,8 +29,8 @@ This page lists every job in `.github/workflows` and every group of tests, with 
 | Workflow | File | When |
 |---|---|---|
 | tests | `.github/workflows/tests.yml` | every push to main and to `release-*` branches, every tag `v*`, every pull request, by hand |
-| models | `.github/workflows/models.yml` | every push to main and to `release-*` branches, Mondays at 04:17 UTC, by hand |
-| security | `.github/workflows/security.yml` | every push to main and to `release-*` branches, every pull request, Mondays at 05:23 UTC, by hand |
+| models | `.github/workflows/models.yml` | every push to main and to `release-*` branches, the 3rd of each month at 04:17 UTC, by hand |
+| security | `.github/workflows/security.yml` | every push to main and to `release-*` branches, every pull request, the 5th of each month at 05:23 UTC, by hand |
 | public benchmark | `.github/workflows/public-bench.yml` | by hand only |
 | Dependabot | `.github/dependabot.yml` | once a month |
 
