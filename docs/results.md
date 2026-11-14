@@ -268,7 +268,7 @@ The same 120 fresh questions in five forms: English, German and Polish machine t
 
 ## With an agent, end to end
 
-Search scores are half the story, what counts is whether the agent does its job better. So I ran Claude Code on my record with LEKS and without it, a fresh session per question and arm, graded blind: the judge saw the answers in shuffled order and no arm labels, and a second blind pass agreed with it on 131 of 140 grades.
+Search scores are half the story, what counts is whether the agent does its job better. So I ran Claude Code on my record with LEKS and without it, a fresh session per question and arm, graded blind: the judge saw the answers in shuffled order and no arm labels, and a second blind pass agreed with it on 131 of 140 grades. The tables name the models by the Claude Code CLI aliases they were called with: `sonnet` is Sonnet 5.5, `opus` Opus 5.5 and `haiku` Haiku 5.5.
 
 ![Right answers with and without LEKS across the end-to-end tests](../media/end-to-end.svg)
 
@@ -295,7 +295,7 @@ The working days carry the formal test: 18 question turns only the LEKS sessions
 
 The haiku rows come from the second blind pass, which graded them together with all the sonnet answers (sonnet 31 of 35 with LEKS and 28 without in that pass). Every search arm cuts the prompt by about a quarter and the wall time by 2 to 4 s. The reranker's gain shows in the search scores above, and any search arm brings the token saving.
 
-**A small model as the agent.** Some hosts hand the reading to a small model, Copilot's Explore subagent does that by default (see [docs/hosts.md](hosts.md)). So I ran the 35 questions again with haiku as the only model. With LEKS it got 23 right, without 17, and per right answer it paid half (0.49, 95% CI 0.27 to 0.81), with 40% less prompt and 6 s less per question. The large model with LEKS still leads (31 against 23), so for Copilot the template's VS Code settings carry the line that sets the Explore model.
+**A small model as the agent.** Some hosts hand the reading to a small model, Copilot's Explore subagent does that by default (see [docs/hosts.md](hosts.md)). So I ran the 35 questions again with Haiku 5.5 as the only model. With LEKS it got 23 right, without 17, and per right answer it paid half (0.49, 95% CI 0.27 to 0.81), with 40% less prompt and 6 s less per question. The large model with LEKS still leads (31 against 23), so for Copilot the template's VS Code settings carry the line that sets the Explore model.
 
 ## Cost
 
@@ -319,7 +319,7 @@ LEKS itself makes no paid calls. What changes is the agent's bill, and that drop
 
 Every arm costs less per question. Per right answer, full LEKS 3.0 is the only arm whose whole interval lies below 1.
 
-**3.1.** These costs were measured on 3.0 and carry over to 3.1, which keeps the search lanes and models of 3.0. A rerun on the same private record on 13 November 2026 found that 3.1 puts the right note in the top 5 for exactly the questions 3.0 does, held-out and fresh, with the models and on words alone: none gained, none lost. I have not rerun the agent sessions on 3.1, and Copilot and Codex sessions with LEKS are not measured yet. [docs/costs.md](costs.md) shows how each host bills and how the harness in `bench/hosts` measures a session.
+**3.1.** These costs were measured on 3.0 and carry over to 3.1, which keeps the search lanes and models of 3.0. A rerun on the same private record on 13 November 2026 found that 3.1 puts the right note in the top 5 for exactly the questions 3.0 does, held-out and fresh, with the models and on words alone: none gained, none lost. I have not rerun the agent sessions on 3.1. Sessions and costs on Copilot and Codex come in a later version. [docs/costs.md](costs.md) shows how each host bills and how the harness in `bench/hosts` measures a session.
 
 **Resources.** The model helper holds about 6.8 GiB under load, with peaks up to 8.1 GiB, and a search with both models takes 1.4 to 1.7 s at the median. Words, code and file names alone answer in about 40 ms with no model memory.
 
@@ -327,7 +327,7 @@ Every arm costs less per question. Per right answer, full LEKS 3.0 is the only a
 
 - **Platforms.** Built and measured on macOS with Apple silicon, where the model helper runs in a sandbox and scanned pages go through the Vision framework. CI runs the tests on macOS, Linux and Windows with Python 3.10 to 3.13, and on every push to main and once a month loads the real models on Linux, on CPU, and runs the bench with them. On Linux the models run without the macOS sandbox. On Windows the tests run with a stand-in model backend, and the model helper is reached over a local TCP port with a token ([docs/install.md](install.md#what-you-need)).
 - **Memory.** The model helper wants about 6.8 GiB, with peaks up to 8.1 GiB. On a smaller machine LEKS runs on words, code symbols and file names, and `leks status` says which lanes are on.
-- **Hosts.** Claude Code, GitHub Copilot in VS Code and Codex, through the same template. I measured agent sessions on Claude Code. The Copilot and Codex files follow the documented formats of those hosts and tests check them, and I have not measured a Copilot or Codex session with LEKS.
+- **Hosts.** Claude Code, GitHub Copilot in VS Code and Codex, through the same template. I measured agent sessions on Claude Code. The Copilot and Codex files follow the documented formats of those hosts and tests check them. Sessions and costs on Copilot and Codex come in a later version.
 - **Answers.** LEKS returns the best passages it has, and the agent decides whether they answer the question.
 - **Evidence.** The search, agent and cost numbers come from my private record and were measured on 3.0. 3.1 changes no lane and no model, and a rerun on that record found the right note in the top 5 for the same questions as 3.0 ([Cost](#cost)). Its own numbers come from the public benchmark, the [comparison](comparison.md) and the tests.
 - **Core and extras.** The core is the MCP server and the command line. The hooks, the skills and the agent team are optional, and the core works without them.

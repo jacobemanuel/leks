@@ -88,7 +88,7 @@ All of it is Claude Code, one model per session, costs from the CLI's own figure
 | ten development tasks, USD and seconds | 1.89 and 543 | 1.59 and 446 | line 535 |
 | three working days, two scenarios, USD | 10.49 | 12.33 | line 546 |
 | the same, cost ratio over 114 paired turns (95% CI) | 0.851 (0.803 to 0.896) | | line 549 |
-| small model (alias haiku) as the only model, right of 35 | 23 | 17 | line 582 |
+| small model (Haiku 5.5, alias haiku) as the only model, right of 35 | 23 | 17 | line 582 |
 | the same, ratio of cost per correct answer (95% CI) | 0.49 (0.27 to 0.81) | | line 582 |
 
 The development tasks are the one place where LEKS cost more: 0.30 USD more over the ten tasks, with 9 against 7 passed (line 535). Per correct answer the small model with LEKS cost 0.0531 USD against 0.0608 USD for the main model with LEKS (line 584). The report's measurement design is in lines 204 to 217.
@@ -117,3 +117,5 @@ I ran the harness here only with `--dry-run` and with the fake host, whose numbe
 - Whether `codex exec` starts subagents in a non-interactive session, whether it reads the project's `.codex/agents` folder when it ignores the user config, and how a subagent's tokens appear in its events.
 - How much a Codex session draws from a ChatGPT plan's 5-hour limit, since the plan pages give message ranges and no token figure.
 - Whether the savings the report measured on Claude Code (above) hold on the other hosts, and what the agent arms add or save. The report gives no basis to guess either.
+
+The measured runs on Copilot and Codex, with their costs, come in a later version.

@@ -24,7 +24,7 @@ Next to a tool server, the hand-over held: in ten sessions with the Blender MCP 
 | cost proxy | mean characters an agent reads to reach the gold passage (section 3.4) |
 | R1 | the default engine of LEKS 2.0 |
 | Holm p | a p value adjusted for the number of comparisons in its family |
-| sonnet, opus, haiku | model aliases of the Claude Code CLI, which the end-to-end harness passes as `--model`; each names a model family, and the CLI picks the model behind it |
+| sonnet, opus, haiku | model aliases of the Claude Code CLI, which the end-to-end harness passes as `--model`; each names a model family, and the CLI picks the model behind it; in these runs they were Sonnet 5.5, Opus 5.5 and Haiku 5.5 |
 
 **Models by alias.**
 

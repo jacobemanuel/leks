@@ -34,6 +34,12 @@ On a project that runs for months the agent can't read everything, so it greps f
 - **Notes that stay true.** After an edit LEKS lists the notes to bring in line, and freshness budgets, revisit dates and edit contracts flag the rest
 - **Local.** Index and models stay on your machine. The models run in a separate helper process, on macOS in a sandbox with no network. LEKS itself sends nothing anywhere, your agent host still sends what the agent reads to its model provider, like any file it opens
 
+<p align="center">
+  <img src="media/leks-demo.webp" width="100%" alt="Claude Code asks whether the build cache is still keyed by file path and modification time, calls LEKS four times and answers that ADR-008 replaced ADR-007, citing file and line. The detailed view then shows the LEKS search result with ADR-007 marked superseded and a NEWER VERSION pointer to ADR-008">
+</p>
+
+<p align="center"><sub>A live Claude Code session on Sonnet 5.5 at medium effort over the sample notes in <a href="bench/fixtures/corpus">bench/fixtures</a>, at real speed, with LEKS on words alone (no models loaded). Claude calls LEKS four times and answers with file and line. Ctrl+O then opens the detailed view: ADR-008 on top, ADR-007 marked superseded with a <code>NEWER VERSION:</code> pointer. Only the idle wait after the answer and the jump to the top of that view are cut</sub></p>
+
 ## What it saves
 
 I measured it with Claude Code on a real and private record I have worked in every day since February 2026, 7,294 documents and 172,775 files. Each run puts the same agent on the same questions with LEKS and without it, and a blind judge grades the answers with the labels hidden.
@@ -58,7 +64,7 @@ Three scripted working days, 100 question turns and 14 dev tasks, a cold prompt 
 
 ![Cost of the agent with LEKS as a share of the cost without it](media/cost.svg)
 
-**Which models.** Claude Code on Sonnet 5.5 at medium effort for the main runs. A smaller sweep, 8 fixed questions per setting, ran Sonnet 5.5 at every effort level from low to max and Opus 5.5 at four levels from low to max: with LEKS each right answer cost 15% to 55% less in all nine settings. With Haiku as the only model LEKS took it from 17 to 23 right answers out of 35, at half the cost per right answer. The harness picked the models by the CLI's aliases (`sonnet`, `opus`, `haiku`) in November 2026, and a second blind pass agreed with the judge on 131 of 140 grades. Every table: [docs/results.md](docs/results.md#with-an-agent-end-to-end)
+**Which models.** Claude Code on Sonnet 5.5 at medium effort for the main runs. A smaller sweep, 8 fixed questions per setting, ran Sonnet 5.5 at every effort level from low to max and Opus 5.5 at four levels from low to max: with LEKS each right answer cost 15% to 55% less in all nine settings. With Haiku 5.5 as the only model LEKS took it from 17 to 23 right answers out of 35, at half the cost per right answer. The harness called them by the CLI's aliases (`sonnet`, `opus`, `haiku`), which in November 2026 meant Sonnet 5.5, Opus 5.5 and Haiku 5.5, and a second blind pass agreed with the judge on 131 of 140 grades. Every table: [docs/results.md](docs/results.md#with-an-agent-end-to-end)
 
 ## Next to other local search tools
 
@@ -219,7 +225,7 @@ Every command in those files starts `python3`. Unless that's the Python with LEK
 - **One public corpus.** The PEPs are clean, well kept documents and your project may be messier. The q3 questions were written by a model from each PEP's abstract and frozen before any tool saw them
 - **Speed and memory.** With both models a search takes 1.4 to 1.7 s at the median on my record and the model helper holds about 6.8 GiB, with peaks up to 8.1 GiB. MemPalace answers in 39 to 132 ms. On a smaller machine LEKS runs on words, code and file names, about 40 ms on my record and 6 ms on the PEPs
 - **Top 5 more than top 1.** With its models the right PEP comes first for 62.9% of the q3 questions, so the agent reads the five
-- **Agent numbers from 3.0 on Claude Code.** 3.1 keeps the lanes and the models and its search finds the same notes, but I haven't rerun the agent sessions on 3.1. The Copilot and Codex files follow the hosts' documented formats and tests check them, and their sessions and the agent team in a live host aren't measured yet
+- **Agent numbers from 3.0 on Claude Code.** 3.1 keeps the lanes and the models and its search finds the same notes, but I haven't rerun the agent sessions on 3.1. The Copilot and Codex files follow the hosts' documented formats and tests check them. Sessions and costs on Copilot and Codex come in a later version, and the agent team in a live host isn't measured yet
 - **Same top 5 as 3.0.** On my record, and on q3 on words alone, 3.1 puts the right note in the top 5 for exactly the questions 3.0 does. What 3.1 improves is the handling of replaced notes and the note keeping
 - **Young.** No external security audit so far. CI scans for secrets and runs CodeQL, bandit and pip-audit, and [SECURITY.md](SECURITY.md) says where your data goes
 - **Overkill for a handful of files.** If your notes fit in one read, plain search in the editor is enough
