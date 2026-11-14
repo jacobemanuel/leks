@@ -11,7 +11,7 @@ def of(kind: str, status: str, status_src: str, newer: bool) -> str:
     """Source class from kind, status, where the status came from, and whether a newer version exists."""
     if status_src == 'frozen' and not newer and status not in ('superseded', 'stale'):
         return 'frozen'
-    if newer or status in ('superseded', 'stale') or (status == 'historical-record' and status_src == 'path'):
+    if newer or status in ('superseded', 'stale', 'historical-record'):
         return 'history'
     if kind in _BY_KIND:
         return kind

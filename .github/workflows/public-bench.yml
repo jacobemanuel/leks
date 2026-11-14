@@ -1,0 +1,61 @@
+name: public benchmark
+
+# started by hand: fetches the PEPs at the pinned commit, checks them by hash, runs every system
+# and uploads the result files. the model arm downloads the pinned model revisions and runs on CPU.
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: also run LEKS with the local models (CPU, downloads the model weights)
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  HF_HUB_DISABLE_TELEMETRY: "1"
+
+jobs:
+  peps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    env:
+      MODELS: ${{ inputs.models }}
+    steps:
+      # the full history, so the 3.0 commit is there for the worktree below
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: install
+        run: |
+          if [ "$MODELS" = "true" ]; then
+            # cpu wheels, the runner has no gpu
+            python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+            python -m pip install -e ".[models,pdf]"
+          else
+            python -m pip install -e ".[pdf]"
+          fi
+      - name: LEKS 3.0.0 next to this checkout
+        run: git worktree add "$RUNNER_TEMP/leks-3.0" aa1e842fa6c538a6c59be04f8b65be9798803943
+      - name: run
+        run: |
+          systems=bm25,leks,leks30
+          extra=""
+          if [ "$MODELS" = "true" ]; then
+            systems="$systems,leks+models"
+            extra="--fetch-models"
+          fi
+          python -B bench/public/pep_bench.py --leks30 "$RUNNER_TEMP/leks-3.0" --systems "$systems" $extra \
+            --cache "$RUNNER_TEMP/cache" --out "$RUNNER_TEMP/results"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: public-bench-results
+          path: ${{ runner.temp }}/results
+          if-no-files-found: warn

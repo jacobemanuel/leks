@@ -10,12 +10,10 @@ import importlib.util
 import json
 import os
 import site
-import socket
-import stat
 import sys
 import time
 
-from leks import hooks
+from leks import hooks, transport
 
 STALE_LOCK = 120.0       # a start lock older than two minutes is a leftover
 SOCKET_WAIT = 20.0       # how long the follow-up waits for the daemon
@@ -36,10 +34,8 @@ def _ask(sock_path, req, timeout):
     """One JSON line out, one back. A dict, or None on any failure."""
     s = None
     try:
-        s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-        s.settimeout(timeout)
-        s.connect(sock_path)
-        s.sendall((json.dumps(req) + '\n').encode('utf-8'))
+        s, token = transport.connect(sock_path, timeout)
+        s.sendall((json.dumps(transport.with_token(req, token)) + '\n').encode('utf-8'))
         buf = b''
         while b'\n' not in buf and len(buf) < MAX_REPLY:
             part = s.recv(65536)
@@ -121,7 +117,7 @@ def _wait_up(cfg, secs):
     end = time.time() + secs
     while time.time() < end:
         try:
-            if stat.S_ISSOCK(os.stat(cfg.socket_path()).st_mode) and _ping(cfg):
+            if transport.present(cfg.socket_path()) and _ping(cfg):
                 return True
         except OSError:
             pass

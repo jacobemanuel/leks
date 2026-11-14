@@ -1,0 +1,3 @@
+# build the sdist and the wheel, check their metadata
+build==1.6.1
+twine==7.0.0

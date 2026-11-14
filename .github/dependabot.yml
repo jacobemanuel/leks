@@ -1,0 +1,36 @@
+version: 2
+updates:
+  # pull requests for the actions the workflows use, once a week, grouped into one.
+  # every action is pinned to a full commit SHA with its version in a comment:
+  # when reviewing an update, check that the new SHA and its comment agree
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
+
+  # the tools the workflows install, each pinned in .github/ci/requirements-*.txt
+  - package-ecosystem: pip
+    directory: /.github/ci
+    schedule:
+      interval: weekly
+    groups:
+      ci-tools:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
+
+  # the extras in pyproject.toml (the core needs nothing beyond the standard library)
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      extras:
+        patterns: ["*"]
+    commit-message:
+      prefix: deps

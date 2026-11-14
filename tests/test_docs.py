@@ -72,6 +72,10 @@ DOC_XML = (
     '</w:body></w:document>')
 
 
+# the helper runs only on posix systems: docs.helper_available says no on windows
+posix_helper = unittest.skipUnless(os.name == 'posix', 'the OCR helper runs only on posix systems')
+
+
 def make_docx(path, xml=DOC_XML, extra=None):
     with zipfile.ZipFile(path, 'w', zipfile.ZIP_DEFLATED) as z:
         z.writestr('[Content_Types].xml', '<Types/>')
@@ -268,6 +272,7 @@ class PdfTests(Base):
         self.assertTrue(all(a == b for a, b, _h, _t in ch))
         self.assertEqual(ch[-1][2], 'References')
 
+    @posix_helper
     def test_scanned_pdf_goes_to_helper(self):
         p = self.path('scan.pdf')
         write_pdf(p, ['', ''])
@@ -288,6 +293,7 @@ class PdfTests(Base):
         self.assertIsNone(docs.extract(cfg, p, '.pdf'))
         self.assertEqual(docs.skip_reason(cfg, p, '.pdf'), 'no usable text')
 
+    @posix_helper
     def test_needs_ocr(self):
         scan = self.path('scan.pdf')
         write_pdf(scan, [''])
@@ -299,6 +305,7 @@ class PdfTests(Base):
         self.assertIsNone(docs.extract(cfg, self.make_pdf(), '.pdf'))
         self.assertEqual(docs.skip_reason(cfg, self.make_pdf(), '.pdf'), 'over size limit')
 
+    @posix_helper
     def test_batch_result_is_used(self):
         scan = self.path('scan.pdf')
         write_pdf(scan, [''])
@@ -319,6 +326,7 @@ class NoPypdfTests(Base):
             with mock.patch.object(docs, '_pypdf_installed', return_value=False):
                 self.assertEqual(docs.skip_reason(cfg, p, '.pdf'), 'no pdf text extractor')
 
+    @posix_helper
     def test_no_pypdf_uses_helper(self):
         p = self.touch('b.pdf', b'%PDF-1.4 stub')
         with mock.patch.dict(sys.modules, {'pypdf': None}):
@@ -427,6 +435,7 @@ class DocxTests(Base):
             docs.docx_paragraphs(p, {})
 
 
+@posix_helper
 class OcrTests(Base):
     def test_image_through_helper(self):
         p = self.touch('shot.png')
@@ -575,6 +584,7 @@ class BuildHelperTests(Base):
         self.assertFalse(ok)
         self.assertIn('swiftc', msg)
 
+    @posix_helper
     def test_build_ok_and_failure(self):
         cfg = make_cfg(self.tmp, helper=False)
         good = self.fake_swiftc('open(out, "w").write("#!/bin/sh\\n")')

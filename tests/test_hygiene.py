@@ -10,8 +10,10 @@ from tests import helpers
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.venv', 'venv', 'build', 'dist', '.pytest_cache'}
-SKIP_FILES = {'SPEC.md'}
+SKIP_DIRS = {'.git', '__pycache__', 'node_modules', '.venv', 'venv', 'build', 'dist', '.pytest_cache',
+             '.ruff_cache', '.mypy_cache', '.tox', '.nox', 'htmlcov'}
+# in a git worktree .git is a file that holds the absolute path of the main clone
+SKIP_FILES = {'SPEC.md', '.git', 'coverage.xml'}
 SKIP_SUFFIX = ('.pyc', '.sqlite', '.f32', '.png', '.jpg', '.jpeg', '.gif', '.pdf', '.docx', '.zip', '.gz')
 
 # built from parts so this file does not trip its own scan
@@ -28,6 +30,9 @@ def repo_files(root: str):
         dns[:] = sorted(d for d in dns if d not in SKIP_DIRS and not d.endswith('.egg-info'))
         for fn in sorted(fns):
             if fn in SKIP_FILES or fn.endswith(SKIP_SUFFIX):
+                continue
+            # coverage data: .coverage, and .coverage.<host>.<pid>.<n> from parallel runs
+            if fn == '.coverage' or fn.startswith('.coverage.'):
                 continue
             yield os.path.join(dp, fn)
 
@@ -127,7 +132,7 @@ class ScannerSelfTest(unittest.TestCase):
                   'the Users group', 'see /tmp/leks-1.sock', 'a/Users/b'):
             self.assertEqual(scan_paths(s), [], s)
 
-    def test_walk_skips_spec_and_git(self):
+    def test_walk_skips_spec_git_and_tool_output(self):
         tmp = helpers.short_tmpdir()
         self.addCleanup(shutil.rmtree, tmp, True)
         for rel in ('a.txt', 'SPEC.md', '.git/x', 'sub/b.py', 'sub/__pycache__/c.pyc'):
@@ -135,8 +140,19 @@ class ScannerSelfTest(unittest.TestCase):
             os.makedirs(os.path.dirname(full), exist_ok=True)
             with open(full, 'w') as f:
                 f.write('x')
+        # what the local ruff and coverage runs of docs/testing.md leave in the clone, and the .git file of
+        # a git worktree. none of it ships, and the scans tripped on it on the next local run
+        link = 'gitdir: ' + _SEP + 'Users' + _SEP + 'me' + _SEP + 'clone' + _SEP + '.git\n'
+        for rel, data in (('wt/.git', link.encode()), ('wt/c.md', b'y'), ('.ruff_cache/0.17.4/1071', b'\x00\x01'),
+                          ('.coverage', b'SQLite format 3\x00'), ('.coverage.host.12.34', b'\x00'),
+                          ('htmlcov/index.html', b'<html></html>'), ('coverage.xml', b'<coverage/>'),
+                          ('.mypy_cache/3.13/x.json', b'{}'), ('.coveragerc', b'[run]\n')):
+            full = os.path.join(tmp, *rel.split('/'))
+            os.makedirs(os.path.dirname(full), exist_ok=True)
+            with open(full, 'wb') as f:
+                f.write(data)
         got = sorted(os.path.relpath(p, tmp) for p in repo_files(tmp))
-        self.assertEqual(got, ['a.txt', os.path.join('sub', 'b.py')])
+        self.assertEqual(got, ['.coveragerc', 'a.txt', os.path.join('sub', 'b.py'), os.path.join('wt', 'c.md')])
 
 
 if __name__ == '__main__':

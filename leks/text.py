@@ -1,6 +1,7 @@
 """Small text helpers for search: query terms, dates, snippets, citations."""
 from __future__ import annotations
 
+import datetime
 import re
 
 # words that carry no meaning for a lookup
@@ -77,6 +78,41 @@ def dates_in(q: str) -> list[tuple[int, int | None]]:
     return out
 
 
+# "Revisit: 2026-12-01" on a line of its own, maybe a list item or bold. leks revisit and the
+# session brief read revisit dates with this, so they agree on what a note says.
+# a quoted date ("2026-12-01", '2026-12-01', `2026-12-01`) is a date too, as yaml front matter writes it
+REVISIT = re.compile(r'(?i)^\s*(?:[-*+]\s+)?\**\s*revisit\s*\**\s*:\s*\**\s*["\'`]?(\d{4}-\d{2}-\d{2})')
+
+
+def revisit_date(line: str) -> str | None:
+    """The date of a revisit line as YYYY-MM-DD, None for any other line or a date that does not exist."""
+    m = REVISIT.match(line)
+    if not m:
+        return None
+    try:
+        datetime.date.fromisoformat(m.group(1))
+    except ValueError:
+        return None
+    return m.group(1)
+
+
+# the same line with anything after the colon: a date, or a condition such as "when the cache lands"
+REVISIT_ANY = re.compile(r'(?i)^\s*(?:[-*+]\s+)?\**\s*revisit\s*\**\s*:\s*\**\s*(.*?)[\s*]*$')
+
+
+def revisit(line: str) -> tuple[str | None, str] | None:
+    """(date or None, what the line says) for a revisit line, None for any other line or an empty one.
+    Without a date that exists at the start, the text is a condition."""
+    m = REVISIT_ANY.match(line)
+    if not m or not m.group(1):
+        return None
+    said = m.group(1)
+    # one pair of quotes around the whole value is yaml or code markup, not what the line says
+    if len(said) > 2 and said[0] == said[-1] and said[0] in '"\'`':
+        said = said[1:-1].strip() or said
+    return revisit_date(line), said
+
+
 def snippet(t: str, q: str, n: int = 420) -> str:
     """A flat stretch of text around the first query word."""
     terms = [
@@ -94,13 +130,17 @@ def best_window(t: str, q: str, n: int) -> str:
     """The stretch of a passage with the most query words, cut at line or sentence ends."""
     t = re.sub(r'[ \t]+', ' ', t).strip()
     if len(t) <= n:
-        return re.sub(r'\n+', ' / ', t)
+        return re.sub(r'\s*\n\s*', ' / ', t)
     terms = [
         x.lower()[:6]
         for x in re.findall(r'[A-Za-z0-9]+', q)
         if x.lower() not in STOP and x.lower() not in NOISE and len(x) > 2
     ]
-    parts = re.split(r'(?<=[.!?:;])\s+|\n+', t)
+    # split at line ends and sentence ends, keep which one it was: a line end shows as " / ", a sentence end as a space
+    # spaces and a \r around a line end belong to the line end, so no double space or \r is left over
+    bits = re.split(r'(\s*\n\s*|(?<=[.!?:;]) +)', t)
+    parts = [p.rstrip() for p in bits[0::2]]
+    seps = [' / ' if '\n' in s else ' ' for s in bits[1::2]]
     best, best_s = 0, -1
     for i in range(len(parts)):
         size = 0
@@ -114,12 +154,15 @@ def best_window(t: str, q: str, n: int) -> str:
         if sc > best_s:
             best, best_s = i, sc
     out, size = [], 0
-    for p in parts[best:]:
+    for k in range(best, len(parts)):
+        p = parts[k]
         if size + len(p) > n:
             break
+        if out:
+            out.append(seps[k - 1])
         out.append(p)
         size += len(p) + 1
-    return ' / '.join(out) if out else t[:n]
+    return ''.join(out) if out else t[:n]
 
 
 def unit_of(kind: str, unit: str | None) -> str:

@@ -4,27 +4,34 @@ Several agent sessions can search at once without each loading the weights.
 The daemon holds no notes. It turns text it is given into numbers and hands
 only numbers back.
 
-Protocol: one JSON line in, one JSON line out over a unix socket, then the
-server closes (section 3.5 of the spec). Replies are only
+Protocol: one JSON line in, one JSON line out, then the server closes
+(section 3.5 of the spec). The line goes over a unix socket, or over
+127.0.0.1 with a token where there are no unix sockets (see transport.py).
+Replies are only
   {"shape": [n, d], "b64": "..."}   embed (ping and bye answer shape [0, 0])
   {"scores": [...]}                 rerank
   {"error": "<fixed code>"}         never any free text
 Only the configured embedder and reranker keys load. A message that carries
-file descriptors is refused and they are closed.
+file descriptors is refused and they are closed. Over tcp a request without
+the right token gets {"error": "denied"} and nothing else.
 """
 from __future__ import annotations
 
 import array
 import base64
+import hmac
 import json
 import math
 import os
+import secrets
 import signal
 import socket
 import stat
 import sys
 import threading
 import time
+
+from leks import transport
 
 MAX_LINE = 3 * 1024 * 1024
 MAX_TEXTS = 64
@@ -33,12 +40,14 @@ MAX_Q = 2000
 MAX_CONN = 32
 READ_DEADLINE = 30.0
 ERR = frozenset({'bad_request', 'bad_input', 'too_big', 'unknown_op', 'model_refused',
-                 'model_missing', 'model_check', 'busy', 'internal'})
+                 'model_missing', 'model_check', 'busy', 'internal', 'denied'})
 PING_REPLY = {'shape': [0, 0], 'b64': ''}
 
+# unix sockets with descriptor passing; without them (windows) the daemon listens on tcp
+UNIX_OK = transport.UNIX_OK
 # room for 256 passed descriptors: a message carries up to 253, all of them are
 # installed before the control data is cut, so the buffer must hold them all
-ANC = socket.CMSG_SPACE(256 * array.array('i').itemsize)
+ANC = socket.CMSG_SPACE(256 * array.array('i').itemsize) if UNIX_OK else 0
 
 
 class Refuse(Exception):
@@ -59,12 +68,14 @@ _sem = threading.BoundedSemaphore(MAX_CONN)
 _last = time.time()
 _leaving = False
 _threads = set()
+_token = None                               # tcp only: every request has to carry it
 
 
 def configure(cfg):
     """Set the config the handlers use. main() calls this; tests can too."""
-    global _cfg, _backend, _last, _leaving
+    global _cfg, _backend, _last, _leaving, _token
     _cfg = cfg
+    _token = None
     _backend = None
     _last = time.time()
     _leaving = False
@@ -155,6 +166,10 @@ def handle(req):
     raise Refuse('unknown_op')
 
 
+def _token_ok(got):
+    return isinstance(got, str) and hmac.compare_digest(got.encode('utf-8'), _token.encode('utf-8'))
+
+
 def reply_for(line):
     """The reply dict for one raw request line. Never raises."""
     global _last, _leaving
@@ -168,6 +183,9 @@ def reply_for(line):
         return {'error': 'bad_request'}
     if not isinstance(req, dict):
         return {'error': 'bad_request'}
+    if _token is not None and not _token_ok(req.get('token')):
+        # tcp: anyone on this machine can connect, only the holder of the endpoint file may ask
+        return {'error': 'denied'}
     op = req.get('op')
     if op == 'ping':
         # answers right away, even while a model loads or works
@@ -194,7 +212,15 @@ def read_line(conn):
     """Read one request line. None when the message carried descriptors."""
     buf = bytearray()
     end = time.monotonic() + READ_DEADLINE
+    # tcp carries no descriptors, a plain recv is enough there
+    unix = bool(ANC) and conn.family == getattr(socket, 'AF_UNIX', None)
     while len(buf) <= MAX_LINE and b'\n' not in buf and time.monotonic() < end:
+        if not unix:
+            data = conn.recv(65536)
+            if not data:
+                break
+            buf += data
+            continue
         data, anc, flags, _ = conn.recvmsg(65536, ANC)
         if flags & socket.MSG_CTRUNC:
             # descriptors we cannot see and cannot close: only the end of this process closes them
@@ -248,6 +274,35 @@ def _another_daemon_runs(path):
         return False
 
 
+def _tcp_daemon_runs(path):
+    """True when a live tcp daemon answers with the token of the endpoint file. A stale file is removed."""
+    where = transport.endpoint_path(path)
+    if not os.path.lexists(where):
+        return False
+    ep = transport.read_endpoint(path)
+    if ep is None:
+        # a file we did not write or cannot trust: leave it alone, like a non-socket in unix mode
+        sys.exit(1)
+    try:
+        with socket.create_connection((transport.HOST, ep[0]), timeout=1) as s:
+            s.sendall(json.dumps({'op': 'ping', 'token': ep[1]}).encode('ascii') + b'\n')
+            buf = b''
+            while b'\n' not in buf and len(buf) < 256:
+                part = s.recv(256)
+                if not part:
+                    break
+                buf += part
+        if json.loads(buf.split(b'\n', 1)[0]) == PING_REPLY:
+            return True
+    except (OSError, ValueError):
+        pass
+    try:
+        os.remove(where)
+    except OSError:
+        pass
+    return False
+
+
 def _free_start_lock(cfg):
     # listening now: the start that spawned us is done, so the next start is not held off
     try:
@@ -264,7 +319,7 @@ def _leave(*_):
 
 def main(cfg=None):
     """Bind, serve, leave after daemon.idle_exit quiet seconds or on bye."""
-    global _last
+    global _last, _token
     if cfg is None:
         from leks import config
         cfg = config.load()
@@ -272,18 +327,25 @@ def main(cfg=None):
     path = cfg.socket_path()
     os.makedirs(os.path.dirname(os.path.abspath(path)), mode=0o700, exist_ok=True)
     os.environ.setdefault('TORCHINDUCTOR_CACHE_DIR', os.path.join(cfg.run_dir(), 'cache'))
-    if _another_daemon_runs(path):
+    tcp = transport.kind() == 'tcp'
+    if (_tcp_daemon_runs if tcp else _another_daemon_runs)(path):
         return
     idle = float((cfg.daemon or {}).get('idle_exit', 3600) or 0)
     tick = min(1.0, max(0.05, idle / 4)) if idle > 0 else 1.0
-    srv = socket.socket(socket.AF_UNIX)
-    old = os.umask(0o177)
-    try:
-        srv.bind(path)
-    finally:
-        os.umask(old)
-    srv.listen(16)
-    mine = os.stat(path).st_ino
+    mine = None
+    if tcp:
+        srv = transport.listen_tcp()
+        _token = secrets.token_hex(32)
+        transport.write_endpoint(path, srv.getsockname()[1], _token)
+    else:
+        srv = socket.socket(socket.AF_UNIX)
+        old = os.umask(0o177)
+        try:
+            srv.bind(path)
+        finally:
+            os.umask(old)
+        srv.listen(16)
+        mine = os.stat(path).st_ino
     _free_start_lock(cfg)
     srv.settimeout(tick)
     for sig in (signal.SIGTERM, signal.SIGINT):
@@ -316,11 +378,14 @@ def main(cfg=None):
     for t in list(_threads):
         t.join(1.0)
     # a later daemon may own the path by now
-    try:
-        if os.stat(path).st_ino == mine:
-            os.remove(path)
-    except OSError:
-        pass
+    if tcp:
+        transport.drop_endpoint(path, _token)
+    else:
+        try:
+            if os.stat(path).st_ino == mine:
+                os.remove(path)
+        except OSError:
+            pass
     # a plain exit waits on the gpu stack's teardown, this gives the memory back at once
     os._exit(0)
 

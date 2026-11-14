@@ -1,0 +1,45 @@
+{
+  "about": "Floor for bench/run_bench.py --models none (words only, fixture corpus in bench/fixtures), checked by bench/gate.py in every unit test job. Each metric of each system may fall by at most tolerance_questions answerable questions (1 of 37, 2.7 points); a drop of two questions fails the gate. The numbers were measured on macOS only. The CI jobs also run on Linux and Windows, where Python may come with another SQLite version, so one question of room lets a tie between two equally scored passages fall the other way there. A change that moves these numbers on purpose updates this file in the same commit.",
+  "models": "none",
+  "n_scored": 40,
+  "tolerance_questions": 1,
+  "require": [
+    "grep",
+    "words",
+    "fused"
+  ],
+  "measured": {
+    "how": "python bench/run_bench.py --models none, then python bench/gate.py RESULTS --write-baseline bench/baseline_words.json --require grep,words,fused; tolerance_questions set to 1 by hand, for the reason in about",
+    "version": "3.0.0",
+    "python": [
+      "3.10.20",
+      "3.11.15",
+      "3.12.13",
+      "3.13.12"
+    ],
+    "system": "macOS arm64",
+    "pypdf": "7.0.1",
+    "result": "identical ranks for every question on all four Python versions",
+    "date": "2026-11-13"
+  },
+  "systems": {
+    "grep": {
+      "n": 37,
+      "top1": 0.4865,
+      "top5": 0.9459,
+      "mrr10": 0.6707
+    },
+    "words": {
+      "n": 37,
+      "top1": 0.7568,
+      "top5": 0.9459,
+      "mrr10": 0.8387
+    },
+    "fused": {
+      "n": 37,
+      "top1": 0.7027,
+      "top5": 0.9459,
+      "mrr10": 0.8183
+    }
+  }
+}

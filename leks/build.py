@@ -161,7 +161,7 @@ def _class_of(ext):
         return 'document'
     if ext in config.IMAGE_EXT:
         return 'image'
-    if ext in ('.csv', '.npy', '.bin', '.sqlite', '.parquet', '.ply', '.splat', '.obj', '.xml'):
+    if ext in ('.csv', '.npy', '.bin', '.sqlite', '.parquet', '.ply', '.obj', '.xml'):
         return 'data'
     return 'other'
 
@@ -290,9 +290,9 @@ def _index_text(cfg, root, rel, st, raw, sha, ext, kind):
         text = chunking.strip_html(text)
     lines = _lines_of(text)
     name = os.path.basename(rel)
-    fm = chunking.front(lines)
+    fm, head = chunking.meta_of(lines)
     title = chunking.title_of(lines, fm, name)
-    status, src = chunking.status_of(kind, rel, fm, cfg.classify)
+    status, src = chunking.status_of(kind, rel, fm, cfg.classify, head)
     is_code = kind == 'code'
     chunks = chunking.chunks_of(lines, is_code, _chunk_chars(cfg))
     syms = []
@@ -690,6 +690,28 @@ def _master_reader(cfg):
     return sqlite3.connect(cfg.master_path(), timeout=120)
 
 
+def _put_in_place(tmp, final):
+    """Swap the new profile database in. Windows refuses to rename over a file another process has open,
+    and a running server keeps its index open: then sqlite copies the new pages into the open file, which
+    it allows between two reads, and the server sees the new index at its next call."""
+    try:
+        os.replace(tmp, final)
+        return
+    except PermissionError:
+        if not os.path.exists(final):
+            raise
+    src = sqlite3.connect(tmp)
+    try:
+        dst = sqlite3.connect(final, timeout=30)
+        try:
+            src.backup(dst)
+        finally:
+            dst.close()
+    finally:
+        src.close()
+    os.remove(tmp)
+
+
 def materialize(cfg, profile, log=print):
     """Build search.sqlite for one profile from the master and swap it in whole."""
     t0 = time.time()
@@ -745,7 +767,7 @@ def materialize(cfg, profile, log=print):
                     cov[key] = vs.write_profile(cfg, key, profile, tmp)
                 except Exception:
                     cov[key] = None
-        os.replace(tmp, final)
+        _put_in_place(tmp, final)
         master.close()
     except BaseException:
         master.close()

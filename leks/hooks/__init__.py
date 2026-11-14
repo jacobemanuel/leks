@@ -69,11 +69,28 @@ def drop_lock(path):
         pass
 
 
-def spawn(argv, env=None, cwd='/'):
+# windows process flags (the values from the win32 docs, subprocess names them only on windows)
+DETACHED_PROCESS = 0x00000008
+CREATE_NEW_PROCESS_GROUP = 0x00000200
+CREATE_BREAKAWAY_FROM_JOB = 0x01000000
+
+
+def _detach_options():
+    """Popen keyword sets to try in order. Windows: out of the host's job first, then without that."""
+    if os.name == 'nt':
+        base = DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+        # a job that forbids breakaway refuses the first set, the second still detaches from the console
+        return [{'creationflags': base | CREATE_BREAKAWAY_FROM_JOB}, {'creationflags': base}]
+    return [{'start_new_session': True}]
+
+
+def spawn(argv, env=None, cwd=None):
     """Start a detached process (own session, no stdio). True when it started."""
-    try:
-        subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                         env=env, cwd=cwd, start_new_session=True, close_fds=True)
-        return True
-    except Exception:
-        return False
+    for extra in _detach_options():
+        try:
+            subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                             env=env, cwd=cwd or os.path.abspath(os.sep), close_fds=True, **extra)
+            return True
+        except Exception:
+            continue
+    return False

@@ -59,6 +59,15 @@ class TestText(unittest.TestCase):
         self.assertLess(len(w), 140)
         self.assertEqual(text.best_window('short\n\ntext', 'x', 100), 'short / text')
         self.assertEqual(text.best_window('a' * 50, 'zzz', 10), 'a' * 10)
+        # a sentence end next to a line end, or a \r of a crlf line, leaves no double space or \r behind
+        self.assertEqual(text.best_window('The cache is big. \nTile budget here.', 'tile budget', 200),
+                         'The cache is big. / Tile budget here.')
+        self.assertEqual(text.best_window('Cache line\r\nTile budget\r\nmore', 'tile budget', 200),
+                         'Cache line / Tile budget / more')
+        long = 'Intro words here. ' * 10 + 'The cache is big. \r\nTile budget here.\r\n' + 'Tail. ' * 30
+        w = text.best_window(long, 'cache tile budget', 60)
+        self.assertIn('The cache is big. / Tile budget here.', w)
+        self.assertNotIn('\r', w)
 
     def test_unit_and_cite(self):
         self.assertEqual(text.unit_of('note', 'line'), 'line')
@@ -99,8 +108,11 @@ class TestSourceClass(unittest.TestCase):
         self.assertEqual(source_class.of('note', 'unknown', 'rule', True), 'history')
         self.assertEqual(source_class.of('decision', 'historical-record', 'path', False), 'history')
         self.assertEqual(source_class.of('code', 'historical-record', 'path', False), 'history')
-        # old but not replaced and not from a history folder: the kind still speaks
-        self.assertEqual(source_class.of('decision', 'historical-record', 'front-matter', False), 'decision')
+        # since status lines count, any historical-record is history, wherever the status came from
+        self.assertEqual(source_class.of('decision', 'historical-record', 'front-matter', False), 'history')
+        self.assertEqual(source_class.of('decision', 'historical-record', 'status-line', False), 'history')
+        # old but current and not replaced: the kind still speaks
+        self.assertEqual(source_class.of('decision', 'record', 'front-matter', False), 'decision')
 
     def test_by_kind(self):
         for kind in ('state', 'rule', 'code', 'decision', 'result', 'document', 'image'):

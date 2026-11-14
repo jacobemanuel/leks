@@ -1,0 +1,11 @@
+# the leks server for codex. codex reads a project .codex/config.toml only in a trusted project,
+# the same tables also work in ~/.codex/config.toml
+[mcp_servers.leks]
+command = "python3"
+args = ["-m", "leks", "serve"]
+# codex stops a tool call after 60 s by default. a search that has to wait for the models can take
+# longer (45 s for the query vector, 30 s for a cold rerank, see docs/configuration.md in the leks repo)
+tool_timeout_sec = 120
+
+[mcp_servers.leks.env]
+LEKS_PROFILE = "architect"

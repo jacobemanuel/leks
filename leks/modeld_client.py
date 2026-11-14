@@ -1,6 +1,7 @@
 """Client for the local model daemon.
 
-One JSON line goes out over a unix socket, one JSON line comes back. Nothing a
+One JSON line goes out over a unix socket (or 127.0.0.1 with a token where
+there are none, see transport.py), one JSON line comes back. Nothing a
 reply says is kept as text: a reply is either numbers of a known count and shape,
 or no answer at all. When there is no answer the lane that wanted it closes and
 the caller reads `Client.why` (always one of the fixed strings below).
@@ -17,6 +18,8 @@ import socket
 import sys
 import time
 
+from . import transport
+
 # fixed reasons, never text taken from a reply
 WHY_NO_MODELS = 'no models configured'
 WHY_NO_BACKEND = 'model backend not installed'
@@ -29,8 +32,10 @@ WHY_BUDGET = 'model over its time budget'
 NUM_MAX = 1e4
 MAX_REPLY = 2 * 1024 * 1024
 COOL = 30.0
+# unix socket with descriptor checks where python has recvmsg, tcp on 127.0.0.1 elsewhere (windows)
+UNIX_OK = transport.UNIX_OK
 # room for 256 descriptors in one message, a cut message disables the client
-ANC = socket.CMSG_SPACE(4 * 256)
+ANC = socket.CMSG_SPACE(4 * 256) if UNIX_OK else 0
 BYE_BUDGET = 5.0
 OPS = ('ping', 'bye', 'embed', 'rerank')
 BACKEND_MODULES = ('torch', 'transformers', 'safetensors')
@@ -231,22 +236,33 @@ class Client:
         except Exception:
             return False
 
-    def _talk(self, payload, end, wake=False):
+    def _connect(self, mode, timeout):
+        """(socket, token). Raises like a unix connect: FileNotFoundError, ConnectionRefusedError, OSError."""
+        if mode == 'tcp':
+            return transport.connect(self.socket_path, timeout, 'tcp')
+        c = socket.socket(socket.AF_UNIX)
+        try:
+            c.settimeout(timeout)
+            c.connect(self.socket_path)
+        except BaseException:
+            c.close()
+            raise
+        return c, None
+
+    def _talk(self, req, end, wake=False):
         """Send one line, read one line. None on any failure (why is set).
 
         wake: when the first connect finds no daemon, start one and keep trying within the connect budget.
         """
+        mode = transport.kind()
         t0 = time.monotonic()
         try_until = min(end, t0 + self.budgets['connect'])
         woke = not (wake and self._wake is not None)
         while True:
-            c = socket.socket(socket.AF_UNIX)
             try:
-                c.settimeout(max(0.05, min(2.0, end - time.monotonic())))
-                c.connect(self.socket_path)
+                c, token = self._connect(mode, max(0.05, min(2.0, end - time.monotonic())))
                 break
             except (FileNotFoundError, ConnectionRefusedError):
-                c.close()
                 if not woke:
                     woke = True
                     if not self._start_daemon():
@@ -257,19 +273,27 @@ class Client:
                     return None
                 time.sleep(max(0.0, min(0.25, try_until - time.monotonic())))
             except Exception:
-                c.close()
                 self._cool()
                 return None
         buf = bytearray()
         try:
             c.settimeout(max(0.05, end - time.monotonic()))
-            c.sendall(payload)
+            c.sendall(json.dumps(transport.with_token(req, token)).encode('ascii') + b'\n')
             while b'\n' not in buf:
                 left = end - time.monotonic()
                 if left <= 0:
                     self.why = WHY_BUDGET
                     return None
                 c.settimeout(left)
+                if mode == 'tcp':
+                    # tcp carries no descriptors
+                    b = c.recv(65536)
+                    if not b:
+                        return None
+                    buf += b
+                    if len(buf) > MAX_REPLY:
+                        return None
+                    continue
                 b, anc, flags, _ = c.recvmsg(65536, ANC)
                 # a daemon has no reason to hand over a descriptor: close each one, drop the reply
                 got_fd = False
@@ -319,11 +343,11 @@ class Client:
         if budget is None:
             budget = self._default_budget(op)
         try:
-            payload = json.dumps(req).encode('ascii') + b'\n'
+            json.dumps(req).encode('ascii')
         except (TypeError, ValueError):
             return None
         # only model work may start the daemon, never ping or bye
-        raw = self._talk(payload, time.monotonic() + budget, wake=op in ('embed', 'rerank'))
+        raw = self._talk(req, time.monotonic() + budget, wake=op in ('embed', 'rerank'))
         if raw is None:
             return None
         if not raw.endswith(b'\n') or raw.count(b'\n') != 1:

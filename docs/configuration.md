@@ -80,9 +80,10 @@ The template points its roots at folders under `~/projects/example`. Edit `roots
 | `ocr` | object | see [OCR](#ocr) | text from scanned PDFs and images |
 | `limits` | object | see [Limits](#limits) | size limits and passage length |
 | `server` | object | see [Server](#server) | MCP server options |
-| `check` | object | see [Check](#check) | options of the notes check. `leks init` does not write it. |
+| `check` | object | see [Check](#check) | options of the notes check and the edit contracts. `leks init` does not write it. |
+| `freshness` | object | see [Freshness](#freshness) | days a note may go unchanged before the session brief names it. `leks init` does not write it. |
 
-A section you leave out takes its defaults. A section you give is merged over its defaults key by key, so `"ocr": {"enabled": "off"}` keeps the other OCR defaults. This holds for `budgets`, `daemon`, `update`, `ocr`, `limits`, `server` and `check`. `classify` and `models` follow their own rules, given below.
+A section you leave out takes its defaults. A section you give is merged over its defaults key by key, so `"ocr": {"enabled": "off"}` keeps the other OCR defaults. This holds for `budgets`, `daemon`, `update`, `ocr`, `limits`, `server`, `check` and `freshness`. `classify` and `models` follow their own rules, given below.
 
 ## Roots
 
@@ -273,6 +274,47 @@ Options of `leks check`, the notes check that the template's end-of-turn hook ru
 | Key | Type | Default | Effect |
 |---|---|---|---|
 | `em_dash` | boolean | `true` | `false` stops `leks check` from flagging em dashes in changed notes |
+| `contracts` | list | `[]` | edit contracts: how notes that fit a glob may change. With none, the check works as without this key. |
+
+Each entry of `contracts` is an object with a `glob` and at least one of these rules. The glob follows the [glob rules](#roots) and is matched against the note's path under the folder the check walks (its base folder or `--root`), which can differ from the path under a LEKS root. The first entry whose glob fits a note wins.
+
+| Key | Type | Effect |
+|---|---|---|
+| `glob` | string | the notes this entry covers |
+| `type` | `"write-once"`, `"frozen"` or `"living"` | a write-once note keeps its body once the check has seen it (status, superseded lines, front matter and link targets may change); a frozen note keeps its whole text; a living note holds no line that starts with a date outside a log, changelog, history or journal section |
+| `keep` | list of 1 to 20 field names | fields the note must still have: a front matter key, a `Key: value` line or a heading. Names use letters, digits, spaces, `-` and `_`, and match in lower case with runs of spaces, `-` and `_` read as one space. |
+| `successor` | boolean | `true`: a note whose status says superseded or replaced must name the note that replaces it |
+
+At most 200 entries. A write-once or frozen change that should stay is kept with `leks check --accept FILE`. What each rule checks and the messages are in [how-it-works.md](how-it-works.md#edit-contracts).
+
+```json
+"check": {
+  "contracts": [
+    {"glob": "**/decisions/**", "type": "write-once", "keep": ["status", "date", "revisit"], "successor": true},
+    {"glob": "specs/frozen/**", "type": "frozen"},
+    {"glob": "**/STATE.md", "type": "living"}
+  ]
+}
+```
+
+## Freshness
+
+Budgets in days for how long a note may go without a change before the session brief names it ([how-it-works.md](how-it-works.md#freshness-budgets)). The section is optional and `leks init` does not write it. With no budget set, the brief has no freshness line.
+
+| Key | Type | Default | Effect |
+|---|---|---|---|
+| `classes` | object | `{}` | source class to days: `state`, `rule`, `decision`, `result`, `note`, `code`, `document` or `image`. `frozen` and `history` notes keep what held at their time and take no budget, so those names are an error, as is any other name. |
+| `paths` | object | `{}` | glob to days. The glob is matched against the path under the LEKS root and follows the [glob rules](#roots). A path glob beats the class budget, and of several that fit, the smallest budget wins. |
+| `git` | boolean | `true` | a note's age comes from its last commit when its root is in a git repo. `false` takes the file time everywhere. |
+
+Days are whole numbers from 1 to 36500. `classes` and `paths` take at most 200 entries each. Notes marked record, superseded, stale or historical-record and notes with a newer version take no budget.
+
+```json
+"freshness": {
+  "classes": {"state": 14, "decision": 180},
+  "paths": {"specs/**": 60}
+}
+```
 
 ## Environment variables
 
@@ -282,6 +324,7 @@ Options of `leks check`, the notes check that the template's end-of-turn hook ru
 | `LEKS_HOME` | the home folder. Beats the `home` key, and `$LEKS_HOME/config.json` is a lookup place. |
 | `LEKS_PROFILE` | the active profile. The MCP server takes its profile only from here. |
 | `LEKS_MODELD_SOCK` | path of the daemon socket, default `<home>/run/modeld.sock`. A path of 100 bytes or more is replaced by `/tmp/leks-<uid>-<hash>.sock`. |
+| `LEKS_MODELD_TRANSPORT` | `tcp` makes the model daemon and its clients talk over TCP on 127.0.0.1 with a token, the way they always do on Windows ([cli](cli.md#leks-modeld)). Unset, they use the Unix socket where the system has one. |
 | `LEKS_ALLOW_FAKE` | `1` allows `"backend": "fake"` (tests) |
 | `LEKS_LOCK_HELD` | `1` tells a build that its caller already holds `run/update.lock`, so the build does not take it again |
 | `HF_HOME` | where the Hugging Face client keeps its own files during `leks models fetch` and inside the model daemon. Default `<home>/models/hf-home`; a value you set yourself wins. |

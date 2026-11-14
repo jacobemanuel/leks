@@ -20,8 +20,8 @@ def quiet(*a, **k):
 def put(cfg, root, rel, text, binary=False):
     p = os.path.join(cfg.root(root).path, rel)
     os.makedirs(os.path.dirname(p), exist_ok=True)
-    with open(p, 'wb' if binary else 'w', **({} if binary else {'encoding': 'utf-8'})) as f:
-        f.write(text)
+    with open(p, 'wb') as f:
+        f.write(text if binary else text.encode('utf-8'))
     return p
 
 
@@ -726,6 +726,31 @@ class MaterializeTests(Base):
         self.assertTrue(all('docs' in v for v in third['profiles'].values()))
         forced = build.update_all(self.cfg, force=True, log=quiet)
         self.assertTrue(all('docs' in v for v in forced['profiles'].values()))
+
+    def test_an_index_held_open_is_refreshed_in_place(self):
+        # windows refuses to rename over a profile database a running server has open. before the fix the
+        # update failed there and the server kept the old index for the whole session
+        self.mat()
+        db = self.cfg.profile_db('orchestrator')
+        open_reader = schema.open_ro(db)
+        self.addCleanup(open_reader.close)
+        put(self.cfg, 'notes', 'fresh.md', '# Fresh\n\nthe tile cache warms up\n')
+        self.update()
+        real = os.replace
+
+        def refuse(src, dst):
+            if dst == db:
+                raise PermissionError(13, 'the file is in use', dst)
+            return real(src, dst)
+
+        with mock.patch.object(build.os, 'replace', refuse):
+            r = self.mat()
+        self.assertEqual(r['docs'], 10)
+        self.assertFalse(os.path.exists(db + '.tmp'))
+        # the reader that stayed open sees the new pages at its next query
+        q = "SELECT count(*) FROM docs WHERE path = 'notes/fresh.md'"
+        self.assertEqual(open_reader.execute(q).fetchone()[0], 1)
+        self.assertEqual(profile_rows(self.cfg, 'orchestrator', q)[0][0], 1)
 
     def test_update_all_with_skipped_files_still_builds_profiles(self):
         # the skipped counter and the locked marker share a key name

@@ -30,6 +30,18 @@ def _load(name, path):
     return mod
 
 
+def corpus_files(root):
+    # the fixture as the engine sees it: ci runs compileall over bench/ before the suite,
+    # so __pycache__ and .pyc show up next to the fixture code. skip what the engine skips
+    from leks.config import ALWAYS_EXCLUDE_DIRS, JUNK_NAMES, JUNK_PREFIXES, JUNK_SUFFIXES
+    out = []
+    for dp, dns, fns in os.walk(root):
+        dns[:] = [d for d in dns if d not in ALWAYS_EXCLUDE_DIRS]
+        out += [os.path.join(dp, f) for f in fns
+                if f not in JUNK_NAMES and not f.startswith(JUNK_PREFIXES) and not f.endswith(JUNK_SUFFIXES)]
+    return sorted(out)
+
+
 stats = _load("leks_bench_stats_t", os.path.join(BENCH, "stats.py"))
 rb = _load("leks_run_bench_t", os.path.join(BENCH, "run_bench.py"))
 
@@ -216,10 +228,7 @@ class FixtureTests(unittest.TestCase):
         cls.qs = cls.raw["questions"]
 
     def files(self, sub):
-        out = []
-        for dp, _, fns in os.walk(os.path.join(CORPUS, sub)):
-            out += [os.path.join(dp, f) for f in fns]
-        return sorted(out)
+        return corpus_files(os.path.join(CORPUS, sub))
 
     def test_question_mix(self):
         counts = {}
@@ -497,7 +506,7 @@ class RealModelPathTests(unittest.TestCase):
             # no weights_dir: the models folder of the user's home, a relative home field included
             self.assertEqual(weights(self.write_config(tmp, home="h")), os.path.join(tmp, "h", "models"))
             os.environ["LEKS_HOME"] = "/srv/user-home"
-            self.assertEqual(weights(self.write_config(tmp)), os.path.join("/srv/user-home", "models"))
+            self.assertEqual(weights(self.write_config(tmp)), os.path.join(os.path.abspath("/srv/user-home"), "models"))
             # --weights is a path from where the command runs
             self.assertEqual(weights(self.write_config(tmp, weights="w"), "--weights", "rel/w"),
                              os.path.abspath("rel/w"))
@@ -519,7 +528,7 @@ class RealModelPathTests(unittest.TestCase):
             self.assertEqual(os.environ["LEKS_HOME"], "/srv/user-home")
         self.assertEqual(rc, 0)
         # before the fix the weights pointed into the temp home, where nothing is
-        self.assertEqual(seen["weights"], os.path.join("/srv/user-home", "models"))
+        self.assertEqual(seen["weights"], os.path.join(os.path.abspath("/srv/user-home"), "models"))
         self.assertTrue(seen["there"])
         self.assertEqual(seen["source"], seen["env"])
 

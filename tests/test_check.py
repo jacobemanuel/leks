@@ -243,15 +243,16 @@ class ConfigSection(unittest.TestCase):
     def test_optional_and_on_by_default(self):
         self.assertNotIn('check', config.default_dict())
         cfg = config.from_dict(self.base())
-        self.assertEqual(cfg.check, {'em_dash': True})
-        self.assertEqual(cfg.to_dict()['check'], {'em_dash': True})
+        # contracts joined the section in this release, empty by default
+        self.assertEqual(cfg.check, {'em_dash': True, 'contracts': []})
+        self.assertEqual(cfg.to_dict()['check'], {'em_dash': True, 'contracts': []})
 
     def test_read_and_checked(self):
         d = self.base()
         d['check'] = {'em_dash': False}
         cfg = config.from_dict(d)
         self.assertIs(cfg.check['em_dash'], False)
-        self.assertEqual(config.from_dict(cfg.to_dict()).check, {'em_dash': False})
+        self.assertEqual(config.from_dict(cfg.to_dict()).check, {'em_dash': False, 'contracts': []})
         d['check'] = {'em_dash': 'no'}
         with self.assertRaisesRegex(config.ConfigError, 'check.em_dash must be true or false'):
             config.from_dict(d)
@@ -340,18 +341,23 @@ class HookInput(unittest.TestCase):
                 return True
         self.assertEqual(check.hook_input(Tty(b'{"stop_hook_active": true}')), {})
 
-    def test_a_pipe_that_never_closes_costs_the_wait_only(self):
+    def pipe(self):
+        # the write end closes before the read end. hook_input leaves its reader thread in a read on the
+        # pipe, and on windows closing the read end waits for that read, so it has to see the end of file first
         r, w = os.pipe()
+        stream = os.fdopen(r, 'rb')
+        self.addCleanup(stream.close)
         self.addCleanup(os.close, w)
-        with os.fdopen(r, 'rb') as stream:
-            t0 = time.monotonic()
-            self.assertEqual(check.hook_input(stream, wait=0.2), {})
-            self.assertLess(time.monotonic() - t0, 2.0)
-        r2, w2 = os.pipe()
-        self.addCleanup(os.close, w2)
-        os.write(w2, b'{"stop_hook_active": true}')
-        with os.fdopen(r2, 'rb') as stream:
-            self.assertEqual(check.hook_input(stream, wait=0.2), {'stop_hook_active': True})
+        return stream, w
+
+    def test_a_pipe_that_never_closes_costs_the_wait_only(self):
+        stream, _ = self.pipe()
+        t0 = time.monotonic()
+        self.assertEqual(check.hook_input(stream, wait=0.2), {})
+        self.assertLess(time.monotonic() - t0, 2.0)
+        stream, w = self.pipe()
+        os.write(w, b'{"stop_hook_active": true}')
+        self.assertEqual(check.hook_input(stream, wait=0.2), {'stop_hook_active': True})
 
 
 class AsTheHostRunsIt(Vault):
@@ -413,7 +419,7 @@ class ProjectFolder(Vault):
         self.put('notes/a.md', '# A\n\n[[nope]]\n')
         code, lines = self.run_check(['notes'], stdin=self.STOP)
         self.assertEqual(code, 2)
-        self.assertEqual(lines[1:], [os.path.join('notes', 'a.md') + ':3: dead link [[nope]], nothing by that name'])
+        self.assertEqual(lines[1:], ['notes/a.md:3: dead link [[nope]], nothing by that name'])
 
     def test_a_terminal_run_keeps_the_current_folder(self):
         self.put('notes/a.md', '# A\n')

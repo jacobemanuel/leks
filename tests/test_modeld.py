@@ -276,6 +276,7 @@ class WeightsErrorTests(Base):
 
 
 @needs_numpy
+@helpers.needs_unix_sockets
 class DaemonTests(Base):
     """A real daemon process on a short socket."""
 

@@ -1,35 +1,221 @@
 name: tests
 
+# what each job proves and what it cannot prove: docs/testing.md
+
 on:
   push:
-    branches: [main]
+    branches: [main, "release-*"]
+    tags: ["v*"]
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # a new push to a pull request stops the old run there; runs on main, release branches and tags always finish
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_PYTHON_VERSION_WARNING: "1"
+  # fewest tests the whole suite must run in every cell (unittest counts skipped tests too).
+  # counted on this commit with: python -B -m unittest discover -s tests -t . (the "Ran N tests" line).
+  # a pull request that adds tests may raise it; one that lowers it has to say why
+  TESTS_FLOOR: "1030"
 
 jobs:
-  unittest:
+  unit:
+    name: unit (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    env:
+      # many test helpers open files and read pipes with the locale encoding, cp1252 on windows.
+      # the package itself names utf-8 at every open and on stdio; the packaging job runs it without this
+      PYTHONUTF8: "1"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      # windows checkouts would otherwise turn LF into CRLF, and the fixtures and hashes expect LF
+      - name: keep line endings as committed
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      # pdf and test extras; the model extra (torch) stays out, the tests use a stand-in model backend.
+      # on macOS the suite also compiles the OCR helper with swiftc
+      - name: install with the pdf and test extras
+        run: python -m pip install -e ".[pdf,test]"
+      - name: byte-compile every Python file
+        run: python -m compileall -q leks bench tests .github/scripts
+      - name: import every module of the package
+        run: python -B .github/scripts/import_all.py
+      - name: whole unit suite, at least TESTS_FLOOR tests
+        run: python -B .github/scripts/run_suite.py --floor "$TESTS_FLOOR"
+      - name: bench, words only
+        run: python -B bench/run_bench.py --models none --out "$RUNNER_TEMP/bench"
+      - name: bench gate against bench/baseline_words.json
+        run: python -B bench/gate.py "$RUNNER_TEMP/bench" --baseline bench/baseline_words.json
+      # the per question ranks, to see which question moved when the gate fails
+      - name: keep the bench results of a failed run
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bench-words-${{ matrix.os }}-python${{ matrix.python }}
+          path: ${{ runner.temp }}/bench
+          if-no-files-found: ignore
+          retention-days: 14
+
+  model-daemon-tcp:
+    # the tcp transport windows takes, forced on the two systems that also have unix sockets,
+    # so a change that breaks it fails here too, next to the windows unit cells
+    name: model daemon over tcp (${{ matrix.os }}, Python 3.13)
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python: ["3.10", "3.13"]
-    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          python-version: ${{ matrix.python }}
-      # pdf and test extras; the model extra (torch) stays out, the tests use a stand-in model backend
-      # on macOS the suite also compiles the OCR helper with swiftc
-      - run: python -m pip install -e ".[pdf,test]"
-      - run: python -B -m unittest discover -s tests -t .
-      - run: python -B bench/run_bench.py --models none
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.13"
-      - run: python -m pip install ruff==0.17.4
-      - run: ruff check .
+      - name: install with the pdf and test extras
+        run: python -m pip install -e ".[pdf,test]"
+      - name: transport, daemon, client and doctor tests with LEKS_MODELD_TRANSPORT=tcp
+        env:
+          LEKS_MODELD_TRANSPORT: tcp
+        run: >-
+          python -B .github/scripts/run_suite.py --floor 39 --no-skips
+          tests.test_transport tests.test_doctor
+
+  mcp:
+    name: mcp conformance (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.13"]
+    env:
+      # as in the unit job: the test helpers decode pipes with the locale encoding
+      PYTHONUTF8: "1"
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: keep line endings as committed
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      # the official SDK client drives the server; jsonschema checks every tool input schema
+      - name: install with the official MCP SDK
+        run: python -m pip install -e ".[pdf,test]" -r .github/ci/requirements-mcp.txt
+      # --no-skips: here the SDK and jsonschema are installed, so nothing may skip
+      - name: conformance tests, none skipped
+        run: >-
+          python -B .github/scripts/run_suite.py --floor 11 --no-skips
+          tests.test_mcp_conformance
+      - name: host format tests
+        run: python -B .github/scripts/run_suite.py --floor 18 tests.test_host_payloads
+
+  packaging:
+    name: packaging (${{ matrix.os }}, sdist, wheel, fresh venv)
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: keep line endings as committed
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      # leks itself is not installed here: the test builds it and installs the wheel into its own venv
+      - name: install the build tools
+        run: python -m pip install -r .github/ci/requirements-build.txt
+      - name: build, twine check, install the wheel and use it, none skipped
+        env:
+          LEKS_TEST_PACKAGING: "1"
+        run: python -B .github/scripts/run_suite.py --floor 8 --no-skips tests.test_packaging
+
+  coverage:
+    name: coverage (ubuntu-latest, Python 3.13)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: install with the pdf and test extras and coverage
+        run: python -m pip install -e ".[pdf,test]" -r .github/ci/requirements-coverage.txt
+      - name: unit tests under coverage
+        run: python -B -m coverage run -m unittest discover -s tests -t .
+      # the files first with no floor, so they exist even when the floor fails below
+      - name: coverage files
+        run: |
+          python -m coverage xml --fail-under=0 -o "$RUNNER_TEMP/coverage/coverage.xml"
+          python -m coverage html --fail-under=0 -d "$RUNNER_TEMP/coverage/html"
+      - name: keep the coverage files
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: coverage
+          path: ${{ runner.temp }}/coverage
+          if-no-files-found: error
+          retention-days: 14
+      # the floor is fail_under in pyproject.toml
+      - name: coverage report and floor
+        run: python -m coverage report
+
+  lint:
+    name: lint (ruff, workflow files)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      # the package and its test extra too: the tests of the CI scripts discover the whole suite
+      - name: install ruff, actionlint, shellcheck, PyYAML and the package
+        run: python -m pip install -e ".[pdf,test]" -r .github/ci/requirements-lint.txt
+      - name: ruff
+        run: ruff check .
+      - name: actionlint
+        run: actionlint
+      # the rules of this repository that actionlint does not know: pins, triggers, the matrix, no skipped gates
+      - name: workflow rules
+        run: python -B .github/scripts/check_workflows.py
+      - name: tests of the CI scripts, none skipped
+        run: python -B .github/scripts/run_suite.py --floor 16 --no-skips tests.test_ci_scripts

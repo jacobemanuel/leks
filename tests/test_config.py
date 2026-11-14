@@ -19,6 +19,8 @@ from tests import helpers
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
+# a posix path as the config reports it: unchanged on posix, with the drive and backslashes on windows
+N = os.path.abspath
 
 
 def clean_env(**extra):
@@ -117,12 +119,12 @@ class Defaults(unittest.TestCase):
 
     def test_derived_paths(self):
         cfg = config.from_dict(base())
-        self.assertEqual(cfg.index_dir(), '/tmp/leks-test-home/index')
-        self.assertEqual(cfg.run_dir(), '/tmp/leks-test-home/run')
-        self.assertEqual(cfg.master_path(), '/tmp/leks-test-home/index/master.sqlite')
-        self.assertEqual(cfg.profile_db('architect'), '/tmp/leks-test-home/index/architect/search.sqlite')
-        self.assertEqual(cfg.vectors_dir(), '/tmp/leks-test-home/index/vectors')
-        self.assertEqual(cfg.helper_path(), '/tmp/leks-test-home/bin/extract_text')
+        self.assertEqual(cfg.index_dir(), N('/tmp/leks-test-home/index'))
+        self.assertEqual(cfg.run_dir(), N('/tmp/leks-test-home/run'))
+        self.assertEqual(cfg.master_path(), N('/tmp/leks-test-home/index/master.sqlite'))
+        self.assertEqual(cfg.profile_db('architect'), N('/tmp/leks-test-home/index/architect/search.sqlite'))
+        self.assertEqual(cfg.vectors_dir(), N('/tmp/leks-test-home/index/vectors'))
+        self.assertEqual(cfg.helper_path(), N('/tmp/leks-test-home/bin/extract_text'))
         with self.assertRaises(ConfigError):
             cfg.profile_db('../x')
 
@@ -130,14 +132,14 @@ class Defaults(unittest.TestCase):
         d = base()
         d['ocr']['helper'] = '~/tools/ocr'
         cfg = config.from_dict(d)
-        self.assertEqual(cfg.helper_path(), os.path.expanduser('~/tools/ocr'))
+        self.assertEqual(cfg.helper_path(), N(os.path.expanduser('~/tools/ocr')))
 
     def test_relative_helper_resolves_against_the_config_folder(self):
         # hook jobs run in /, so a helper path that leaned on the working folder broke there
         d = base()
         d['ocr']['helper'] = 'tools/ocr'
         cfg = config.from_dict(d, base_dir='/tmp/leks-test-conf')
-        self.assertEqual(cfg.helper_path(), '/tmp/leks-test-conf/tools/ocr')
+        self.assertEqual(cfg.helper_path(), N('/tmp/leks-test-conf/tools/ocr'))
 
     def test_lookups(self):
         cfg = config.from_dict(base())
@@ -303,7 +305,7 @@ class Parsing(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.tmp, True)
 
     def write(self, name, text):
-        p = os.path.join(self.tmp, name)
+        p = os.path.join(self.tmp, *name.split('/'))
         os.makedirs(os.path.dirname(p), exist_ok=True)
         with open(p, 'w', encoding='utf-8') as f:
             f.write(text)
@@ -359,7 +361,7 @@ class Parsing(unittest.TestCase):
         fake_home = os.path.join(self.tmp, 'uh')
         self.write('uh/.leks/config.json',
                    json.dumps({'version': 3, 'roots': [{'name': 'z', 'path': 'r', 'kind': 'notes'}]}))
-        with mock.patch.dict(os.environ, {'HOME': fake_home}):
+        with mock.patch.dict(os.environ, {'HOME': fake_home, 'USERPROFILE': fake_home}):
             cfg = config.load()
         self.assertEqual(cfg.roots[0].name, 'z')
         self.assertEqual(cfg.home, os.path.join(fake_home, '.leks'))
@@ -367,7 +369,7 @@ class Parsing(unittest.TestCase):
     def test_tilde_in_env_config(self):
         fake_home = os.path.join(self.tmp, 'uh2')
         self.write('uh2/c.json', json.dumps({'version': 3, 'roots': [{'name': 'z', 'path': 'r', 'kind': 'notes'}]}))
-        with mock.patch.dict(os.environ, {'HOME': fake_home, 'LEKS_CONFIG': '~/c.json'}):
+        with mock.patch.dict(os.environ, {'HOME': fake_home, 'USERPROFILE': fake_home, 'LEKS_CONFIG': '~/c.json'}):
             self.assertEqual(config.load().roots[0].name, 'z')
 
     def test_relative_root_resolves_against_config_folder(self):
@@ -380,20 +382,20 @@ class Parsing(unittest.TestCase):
 
     def test_root_path_tilde_and_trailing_slash(self):
         fake_home = os.path.join(self.tmp, 'uh3')
-        with mock.patch.dict(os.environ, {'HOME': fake_home}):
+        with mock.patch.dict(os.environ, {'HOME': fake_home, 'USERPROFILE': fake_home}):
             cfg = config.from_dict({'version': 3, 'roots': [{'name': 'n', 'path': '~/p/', 'kind': 'notes'}]})
-        self.assertEqual(cfg.roots[0].path, fake_home + '/p')
+        self.assertEqual(cfg.roots[0].path, os.path.join(fake_home, 'p'))
 
     def test_home_precedence(self):
         d = {'version': 3, 'home': '/tmp/from-field', 'roots': [{'name': 'n', 'path': '/tmp/n', 'kind': 'notes'}]}
-        self.assertEqual(config.from_dict(d).home, '/tmp/from-field')
+        self.assertEqual(config.from_dict(d).home, N('/tmp/from-field'))
         with mock.patch.dict(os.environ, {'LEKS_HOME': '/tmp/from-env'}):
-            self.assertEqual(config.from_dict(d).home, '/tmp/from-env')
-            self.assertEqual(config.home_dir(), '/tmp/from-env')
+            self.assertEqual(config.from_dict(d).home, N('/tmp/from-env'))
+            self.assertEqual(config.home_dir(), N('/tmp/from-env'))
         del d['home']
-        with mock.patch.dict(os.environ, {'HOME': '/tmp/uh4'}):
-            self.assertEqual(config.from_dict(d).home, '/tmp/uh4/.leks')
-            self.assertEqual(config.home_dir(None), '/tmp/uh4/.leks')
+        with mock.patch.dict(os.environ, {'HOME': '/tmp/uh4', 'USERPROFILE': '/tmp/uh4'}):
+            self.assertEqual(config.from_dict(d).home, N('/tmp/uh4/.leks'))
+            self.assertEqual(config.home_dir(None), N('/tmp/uh4/.leks'))
 
     def test_active_profile(self):
         cfg = config.from_dict(base())
@@ -528,7 +530,7 @@ class Paths(unittest.TestCase):
             ab = self.cfg.abs_path(disp)
             self.assertIsNotNone(ab, disp)
             self.assertEqual(self.cfg.display_path(ab), disp)
-        self.assertEqual(self.cfg.abs_path('notes/a/b.md'), '/tmp/pr/notes/a/b.md')
+        self.assertEqual(self.cfg.abs_path('notes/a/b.md'), os.path.join(N('/tmp/pr/notes'), 'a', 'b.md'))
 
     def test_longest_root_wins(self):
         self.assertEqual(self.cfg.display_path('/tmp/pr/notes/inner/z.md'), 'inner/z.md')
@@ -559,12 +561,13 @@ class Paths(unittest.TestCase):
     def test_socket_default(self):
         cfg = config.from_dict({'version': 3, 'home': '/tmp/hh', 'roots': [
             {'name': 'n', 'path': '/tmp/n', 'kind': 'notes'}]})
-        self.assertEqual(cfg.socket_path(), '/tmp/hh/run/modeld.sock')
+        self.assertEqual(cfg.socket_path(), os.path.join(N('/tmp/hh'), 'run', 'modeld.sock'))
 
     def test_socket_env(self):
         with mock.patch.dict(os.environ, {'LEKS_MODELD_SOCK': '/tmp/custom.sock'}):
             self.assertEqual(self.cfg.socket_path(), '/tmp/custom.sock')
 
+    @unittest.skipUnless(os.name == 'posix', 'the short socket fallback is for unix sockets')
     def test_socket_fallback_when_long(self):
         home = '/tmp/' + 'long' * 30
         cfg = config.from_dict({'version': 3, 'home': home, 'roots': [
@@ -573,6 +576,7 @@ class Paths(unittest.TestCase):
         self.assertEqual(cfg.socket_path(), '/tmp/leks-%d-%s.sock' % (os.getuid(), sha))
         self.assertLess(len(cfg.socket_path().encode()), config.SOCK_MAX)
 
+    @unittest.skipUnless(os.name == 'posix', 'the length limit is a unix socket one')
     def test_socket_boundary(self):
         # a home that makes <home>/run/modeld.sock exactly 99 bytes still fits
         tail = '/run/modeld.sock'

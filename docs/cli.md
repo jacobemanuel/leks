@@ -1,6 +1,6 @@
 # Command line
 
-Every command runs as `leks <command>`, or as `python3 -m leks <command>` with the interpreter that has LEKS installed. Most commands print JSON on stdout. `search` and `tried` print text meant for an agent, and `search --json` prints data. `check` leaves stdout empty and reports on stderr. Progress and errors go to stderr, so stdout stays clean for a script.
+Every command runs as `leks <command>`, or as `python3 -m leks <command>` with the interpreter that has LEKS installed. Most commands print JSON on stdout. `search` and `tried` print text meant for an agent, and `search --json` prints data. `check` reports on stderr and leaves stdout empty, except for a Copilot stop payload, where it prints one JSON line ([below](#leks-check)). Progress and errors go to stderr, so stdout stays clean for a script.
 
 Setup, step by step, is in [install.md](install.md). The config keys are in [configuration.md](configuration.md), and what happens inside each step is in [how-it-works.md](how-it-works.md).
 
@@ -39,6 +39,8 @@ Config and model problems print their own message, such as `leks: no config: run
 | [`read`](#leks-read) | returns cited lines, pages or paragraphs |
 | [`locate`](#leks-locate) | finds files and code definitions by name |
 | [`tried`](#leks-tried) | checks whether a proposal was tried or decided before |
+| [`neighbours`](#leks-neighbours) | lists the notes to bring in line after an edit |
+| [`revisit`](#leks-revisit) | lists the revisit dates and conditions of decisions and notes |
 | [`state`](#leks-state) | lists the current state notes |
 | [`status`](#leks-status) | reports index size, models and what search runs on |
 | [`serve`](#leks-serve) | runs the MCP server on stdio |
@@ -48,6 +50,7 @@ Config and model problems print their own message, such as `leks: no config: run
 | [`ocr`](#leks-ocr) | compiles the OCR helper |
 | [`check`](#leks-check) | checks the notes that changed, for the end-of-turn hook |
 | [`hook`](#leks-hook) | entry points for host hooks |
+| [`doctor`](#leks-doctor) | reports what this install can do |
 
 ## leks init
 
@@ -158,6 +161,64 @@ leks tried switch the reranker off for short queries
 
 Searches decisions, results, state notes and notes for an earlier answer to the proposal and prints text: up to 5 rows, or a line that starts with `nothing certain` followed by the closest rows. It starts the daemon the way `search` does. The rules are in [how-it-works.md](how-it-works.md#the-other-tools).
 
+## leks neighbours
+
+```bash
+leks neighbours notes/plan.md
+leks neighbours notes/plan.md --was plan-before.md --n 20
+leks neighbours src/cache.py --json
+```
+
+Lists the notes to bring in line after an edit of a note or code file: notes that still hold numbers or sentences the edit removed, the newer and older versions in its supersession chain, notes that link to it, files it links to, and the files closest to it in meaning (in words without vectors). The rules are in [how-it-works.md](how-it-works.md#neighbours). It reads the index and the files and writes nothing. It starts no model: the meaning group uses the stored vectors.
+
+| Argument | Default | Effect |
+|---|---|---|
+| `PATH` | required | the edited file, as search cites it or as a path on disk under a root |
+| `--was FILE` | off | a file with the text the note had before the edit; up to 2 MiB of it is read. Without it the old text is the indexed one, when the file changed since the last build. |
+| `--n N` | `10` | how many notes, clamped to 1 to 30 |
+| `--json` | off | print data instead of text |
+
+The text starts with `neighbours of <path>`, plus `, changed since indexed` when the file differs from the index, and a `removed here:` line with the facts it follows. Then one numbered row per note, `path:line | status | date | why`, and a closing line on what the answer compared. Here a note went from 512 MiB to 256 MiB after the last build, in a small folder with no vectors:
+
+```text
+neighbours of notes/cache.md, changed since indexed
+removed here: 512 MiB
+1. notes/decisions/log.md:7 | current | 2026-11-13 | still holds what this note removed: 512 MiB; close in words (line 10)
+2. notes/plan.md:6 | current | 2026-11-05 | still holds what this note removed: 512 MiB; links to this note; close in words (line 1)
+3. notes/cache-old.md:3 | superseded | 2026-09-14 | older version, this note replaces it; links to this note; close in words (line 1)
+4. notes/index.md:4 | unknown | 2026-11-13 | links to this note; close in words (line 1)
+Removed text: compared with the indexed text. Close notes by words: this note has no vectors. A note marked record, superseded or historical-record keeps what held at its time: leave its text as it is.
+```
+
+The JSON has `path`, `changed`, `removed`, `neighbours` (each with `path`, `line`, `status`, `date` and `why`) and `note`. A path the profile does not have, a document or an image gives `error` instead, still with exit 0.
+
+## leks revisit
+
+```bash
+leks revisit
+leks revisit --due
+leks revisit --by 2027-01-31 --json
+```
+
+Lists every `Revisit:` line in the notes of the active profile ([how-it-works.md](how-it-works.md#revisit-lines)): the lines whose date has come oldest first, then the dates ahead, then the conditions. Notes marked superseded or in a history folder are left out.
+
+| Argument | Default | Effect |
+|---|---|---|
+| `--due` | off | only the lines whose date has come |
+| `--by YYYY-MM-DD` | today | count a date as due when it is on or before this day |
+| `--json` | off | print data instead of text |
+
+Each row reads `state: path:line | date or condition | heading above it | kind, status`, where the state is `due`, `ahead` or `when` (a condition):
+
+```text
+revisit lines in profile default, today 2026-11-13: 1 due, 1 ahead, 1 on a condition
+due: notes/decisions/log.md:8 | 2026-11-01 | Cache size | decision, current
+ahead: notes/decisions/log.md:13 | 2027-02-01 | Reranker off for short queries | decision, current
+when: notes/decisions/log.md:18 | when a second machine joins | Second machine | decision, current
+```
+
+The JSON has `profile`, `today` and `revisit`, a list with `path`, `line`, `state`, `date` (or `null`), `text`, `title`, `kind` and `status`. With no index for the profile yet it exits 1 with `leks: no index for profile <name> yet, run leks build`, and a `--by` that is not a date gives `leks: --by takes a date as YYYY-MM-DD`.
+
 ## leks state
 
 ```bash
@@ -256,6 +317,8 @@ The words `start` can print:
 | `locked` | another start is under way |
 | `refused` | it could not be launched, for example `daemon.sandbox` is `on` and `sandbox-exec` is missing |
 
+The daemon and its clients talk over a Unix socket at the socket path, which only the user can open, wherever Python has Unix sockets with descriptor passing: macOS and Linux. On Windows they talk over TCP on 127.0.0.1, on a port the system picks. The daemon then writes the port and a random token into `modeld.port` next to the socket path, a file only the user may read (mode 0600 on macOS and Linux; on Windows the access rules of the LEKS home folder do that job, which in a user profile admit the user, the system and the administrators), and answers only requests that carry the token. `LEKS_MODELD_TRANSPORT=tcp` takes the TCP path on any system; `leks doctor` shows which one is in use.
+
 ## leks models
 
 ```bash
@@ -268,6 +331,28 @@ leks models check
 When `huggingface_hub` is missing or the download has another layout than the config expects, the error says so, for example `leks: huggingface_hub is not installed: pip install huggingface_hub`.
 
 `check` compares each model folder with its manifest: the same files, the same sizes, and the same hash for every file up to 64 MiB. It prints `{"<key>": {"role": ..., "ok": true, "why": ""}, ...}`, and exits 0 even when a check fails. Typical `why` texts are `no manifest: run leks models fetch`, `file set differs from the manifest: ...`, `size differs from the manifest: <file>` and `hash differs from the manifest: <file>`.
+
+## leks doctor
+
+```bash
+leks doctor
+```
+
+Reports what this install can do, as one JSON object. It reads files and starts nothing. Exit 0 when the config loads, 1 when it does not.
+
+| Key | Value |
+|---|---|
+| `leks`, `python`, `system` | the LEKS version, the Python version and `sys.platform` |
+| `model_transport` | `unix` or `tcp`, how the model daemon and its clients talk ([leks modeld](#leks-modeld)) |
+| `pdf` | `pypdf found`, or that PDFs are skipped |
+| `numpy` | whether numpy is installed |
+| `model_backend` | whether torch, transformers and safetensors are all installed |
+| `sandbox` | `sandbox-exec`, or why the model daemon runs without the sandbox |
+| `config` | `{"ok": true, "path": ..., "roots": [...], "profiles": [...]}`, or `{"ok": false, "why": ...}` |
+| `index` | whether the master index and the database of each profile exist |
+| `models` | for each configured model, `weights found` or `no weights, run leks models fetch`; `none configured, search runs on words` without models |
+
+When the config does not load, the keys after `config` are left out.
 
 ## leks ocr
 
@@ -294,16 +379,18 @@ leks check
 leks check --root notes
 leks check --changed notes/plan.md notes/log.md
 leks check --no-em-dash
+leks check --accept decisions/DEC-4.md
 ```
 
-The notes check that the template runs when a turn ends (`Stop` in Claude Code, `agentStop` in Copilot, see [hosts.md](hosts.md#hooks)). It walks the Markdown notes (`.md`, `.markdown`) under its base folder, or under each `--root`, and checks only the notes whose modification time or size changed since its last run. In a hook run, one that gets the host's hook input on stdin, the base folder is `CLAUDE_PROJECT_DIR` when that is set and exists: Claude Code sets it to the folder the session started in, so a `cd` in the agent's shell does not move the check. Otherwise, and in a run from a terminal, the base folder is the current folder. Copilot runs the hook in the folder its `cwd` field names, and the template sets that to the repository root. The opening run in a set of folders records the notes and reports nothing. It needs no index and no model, and a missing or broken config does not stop it.
+The notes check that the template runs when a turn ends (`Stop` in Claude Code and Codex, `agentStop` in Copilot, see [hosts.md](hosts.md#hooks)). It walks the Markdown notes (`.md`, `.markdown`) under its base folder, or under each `--root`, and checks only the notes whose modification time or size changed since its last run. In a hook run, one that gets the host's hook input on stdin, the base folder is `CLAUDE_PROJECT_DIR` when that is set and exists: Claude Code sets it to the folder the session started in, so a `cd` in the agent's shell does not move the check. Otherwise, and in a run from a terminal, the base folder is the current folder. Copilot runs the hook in the folder its `cwd` field names, and the template sets that to the repository root. The opening run in a set of folders records the notes and reports nothing. It needs no index and no model, and a missing or broken config does not stop it.
 
 | Argument | Default | Effect |
 |---|---|---|
 | `--root DIR...` | the base folder | the folders to walk. A relative path is read from the base folder. Hidden files and folders and the build folders listed under [Roots](configuration.md#roots) are skipped. |
 | `--changed FILE...` | off | check these notes, changed or not, instead of the ones changed since the last run. A file outside the roots is ignored. |
 | `--no-em-dash` | off | do not flag em dashes. `"check": {"em_dash": false}` in the config does the same ([configuration.md](configuration.md#check)). |
-| `--config PATH` | the usual lookup | the global flag: this config sets the home folder that holds the record and the `check.em_dash` switch |
+| `--accept FILE...` | off | keep the current text of these write-once or frozen notes as their new baseline and check nothing. Pass the same `--root` as the check. |
+| `--config PATH` | the usual lookup | the global flag: this config sets the home folder that holds the record, the `check.em_dash` switch and the edit contracts |
 
 What it reports:
 
@@ -315,10 +402,17 @@ What it reports:
 | `em dash (N in this note), use a comma, colon or brackets` | a changed note holds em dashes; the count shows when there is more than one |
 | `new note that no other note links to, link it from a related note or an index` | a note added since the last run gets no link from any other note |
 | `dead link [[X]], its note was removed or renamed` | an unchanged note still links to a note that is gone since the last run |
+| `write-once note changed, it is a record: ...` | a changed note under a `write-once` contract has a new body, named by its first changed line |
+| `frozen note changed: ...` | a changed note under a `frozen` contract has any new text |
+| `dated line outside a log section, ...` | a changed note under a `living` contract has a line that starts with a date outside a log section |
+| `missing field X, the contract for G keeps ...` | a changed note lacks a field its contract keeps |
+| `marked superseded but names no successor, ...` | a changed note under a contract with `successor` is marked superseded and names no note after it |
+
+The contract rows come only from `check.contracts` in the config; the rules and the full messages are in [how-it-works.md](how-it-works.md#edit-contracts). The two contract findings for a changed note end with the command that keeps the change, `leks check --accept <path>`, with the same `--root` flags. In a hook run whose shell has moved away from the project folder, the command names the note and the checked folders in full, so it runs as printed from there. The command uses POSIX shell quoting.
 
 A link matches by name anywhere under the roots, with or without `.md`, or by its path from the note's folder, and case does not count. Links inside code blocks, code spans, HTML comments and `%%` comments are left alone, and so are anchors, URLs, template placeholders such as `{{name}}` and links that lead out of the root. Entry notes need no inbound link: `readme`, `index`, `home`, `agents`, `claude`, `changelog`, `license`, `contributing`, `security` and `code_of_conduct`, in any case. The search for inbound links stops after 8 seconds, and a search cut short names no unlinked note.
 
-stdout stays empty. Problems go to stderr, one per line, under a header:
+Problems go to stderr, one per line, under a header, and stdout stays empty:
 
 ```text
 leks check: 2 problems in the notes, fix them before you stop
@@ -326,7 +420,9 @@ notes/plan.md:14: dead link [[tile-cost]], nothing by that name
 notes/idea.md: new note that no other note links to, link it from a related note or an index
 ```
 
-A row reads `path:line: message`, or `path: message` when no line applies. Paths under the base folder are shown relative to it. The output stops at 20 lines, header included, and then ends with `... and N more`. With problems the exit code is 2, and the host hands them to the agent, which fixes them before it stops. With nothing to report it is 0.
+A row reads `path:line: message`, or `path: message` when no line applies. Paths under the base folder are shown relative to it. The output stops at 20 lines, header included, and then ends with `... and N more`. With problems the exit code is 2, and the host hands them to the agent, which fixes them before it stops. With nothing to report it is 0. Copilot treats exit 2 from a stop hook as a warning only, so for its stop payload (hook input with `stopReason` or `stop_reason`) the same text goes to stdout as one line `{"decision": "block", "reason": "..."}` and the exit code is 0 ([hosts.md](hosts.md#hooks)).
+
+`leks check --accept` exits 0 and prints `leks check: kept the current text of N notes` to stderr. It exits 1 when the config has no write-once or frozen contract, when the check has no record for those folders yet, or when a file is not a note under them or has no such contract.
 
 When the check itself cannot run it exits 1 with one of these on stderr (the last one only when there is nothing else to report):
 
@@ -339,7 +435,7 @@ A flag it does not know also gives exit 1, so a typo in the hook command never h
 
 The host passes its hook input on stdin. From a pipe, `leks check` reads it for at most a second; from a terminal it reads nothing. When that input has `stop_hook_active` or `stopHookActive` set to true, this turn's stop was already held once, so the check exits 0 at once and leaves its record as it was. A turn is held at most once, and what the agent changed while fixing is looked at by the next check.
 
-The record is `<home>/run/check-<hash>.json`, one per set of roots, with the modification time and size of every note. It is updated after every run in which a note changed, also when problems were found, so each problem is reported once, for the change that brought it. A second run with nothing changed stays quiet. To look at a note again, name it with `--changed`; that works on the opening run as well, while the checks for new and removed notes need a record.
+The record is `<home>/run/check-<hash>.json`, one per set of roots, with the modification time and size of every note, and for write-once and frozen notes the hashes of up to five kept texts. It is updated after every run in which a note changed, also when problems were found, so each problem is reported once, for the change that brought it. A second run with nothing changed stays quiet. To look at a note again, name it with `--changed`; that works on the opening run as well, while the checks for new and removed notes need a record.
 
 ## leks hook
 
@@ -351,4 +447,4 @@ leks hook warm
 
 These are for host hooks ([hosts.md](hosts.md#hooks)). Each one swallows its own errors and exits 0, so a hook never breaks the host.
 
-`brief` prints the session brief as one line of hook JSON, or nothing when there is no index yet. `update` starts a background build and embed when one is due, and `warm` starts the model daemon when it is down and loads both models in the background. Both of those return at once and print nothing. What each does in detail is in [how-it-works.md](how-it-works.md#hooks).
+`brief` prints the session brief as one line of hook JSON, or nothing when there is no index yet. The brief names the state notes, recent changes, notes past their freshness budget and revisit dates that have come. `update` starts a background build and embed when one is due, and `warm` starts the model daemon when it is down and loads both models in the background. Both of those return at once and print nothing. What each does in detail is in [how-it-works.md](how-it-works.md#hooks).

@@ -1,0 +1,28 @@
+{
+  "description": "LEKS: a brief and an index update at session start, a model warm-up before a search, the notes check at the end of a turn",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {"type": "command", "command": "python3 -m leks hook brief --profile architect", "timeout": 10},
+          {"type": "command", "command": "python3 -m leks hook update --profile architect", "timeout": 10}
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__leks__search|mcp__leks__tried",
+        "hooks": [
+          {"type": "command", "command": "python3 -m leks hook warm --profile architect", "timeout": 10}
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {"type": "command", "command": "python3 -m leks check --profile architect", "timeout": 20}
+        ]
+      }
+    ]
+  }
+}

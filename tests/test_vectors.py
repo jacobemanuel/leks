@@ -231,6 +231,7 @@ class ReplyChecks(unittest.TestCase):
             self.assertIsNone(check_reply(req, bad, SPECS), bad)
 
 
+@helpers.needs_unix_sockets
 class SocketCalls(ClientBase):
     @needs_numpy
     def test_embed_and_rerank_and_ping(self):
@@ -447,6 +448,7 @@ class SocketCalls(ClientBase):
         self.assertEqual(seen, ['bye'])
 
 
+@helpers.needs_unix_sockets
 class Wake(ClientBase):
     """No daemon answers and the client may start one: the search path of a host with no warm-up hook."""
 
@@ -559,6 +561,7 @@ class ColdBudget(unittest.TestCase):
         self.assertEqual(c.rerank_budget(), 9.0)
 
 
+@helpers.needs_unix_sockets
 class Readiness(ClientBase):
     def cfg(self, path, backend='torch', embedder=True, reranker=True):
         return types.SimpleNamespace(
@@ -867,6 +870,68 @@ class EmbedRun(unittest.TestCase):
         mm, covered, why = vecstore.open_vectors(self.cfg, 'orchestrator', built, self.cfg.embedder)
         self.assertEqual(covered, len(hashes))
 
+    def test_a_mapped_vector_file_gets_a_spare_name_then_its_own_again(self):
+        # windows refuses to replace a vector file a running server maps. before the fix the new rows were
+        # dropped there and the meaning lane kept the old coverage
+        run_quiet(self.cfg, client=self.stub(fail_after=1))
+        built, hashes = self.built['orchestrator']
+        f = vecstore.profile_file(self.cfg, 'mdense', 'orchestrator')
+        real = os.replace
+
+        def refuse(src, dst):
+            if dst == f:
+                raise PermissionError(13, 'the file is in use', dst)
+            return real(src, dst)
+
+        with mock.patch.object(vecstore.os, 'replace', refuse):
+            rc, _ = run_quiet(self.cfg, client=self.stub())
+        self.assertEqual(rc, 0)
+        spare = os.path.splitext(f)[0] + '.1.f32'
+        self.assertEqual(vecstore.read_side(self.cfg, 'mdense', 'orchestrator')['file'], os.path.basename(spare))
+        mm, covered, why = vecstore.open_vectors(self.cfg, 'orchestrator', built, self.cfg.embedder)
+        self.assertIsNone(why)
+        self.assertEqual(covered, len(hashes))
+        del mm
+        # once the old file is free the next write takes the own name back and drops the spare
+        self.assertEqual(vecstore.write_profile(self.cfg, 'mdense', 'orchestrator'), (len(hashes), len(hashes)))
+        self.assertEqual(vecstore.read_side(self.cfg, 'mdense', 'orchestrator')['file'], os.path.basename(f))
+        self.assertFalse(os.path.exists(spare))
+        self.assertEqual(vecstore.open_vectors(self.cfg, 'orchestrator', built, self.cfg.embedder)[1], len(hashes))
+
+    def test_a_view_left_mapped_counts_as_in_use_and_other_errors_still_raise(self):
+        # 1224 is what windows says when only a mapped view holds the file; python makes it a plain OSError
+        run_quiet(self.cfg, client=self.stub())
+        f = vecstore.profile_file(self.cfg, 'mdense', 'orchestrator')
+        real = os.replace
+
+        def mapped(src, dst):
+            if dst == f:
+                e = OSError(22, 'the file has a user-mapped section open', dst)
+                e.winerror = 1224
+                raise e
+            return real(src, dst)
+
+        with mock.patch.object(vecstore.os, 'replace', mapped):
+            vecstore.write_profile(self.cfg, 'mdense', 'orchestrator')
+        self.assertEqual(vecstore.read_side(self.cfg, 'mdense', 'orchestrator')['file'], 'orchestrator.1.f32')
+
+        def full(src, dst):
+            raise OSError(28, 'no space left on device', dst)
+
+        with mock.patch.object(vecstore.os, 'replace', full), self.assertRaises(OSError) as cm:
+            vecstore.write_profile(self.cfg, 'mdense', 'orchestrator')
+        self.assertEqual(cm.exception.errno, 28)
+        self.assertFalse(os.path.exists(f + '.tmp'))
+        # the side file still names the spare that holds the rows
+        self.assertEqual(vecstore.read_side(self.cfg, 'mdense', 'orchestrator')['file'], 'orchestrator.1.f32')
+
+    def test_a_side_file_names_no_file_outside_its_folder(self):
+        run_quiet(self.cfg, client=self.stub())
+        side = vecstore.read_side(self.cfg, 'mdense', 'orchestrator')
+        f = vecstore.profile_file(self.cfg, 'mdense', 'orchestrator')
+        for bad in ('../x.f32', os.path.join('..', 'x.f32'), f, 'orchestrator.9.f32', None, 7):
+            self.assertEqual(vecstore.current_file(self.cfg, 'mdense', 'orchestrator', dict(side, file=bad)), f)
+
     def test_one_bad_passage_stays_out_alone(self):
         c = self.stub(bad='passage number 7 ')
         rc, lines = run_quiet(self.cfg, client=c)
@@ -1022,9 +1087,9 @@ class VectorFiles(unittest.TestCase):
         covered, n = self.write()
         self.assertEqual((covered, n), (3, len(self.hashes)))
         side = vecstore.read_side(self.cfg, 'mdense', 'architect')
-        self.assertEqual(set(side), {'key', 'dim', 'n', 'covered', 'built', 'mtime'})
-        self.assertEqual((side['key'], side['dim'], side['n'], side['covered'], side['built']),
-                         ('mdense', self.spec.dim, n, 3, self.built))
+        self.assertEqual(set(side), {'key', 'dim', 'n', 'covered', 'built', 'mtime', 'file'})
+        self.assertEqual((side['key'], side['dim'], side['n'], side['covered'], side['built'], side['file']),
+                         ('mdense', self.spec.dim, n, 3, self.built, 'architect.f32'))
         mm, cov, why = self.open()
         self.assertIsNone(why)
         self.assertEqual(cov, 3)
@@ -1185,6 +1250,7 @@ class VectorFiles(unittest.TestCase):
 
 
 @unittest.skipUnless(np is not None, 'needs numpy')
+@helpers.needs_unix_sockets
 class FakeDaemonRun(unittest.TestCase):
     """embed_all against the real fake daemon, started as its own process."""
 

@@ -158,7 +158,7 @@ def _write_profiles(cfg, spec, profiles, items):
             continue
         side = vecstore.read_side(cfg, spec.key, p)
         fits = (side is not None and str(side.get('built')) == str(built[0])
-                and os.path.exists(vecstore.profile_file(cfg, spec.key, p)))
+                and os.path.exists(vecstore.current_file(cfg, spec.key, p, side)))
         # nothing new and the files fit this build: leave them alone
         if not items and fits:
             continue

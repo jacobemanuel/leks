@@ -16,6 +16,7 @@ import time
 import unittest
 from unittest import mock
 
+import leks
 from leks import lane_code, lane_locate, query, schema
 from tests import helpers
 
@@ -636,7 +637,7 @@ class TestSmallTools(Base):
         self.assertEqual(s['by_root'], {'code': 2, 'docs': 3, 'notes': 6})
         self.assertRegex(s['built_utc'], r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$')
         self.assertTrue(s['names'] > 0)
-        self.assertEqual(s['version'], '3.0.0')
+        self.assertEqual(s['version'], leks.__version__)
         self.assertNotIn(self.home, json.dumps(s))
         self.assertGreaterEqual(s['symbols'], 3)
 

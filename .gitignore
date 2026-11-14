@@ -8,3 +8,14 @@ venv/
 bench/results/
 .DS_Store
 bench/integrations/runs/
+bench/hosts/runs/
+# PEP sources and work folders of the public benchmark, when kept inside the checkout
+bench/public/.cache/
+bench/public/work/
+# what local lint and coverage runs leave behind
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/

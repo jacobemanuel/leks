@@ -1,0 +1,104 @@
+name: models
+
+# the pinned embedder and reranker with their real weights on CPU: the model tests must all run
+# (none skipped), one search must find a known answer in its top 5 through the meaning lane, and the
+# bench must report the meaning lane and the reranker as run. what this proves and what not: docs/testing.md
+
+on:
+  push:
+    branches: [main, "release-*"]
+  schedule:
+    # mondays, so a new torch or transformers release that breaks the lanes shows up within a week
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  HF_HUB_DISABLE_TELEMETRY: "1"
+
+jobs:
+  models:
+    name: real weights (ubuntu-latest, CPU, Python 3.12)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: folders for this run
+        run: |
+          # the weights live under LEKS_HOME/models, the hub download cache stays outside the cached path
+          {
+            echo "LEKS_HOME=$RUNNER_TEMP/leks-home"
+            echo "HF_HOME=$RUNNER_TEMP/hf"
+            echo "OUT=$RUNNER_TEMP/out"
+          } >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/out"
+      # the CPU build of torch first, so the models extra does not pull the CUDA build from PyPI
+      - name: install torch for CPU
+        run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: install with the models, pdf and test extras
+        run: |
+          python -m pip install -e ".[models,pdf,test]"
+          python -m pip freeze --all > "$OUT/pip-freeze.txt"
+          cat "$OUT/pip-freeze.txt"
+      - name: starter config with the pinned models
+        run: python -B -m leks init --home "$LEKS_HOME"
+      - name: cache key from the pinned model revisions
+        id: pins
+        run: python -B .github/scripts/models_ci.py key >> "$GITHUB_OUTPUT"
+      - name: restore the weights
+        id: weights
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/leks-home/models
+          key: ${{ runner.os }}-${{ steps.pins.outputs.key }}
+      - name: fetch the pinned weights from Hugging Face unless the cache had a good copy
+        run: |
+          if python -B .github/scripts/models_ci.py check; then
+            echo "weights from the cache pass leks models check"
+          else
+            rm -rf "$LEKS_HOME/models"
+            python -B -m leks models fetch
+            python -B .github/scripts/models_ci.py check
+          fi
+      # saved right after the check, so a failing test below still keeps the download
+      - name: save the weights
+        if: steps.weights.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/leks-home/models
+          key: ${{ runner.os }}-${{ steps.pins.outputs.key }}
+      # --no-skips: these tests skip wherever the weights are missing, so here a skip is a failure
+      - name: model tests and the end to end search, none skipped
+        env:
+          LEKS_TEST_MODELS: "1"
+          LEKS_TEST_WEIGHTS: ${{ runner.temp }}/leks-home/models
+        run: python -B .github/scripts/run_suite.py --floor 5 --no-skips tests.test_real_models
+      - name: bench with the real models
+        run: python -B bench/run_bench.py --models config --weights "$LEKS_HOME/models" --out "$OUT/bench"
+      # no score floor for the model systems yet (docs/testing.md): the gate checks that every system
+      # ran, that hybrid had the meaning lane on every passage and that full also ran the reranker
+      - name: bench gate, the lanes must have run
+        run: >-
+          python -B bench/gate.py "$OUT/bench"
+          --require grep,words,fused,hybrid,full
+          --lanes
+      - name: keep the results
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: bench-models
+          path: ${{ runner.temp }}/out
+          if-no-files-found: warn
+          retention-days: 30

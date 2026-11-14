@@ -12,11 +12,14 @@ reach an old note.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import os
+import posixpath
 import re
 import sqlite3
 import time
+import unicodedata
 
 try:
     import numpy as np
@@ -45,6 +48,24 @@ MAX_TEXT = 4000
 CHANGED = 'file changed since indexed: read the file'
 NO_MATCH = 'no match in this profile'
 NOT_FOUND = 'not visible in this profile, or not indexed'
+
+# neighbours: the notes to bring in line after an edit
+NOTE_KINDS = ('state', 'rule', 'decision', 'result', 'note')
+NB_MAX = 30           # most notes one call lists
+NB_CLOSE = 5          # notes close in meaning, or in words without vectors
+NB_CHAIN = 10         # steps followed each way along a supersession chain
+NB_NUMBERS = 24       # removed numbers followed per call
+NB_SENTENCES = 16     # removed sentences followed per call
+NB_ROWS = 200         # candidate notes per removed fact
+NB_LINK_ROWS = 400    # candidate notes that may link here
+NB_DOCS = 300         # candidate notes read from disk per call
+NB_WINDOW = 8         # words in a sentence window
+NB_MIN_SENT = 6       # a shorter sentence says too little to follow
+NB_MAX_BYTES = 2 * 1024 * 1024
+MAX_WAS = 2 * 1024 * 1024
+NB_GONE = ('the file is gone from disk, so only the notes that link to it are listed: fix or remove those links.')
+NB_RECORDS = ('A note marked record, superseded or historical-record keeps what held at its time: leave its '
+              'text as it is.')
 
 # fixed reasons a lane can be closed. nothing a reply says ever lands in a lane line
 W_NO_MODELS = 'no models configured'
@@ -97,6 +118,206 @@ def _ocr_label_on(cfg):
     except AttributeError:
         return False
 
+
+# neighbours: numbers and sentences a note no longer has, and who still has them
+
+# a unit after a number, every spelling with the unit it means
+_UNIT = {u: u for u in ('x k ms us s min h day week month kb mb gb tb kib mib gib tib px fps hz khz mhz ghz '
+                        'mm cm m km g kg usd eur').split()}
+_UNIT.update({w: u for u, ws in (('s', 'sec secs second seconds'), ('min', 'mins minute minutes'),
+                                  ('h', 'hr hrs hour hours'), ('day', 'days'), ('week', 'weeks'),
+                                  ('month', 'months')) for w in ws.split()})
+_SPELLINGS = {u: [w for w in _UNIT if _UNIT[w] == u] for u in set(_UNIT.values())}
+# a number on digit boundaries: not the 002 of DEC-002, not the 16 of T16, not a piece of 1.5.2
+_NUMBER = re.compile(r'(?i)(?<![\w.,:/-])(\d+(?:[.,:/-]\d+)*)(?:\s?(%)|\s?('
+                     + '|'.join(sorted(_UNIT, key=len, reverse=True)) + r')\b)?(?![\w%])')
+_META_LINE = re.compile(r'(?i)^\s*(?:[-*+>]\s*)*[*_]*(?:status|date|updated|created|revisit|superseded[\s-]+by'
+                        r'|supersedes|replaced[\s-]+by|replaces)[*_]*\s*:')
+_LIST_ITEM = re.compile(r'\s*(?:[-*+]|\d+[.)])\s')
+_SENTENCE_END = re.compile(r'(?<=[.!?])\s+')
+# a record keeps what held at its time, so current notes come first
+_NB_RANK = {'record': 1, 'superseded': 2, 'historical-record': 2}
+_NB_COLS = ('id', 'path', 'root', 'rel', 'kind', 'status', 'date')
+
+
+def _nb_numbers(line):
+    """(number, unit, as written) on one line. A bare number counts from three characters on."""
+    out = []
+    for m in _NUMBER.finditer(line):
+        num = m.group(1)
+        unit = '%' if m.group(2) else _UNIT.get((m.group(3) or '').lower(), '')
+        if unit or len(num) >= 3:
+            out.append((num, unit, ' '.join(m.group(0).split())))
+    return out
+
+
+def _nb_tokens(s):
+    """Words and numbers, casefolded and without accents, split the way the full-text index splits them."""
+    if not s.isascii():
+        s = ''.join(c for c in unicodedata.normalize('NFKD', s) if not unicodedata.combining(c))
+    return re.findall(r'[^\W_]+', s.casefold())
+
+
+def _nb_text(raw, ext):
+    """File bytes to the text the index reads: html without its tags, plain line ends."""
+    t = raw.decode('utf-8', 'replace')
+    if ext in ('.html', '.htm'):
+        from . import chunking
+        t = chunking.strip_html(t)
+    return t.replace('\r\n', '\n')
+
+
+def _nb_join(a, b):
+    """Two index pieces of one long line: the second starts with the end of the first."""
+    for k in range(min(len(a), len(b), 200), 0, -1):
+        if a.endswith(b[:k]):
+            return a + b[k:]
+    return a + b
+
+
+def _nb_body(text, code):
+    """Lines of the old text to take facts from, (for numbers, for sentences). The front matter and the
+    status and date lines are out of both; a code block or comment is a blank line for sentences. A code
+    file gives numbers only."""
+    lines = text.split('\n')
+    if code:
+        return lines, []
+    from . import check, chunking
+    start = chunking.body_start(lines)
+    masked = check._mask(text).split('\n')
+    nums, prose = [], []
+    for i, ln in enumerate(lines):
+        if i < start or _META_LINE.match(ln):
+            prose.append('')
+            continue
+        nums.append(ln)
+        prose.append(ln if masked[i].strip() or not ln.strip() else '')
+    return nums, prose
+
+
+def _nb_blocks(lines):
+    """Paragraphs, list items and table rows as one string each, so a sentence wrapped over lines stays whole."""
+    out, cur = [], []
+    for ln in lines:
+        s = ln.strip()
+        if (not s or s.startswith('#') or s.startswith('|') or _LIST_ITEM.match(ln)) and cur:
+            out.append(' '.join(cur))
+            cur = []
+        if s and not s.startswith('#'):
+            cur.append(s)
+    if cur:
+        out.append(' '.join(cur))
+    return out
+
+
+def _nb_grams(toks, k):
+    return {hash(tuple(toks[i:i + k])) for i in range(len(toks) - k + 1)}
+
+
+def _nb_numless(toks):
+    return ['0' if t.isdigit() else t for t in toks]
+
+
+def _nb_sentences(blocks, after, limit):
+    """For each old sentence the new text lacks, its first window of words that is gone, at most limit.
+    A window that is still there with other numbers is skipped, the numbers carry that change."""
+    grams, out, seen = {}, [], set()
+    numless = _nb_numless(after)
+    for b in blocks:
+        for s in _SENTENCE_END.split(b):
+            toks = _nb_tokens(s)
+            if len(toks) < NB_MIN_SENT:
+                continue
+            k = min(len(toks), NB_WINDOW)
+            if k not in grams:
+                grams[k] = (_nb_grams(after, k), _nb_grams(numless, k))
+            words, shapes = grams[k]
+            for i in range(len(toks) - k + 1):
+                w = tuple(toks[i:i + k])
+                if hash(w) in words or hash(tuple(_nb_numless(w))) in shapes:
+                    continue
+                if w not in seen:
+                    seen.add(w)
+                    out.append(w)
+                break
+            if len(out) >= limit:
+                return out
+    return out
+
+
+def _nb_num_query(num, unit):
+    """An fts5 match on the text column for a number, glued to its unit or not. The confirm step decides."""
+    ph = ' '.join(re.findall(r'\d+', num))
+    if not unit:
+        return '{text} : "%s" *' % ph
+    if unit == '%':
+        return '{text} : "%s"' % ph
+    alts = []
+    for w in _SPELLINGS[unit]:
+        alts += ['"%s %s"' % (ph, w), '"%s%s"' % (ph, w)]
+    return '{text} : (%s)' % ' OR '.join(alts)
+
+
+def _nb_removed(before, after, code):
+    """Facts of the old text the new one lacks, numbers first, as dicts with show, query and num or words."""
+    nums, prose = _nb_body(before, code)
+    have, bare = set(), set()
+    for ln in after.split('\n'):
+        for num, unit, _ in _nb_numbers(ln):
+            have.add((num, unit))
+            bare.add(num)
+    facts, seen = [], set()
+    for ln in nums:
+        for num, unit, show in _nb_numbers(ln):
+            key = (num, unit)
+            # a bare number stays when the new text has it with any unit
+            if key in seen or (key in have if unit else num in bare):
+                continue
+            seen.add(key)
+            if len(facts) < NB_NUMBERS:
+                facts.append({'show': show, 'query': _nb_num_query(num, unit), 'num': key})
+    for w in ([] if code else _nb_sentences(_nb_blocks(prose), _nb_tokens(after), NB_SENTENCES)):
+        s = ' '.join(w)
+        facts.append({'show': '"%s"' % (s if len(s) <= 80 else s[:77] + '...'),
+                      'query': '{text} : "%s"' % s, 'words': ' %s ' % s})
+    return facts
+
+
+def _nb_holds(facts, text):
+    """(what a candidate's text still holds of the facts, the first line that holds one)."""
+    lines = text.split('\n')
+    nums, bare, norm, tline = {}, {}, '', []
+    if any('num' in f for f in facts):
+        for i, ln in enumerate(lines, 1):
+            for num, unit, _ in _nb_numbers(ln):
+                nums.setdefault((num, unit), i)
+                bare.setdefault(num, i)
+    if any('words' in f for f in facts):
+        toks = []
+        for i, ln in enumerate(lines, 1):
+            t = _nb_tokens(ln)
+            toks += t
+            tline += [i] * len(t)
+        norm = ' %s ' % ' '.join(toks)
+    held, first = [], None
+    for f in facts:
+        if 'num' in f:
+            num, unit = f['num']
+            line = nums.get(f['num']) if unit else bare.get(num)
+        else:
+            pos = norm.find(f['words'])
+            line = tline[norm.count(' ', 0, pos + 1) - 1] if pos >= 0 else None
+        if line is not None:
+            held.append(f['show'])
+            first = line if first is None else min(first, line)
+    return held, first
+
+
+def _nb_why(held):
+    s = ', '.join(held[:3]) + (' and %d more' % (len(held) - 3) if len(held) > 3 else '')
+    return 'still holds what this note removed: ' + s
+
+
 class Engine:
     """Read-only search over one profile database."""
 
@@ -127,6 +348,7 @@ class Engine:
         # a caller that knows the models are not there sets this: search runs on words and says why
         self.words_why = None
         self._vmap_cache = None
+        self._nb_names_cache = None
         self.vec = None
         self.covered = 0
         self.vec_why = None
@@ -745,7 +967,8 @@ class Engine:
     def _doc_row(self, path):
         cols = 'path, status, date, id, kind, ext, unit, units, root, warning'
         p = path.strip() if isinstance(path, str) else ''
-        if p.startswith('/'):
+        # an absolute path in either form, C:\... on windows included
+        if p.startswith('/') or os.path.isabs(p):
             try:
                 p = self.cfg.display_path(p) or ''
             except (KeyError, ValueError, TypeError):
@@ -837,6 +1060,342 @@ class Engine:
         return {'path': p, 'status': st, 'date': dt, 'unit': unit, 'units_total': units, 'from': start, 'to': last,
                 'text': '\n'.join(out) if out else 'no extracted text in this range'}
 
+    # neighbours
+
+    def neighbours(self, path, n=10, was=None) -> dict:
+        """The notes to bring in line after an edit of one note or code file, the strongest reason first.
+
+        In order: notes that still hold numbers or sentences this one no longer has, the notes in its
+        supersession chain (newer versions, then older ones), notes that link to it, files it links to, then
+        the files closest in meaning (in words when there are no vectors). The old text is `was` when given,
+        else the indexed text when the file changed since the build. Reads files, writes nothing.
+        """
+        r = self._doc_row(path)
+        if not r:
+            return {'error': NOT_FOUND}
+        p, st, dt, did, kind, ext, _u, _units, root, _w = r
+        if kind in ('document', 'image'):
+            return {'error': 'neighbours works on notes and code files, this is a %s' % kind}
+        if was is not None and not isinstance(was, str):
+            return {'error': 'was must be the old text of the note'}
+        try:
+            n = max(1, min(int(n), NB_MAX))
+        except (TypeError, ValueError):
+            n = 10
+        rel, size, sha = self.db.execute('SELECT rel, size, sha256 FROM docs WHERE id = ?', (did,)).fetchone()
+        own = dict(zip(_NB_COLS, (did, p, root, rel, kind, st, dt), strict=True))
+        cache = {}
+        try:
+            raw = self._nb_file(p, root)
+        except (OSError, ValueError):
+            return {'error': 'the file cannot be read now'}
+        if raw is None:
+            back = [(row, line, 'links to this note') for row, line in self._nb_backlinks(own, cache)]
+            return self._nb_result(p, True, [], [self._nb_chain(did), back], n, [NB_GONE])
+        if len(raw) > NB_MAX_BYTES:
+            changed = self.changed(p)
+            raw = raw[:NB_MAX_BYTES]
+        else:
+            changed = len(raw) != size or hashlib.sha256(raw).hexdigest() != sha
+        now = _nb_text(raw, ext)
+        if was is not None:
+            before, notes = was[:MAX_WAS].replace('\r\n', '\n'), ['Removed text: compared with the text given as was.']
+        elif changed:
+            before, notes = self._nb_indexed(did), ['Removed text: compared with the indexed text.']
+        else:
+            before, notes = None, ['The file is as indexed, so there is no removed text to follow: pass was with '
+                                   'the old text to compare against it.']
+        facts = _nb_removed(before, now, kind == 'code') if before is not None else []
+        groups = [
+            [(row, line, _nb_why(held)) for row, held, line in self._nb_holders(facts, did, cache)],
+            self._nb_chain(did),
+            [(row, line, 'links to this note') for row, line in self._nb_backlinks(own, cache)],
+            [(row, None, 'this note links to it on line %d' % line) for row, line in self._nb_outlinks(own, now)],
+        ]
+        close = self._nb_meaning(did)
+        if close is None:
+            groups.append([(row, line, 'close in words') for row, line in self._nb_words(did)])
+            notes.append('Close notes by words: this note has no vectors.')
+        else:
+            groups.append([(row, line, 'close in meaning (%.2f)' % s) for row, line, s in close])
+        return self._nb_result(p, changed, facts, groups, n, notes)
+
+    def render_neighbours(self, r: dict) -> str:
+        """The neighbours answer an agent reads: one line per note with path, line, status, date and why."""
+        if r.get('error'):
+            return r['error']
+        out = ['neighbours of %s%s' % (r['path'], ', changed since indexed' if r.get('changed') else '')]
+        if r.get('removed'):
+            out.append('removed here: ' + '; '.join(r['removed']))
+        for i, e in enumerate(r.get('neighbours') or []):
+            where = e['path'] + (':%d' % e['line'] if e.get('line') else '')
+            cols = [where, e.get('status') or 'unknown'] + ([e['date']] if e.get('date') else []) + [e['why']]
+            out.append('%d. %s' % (i + 1, ' | '.join(cols)))
+        if not r.get('neighbours'):
+            out.append('no neighbours found')
+        if r.get('note'):
+            out.append(r['note'])
+        return '\n'.join(out)
+
+    def _nb_result(self, p, changed, facts, groups, n, notes) -> dict:
+        """One list from the groups in their order: a note met again only adds its reason."""
+        out, at = [], {}
+        for g in groups:
+            for row, line, why in g:
+                e = at.get(row['path'])
+                if e is None:
+                    e = at[row['path']] = {'path': row['path'], 'why': why, 'line': line,
+                                           'status': row['status'], 'date': row['date']}
+                    out.append(e)
+                    continue
+                if e['line'] is None:
+                    e['line'] = line
+                elif line and line != e['line']:
+                    why += ' (line %d)' % line
+                e['why'] += '; ' + why
+        out = out[:n]
+        if any(_NB_RANK.get(e['status'], 0) for e in out):
+            notes.append(NB_RECORDS)
+        return {'path': p, 'changed': changed, 'removed': [f['show'] for f in facts], 'neighbours': out,
+                'note': ' '.join(notes)}
+
+    def _nb_file(self, p, root):
+        """The file's bytes now, None when it is gone. OSError when it cannot be read or lies outside its root."""
+        ap = self.cfg.abs_path(p)
+        if not ap:
+            raise OSError('no path')
+        if not os.path.lexists(ap):
+            return None
+        if not self._inside(ap, root):
+            raise OSError('outside its root')
+        with open(ap, 'rb') as f:
+            return f.read(NB_MAX_BYTES + 1)
+
+    def _nb_read(self, p, root, cache):
+        """A candidate's text as it is on disk now, None when it cannot be read. Each file is read once."""
+        if p not in cache:
+            try:
+                raw = self._nb_file(p, root)
+                cache[p] = None if raw is None else _nb_text(raw[:NB_MAX_BYTES], os.path.splitext(p)[1].lower())
+            except (OSError, ValueError):
+                cache[p] = None
+        return cache[p]
+
+    def _nb_indexed(self, did) -> str:
+        """The note's text as the index holds it, the pieces of a long line joined back."""
+        out, last = [], None
+        for a, b, t in self.db.execute('SELECT start_line, end_line, text FROM chunks WHERE doc = ? ORDER BY ord',
+                                       (did,)):
+            if out and a == b == last:
+                out[-1] = _nb_join(out[-1], t)
+            else:
+                out.append(t)
+            last = a if a == b else None
+        return '\n'.join(out)
+
+    def _nb_rows(self, ids) -> list:
+        """Doc rows as dicts, in the order of ids."""
+        rows = {}
+        for i in range(0, len(ids), 500):
+            part = list(ids[i:i + 500])
+            for r in self.db.execute('SELECT %s FROM docs WHERE id IN (%s)' % (', '.join(_NB_COLS),
+                                                                               ','.join('?' * len(part))), part):
+                rows[r[0]] = dict(zip(_NB_COLS, r, strict=True))
+        return [rows[i] for i in ids if i in rows]
+
+    def _nb_fts(self, q, did, limit) -> list:
+        """Ids of notes (no code, no documents) with a passage that matches q, this one left out."""
+        try:
+            return [d for (d,) in self.db.execute(
+                'SELECT DISTINCT c.doc FROM fts JOIN chunks c ON c.id = fts.rowid JOIN docs d ON d.id = c.doc '
+                'WHERE fts MATCH ? AND c.doc != ? AND d.kind IN (%s) LIMIT ?' % ','.join('?' * len(NOTE_KINDS)),
+                (q, did) + NOTE_KINDS + (limit,))]
+        except sqlite3.OperationalError:
+            return []
+
+    def _nb_holders(self, facts, did, cache) -> list:
+        """(row, facts it holds, first line) for notes that still hold removed facts, current notes and the
+        most facts first. The index finds the candidates, their text on disk confirms them."""
+        if not facts:
+            return []
+        hits = {}
+        for i, f in enumerate(facts):
+            for d in self._nb_fts(f['query'], did, NB_ROWS):
+                hits.setdefault(d, set()).add(i)
+        out = []
+        for row in self._nb_rows(sorted(hits, key=lambda d: (-len(hits[d]), d))[:NB_DOCS]):
+            text = self._nb_read(row['path'], row['root'], cache)
+            if text is None:
+                continue
+            held, line = _nb_holds(facts, text)
+            if held:
+                out.append((row, held, line))
+        out.sort(key=lambda x: (_NB_RANK.get(x[0]['status'], 0), -len(x[1]), x[0]['path']))
+        return out
+
+    def _nb_chain(self, did) -> list:
+        """(row, None, why) for the notes in this one's supersession chain, as the build linked them
+        (Newer versions): the newer versions nearest first, then the older ones nearest first, at most
+        NB_CHAIN steps each way."""
+        nw = self._newer()
+        if not nw:
+            return []
+        back: dict = {}
+        for a, (_p, _how, t) in nw.items():
+            back.setdefault(t, []).append(a)
+        found, seen, cur = [], {did}, did
+        for step in range(1, NB_CHAIN + 1):
+            cur = nw[cur][2] if cur in nw else None
+            if cur is None or cur in seen:
+                break
+            seen.add(cur)
+            found.append((cur, step, True))
+        frontier = [did]
+        for step in range(1, NB_CHAIN + 1):
+            nxt = []
+            for x in frontier:
+                for o in sorted(back.get(x, ())):
+                    if o not in seen:
+                        seen.add(o)
+                        found.append((o, step, False))
+                        nxt.append(o)
+            if not nxt:
+                break
+            frontier = nxt
+        rows = {r['id']: r for r in self._nb_rows([i for i, _, _ in found])}
+        out = []
+        for i, step, newer in found[:NB_MAX]:
+            if i not in rows:
+                continue
+            if step == 1:
+                why = 'newer version, it replaces this note' if newer else 'older version, this note replaces it'
+            else:
+                why = ('newer version, %d steps on in the supersession chain' if newer
+                       else 'older version, %d steps back in the supersession chain') % step
+            out.append((rows[i], None, why))
+        return out
+
+    def _nb_backlinks(self, own, cache) -> list:
+        """(row, line) for notes with a link that names this file, by the rules leks check resolves links with."""
+        from . import check
+        toks = re.findall(r'[^\W_]+', posixpath.splitext(posixpath.basename(own['rel']))[0])
+        if not toks:
+            return []
+        tails = check._tails(own['rel'])
+        out = []
+        for row in self._nb_rows(self._nb_fts('{text} : "%s"' % ' '.join(toks), own['id'], NB_LINK_ROWS)):
+            text = self._nb_read(row['path'], row['root'], cache)
+            if text is None:
+                continue
+            rel_dir = posixpath.dirname(check._norm(row['rel']))
+            for pos, t, _wiki in check._links(text):
+                keys = check._keys(t, rel_dir)
+                if keys and keys & tails:
+                    out.append((row, check._line(text, pos)))
+                    break
+        out.sort(key=lambda x: (_NB_RANK.get(x[0]['status'], 0), x[0]['path']))
+        return out
+
+    def _nb_names(self) -> dict:
+        """Last part of a path, with and without its extension, to the rows of notes and code. Once per engine."""
+        if self._nb_names_cache is None:
+            from . import check
+            m: dict = {}
+            for r in self.db.execute("SELECT %s FROM docs WHERE kind NOT IN ('document', 'image')"
+                                     % ', '.join(_NB_COLS)):
+                row = dict(zip(_NB_COLS, r, strict=True))
+                base = check._norm(row['rel']).rsplit('/', 1)[-1]
+                for k in {base, posixpath.splitext(base)[0]}:
+                    m.setdefault(k, []).append(row)
+            self._nb_names_cache = m
+        return self._nb_names_cache
+
+    def _nb_outlinks(self, own, text) -> list:
+        """(row, line of the link here) for the notes and code files this text links to, in link order.
+        A name that fits several files goes to one: same root first, then the shortest path."""
+        from . import check
+        names = self._nb_names()
+        rel_dir = posixpath.dirname(check._norm(own['rel']))
+        out, seen = [], {own['id']}
+        for pos, t, _wiki in check._links(text):
+            keys = check._keys(t, rel_dir)
+            if not keys:
+                continue
+            hits = [row for k in keys for row in names.get(k.rsplit('/', 1)[-1], ())
+                    if keys & check._tails(row['rel'])]
+            if not hits:
+                continue
+            best = min(hits, key=lambda x: (x['root'] != own['root'], len(x['rel']), x['path']))
+            if best['id'] not in seen:
+                seen.add(best['id'])
+                out.append((best, check._line(text, pos)))
+        return out
+
+    def _nb_meaning(self, did):
+        """(row, line, cosine) for the notes and code files closest to the mean of this note's passage
+        vectors. None when there are no vectors, or none for this note yet."""
+        if self.vec is None or np is None:
+            return None
+        vec = np.asarray(self.vec)
+        rows = [v for (v,) in self.db.execute('SELECT vec FROM chunks WHERE doc = ? AND vec >= 0', (did,))
+                if v < len(vec)]
+        mine = vec[rows] if rows else vec[:0]
+        mine = mine[np.any(mine != 0, axis=1)]
+        if not len(mine):
+            return None
+        q = mine.mean(axis=0)
+        norm = float(np.linalg.norm(q))
+        if not norm:
+            return None
+        sims = vec @ (q / norm)
+        m = min(NB_ROWS, len(sims))
+        top = np.argpartition(-sims, m - 1)[:m]
+        top = top[np.argsort(-sims[top])]
+        # a passage with no vector yet is all zeros and has no say
+        top = top[sims[top] != 0]
+        vm = self._vmap()
+        order = [(c, float(sims[v])) for v in top for c in vm.get(int(v), [])]
+        if not order:
+            return []
+        info = {}
+        ids = [c for c, _ in order]
+        for i in range(0, len(ids), 500):
+            part = ids[i:i + 500]
+            for r in self.db.execute('SELECT c.id, c.start_line, %s FROM chunks c JOIN docs d ON d.id = c.doc '
+                                     'WHERE c.id IN (%s)' % (', '.join('d.' + x for x in _NB_COLS),
+                                                             ','.join('?' * len(part))), part):
+                info[r[0]] = (r[1], dict(zip(_NB_COLS, r[2:], strict=True)))
+        out, seen = [], {did}
+        for c, s in order:
+            line, row = info.get(c, (None, None))
+            if row is None or row['id'] in seen or row['kind'] in ('document', 'image'):
+                continue
+            seen.add(row['id'])
+            out.append((row, line, s))
+            if len(out) >= NB_CLOSE:
+                break
+        return out
+
+    def _nb_words(self, did) -> list:
+        """(row, line) for the notes and code files closest in words: this note's title, summary and
+        headings as the question."""
+        if not self.has_docfts:
+            return []
+        r = self.db.execute('SELECT title, summary, headings FROM docfts WHERE rowid = ?', (did,)).fetchone()
+        q = ' '.join(x or '' for x in (r or ()))[:600]
+        if not q.strip():
+            return []
+        out = []
+        for row in self._nb_rows([d for d in self.doc_bm25(q, n=60) if d != did]):
+            if row['kind'] in ('document', 'image'):
+                continue
+            c = self.best_chunk(row['id'], q)
+            line = self.db.execute('SELECT start_line FROM chunks WHERE id = ?', (c,)).fetchone() if c else None
+            out.append((row, line[0] if line else None))
+            if len(out) >= NB_CLOSE:
+                break
+        return out
+
     # small tools
 
     def locate(self, q: str, n: int = 15) -> dict:
@@ -907,7 +1466,7 @@ class Engine:
         try:
             from . import __version__
         except ImportError:
-            __version__ = '3.0.0'
+            __version__ = '3.1.0'
         has_names = lane_locate.has_names(self.db)
         mwhy, rwhy = self._why_now()
         doff = self.docs_off()

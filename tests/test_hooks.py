@@ -19,10 +19,11 @@ from unittest import mock
 
 from leks import hooks
 from leks.hooks import session_brief, update_index, warm_models
+from tests import helpers
 
 
 def tmpdir():
-    return tempfile.mkdtemp(prefix='lk', dir='/tmp')
+    return tempfile.mkdtemp(prefix='lk', dir='/tmp' if os.name == 'posix' else None)
 
 
 def fake_cfg(base, embedder=True, reranker=True, backend='fake'):
@@ -83,8 +84,10 @@ class HelperTests(Base):
         with mock.patch('subprocess.Popen') as popen:
             self.assertTrue(hooks.spawn(['prog', 'arg'], {'A': 'b'}))
         kw = popen.call_args[1]
-        self.assertTrue(kw['start_new_session'])
-        self.assertEqual((kw['cwd'], kw['env']), ('/', {'A': 'b'}))
+        # its own session on posix, detached process flags on windows
+        for k, v in hooks._detach_options()[0].items():
+            self.assertEqual(kw[k], v)
+        self.assertEqual((kw['cwd'], kw['env']), (os.path.abspath(os.sep), {'A': 'b'}))
         self.assertIs(kw['stdout'], subprocess.DEVNULL)
         self.assertFalse(hooks.spawn([os.path.join(self.tmp, 'no-such-program')]))
 
@@ -318,6 +321,7 @@ class WarmTests(Base):
         self.assertEqual(reqs[1], {'op': 'embed', 'model': 'mdense', 'texts': ['warm'], 'kind': 'q'})
         self.assertEqual(warm_models.warm_requests(fake_cfg(self.tmp, reranker=False)), reqs[1:])
 
+    @helpers.needs_unix_sockets
     def test_ping_against_a_real_socket(self):
         self.assertFalse(warm_models._ping(self.cfg))       # nothing listens: fails at once
         ready = threading.Event()
@@ -328,6 +332,7 @@ class WarmTests(Base):
         self.assertTrue(warm_models._ping(self.cfg))
         t.join(5)
 
+    @helpers.needs_unix_sockets
     def test_error_reply_is_not_up(self):
         ready = threading.Event()
         t = threading.Thread(target=serve_once,

@@ -1,7 +1,8 @@
 """macOS sandbox for the model daemon (sandbox-exec with a generated profile).
 
-The daemon only turns text into numbers. The profile takes away the network,
-every write outside the run folder and every exec but python, so a bad
+The daemon only turns text into numbers. The profile takes away the network
+(all but its own listening socket), every write outside the run folder and
+every exec but python, so a bad
 weights file or a library bug has nowhere to go. File reads stay open on
 purpose (the profile has to work on any Mac). On other systems the daemon runs
 without it and says so.
@@ -47,6 +48,12 @@ def _sock_real(cfg):
     return os.path.join(_real(os.path.dirname(os.path.abspath(sock))), os.path.basename(sock))
 
 
+def _endpoint_real(cfg):
+    from . import transport
+    ep = transport.endpoint_path(cfg.socket_path())
+    return os.path.join(_real(os.path.dirname(os.path.abspath(ep))), os.path.basename(ep))
+
+
 def _darwin_dirs():
     """Per-user cache and temp folders (Metal writes shader caches there)."""
     out = []
@@ -73,24 +80,36 @@ def _exec_targets(python):
 
 
 def profile_text(cfg, python, extra_read=()):
-    """The profile as text. Network off except one unix socket, writes only in run, exec only python.
+    """The profile as text. Network off but the listening socket, writes only in run, exec only python.
 
     extra_read adds read allowances for people who tighten reads on top of this
     profile; with the default (reads open) they change nothing.
     """
+    from . import transport
     run = _real(cfg.run_dir())
     sock = _sock_real(cfg)
+    tcp = transport.kind() == 'tcp'
     writes = [
         '(subpath %s)' % _q(run),
         '(literal %s)' % _q(sock),
         '(literal "/dev/null")',
         '(literal "/dev/dtracehelper")',
-    ] + ['(subpath %s)' % _q(d) for d in _darwin_dirs()]
+    ]
+    if tcp:
+        ep = _endpoint_real(cfg)
+        writes[2:2] = ['(literal %s)' % _q(ep), '(literal %s)' % _q(ep + '.tmp')]
+    writes += ['(subpath %s)' % _q(d) for d in _darwin_dirs()]
+    if tcp:
+        listen = ('(allow network-bind network-inbound (local tcp "localhost:*")) '
+                  '; except a port on the loopback address, the forced tcp transport')
+    else:
+        listen = ('(allow network-bind network-inbound (local unix-socket (path-literal %s))) '
+                  '; except the one local socket we listen on' % _q(sock))
     lines = [
         '(version 1) ; profile language version',
         '(allow default) ; start open, then close what matters',
         '(deny network*) ; no network of any kind',
-        '(allow network-bind network-inbound (local unix-socket (path-literal %s))) ; except the one local socket we listen on' % _q(sock),
+        listen,
         '(deny file-write*) ; no writes anywhere',
         '(allow file-write* %s) ; except the run folder, our socket, null and the user cache and temp folders' % ' '.join(writes),
         '(deny process-exec) ; no new programs',
@@ -123,6 +142,7 @@ def clean_env(cfg):
     run = _real(cfg.run_dir())
     for sub in ('home', 'tmp', 'cache'):
         _private_dir(os.path.join(run, sub))
+    from . import transport
     env = {
         'PATH': '/usr/bin:/bin',
         'HOME': os.path.join(run, 'home'),
@@ -145,6 +165,24 @@ def clean_env(cfg):
         env['LEKS_CONFIG'] = os.path.abspath(os.path.expanduser(cfg.source_path))
     if 'LEKS_ALLOW_FAKE' in os.environ:
         env['LEKS_ALLOW_FAKE'] = os.environ['LEKS_ALLOW_FAKE']
+    # client and daemon have to pick the same transport
+    if os.environ.get(transport.ENV):
+        env[transport.ENV] = os.environ[transport.ENV]
+    if os.name == 'nt':
+        _windows_env(env)
+    return env
+
+
+def _windows_env(env):
+    """What a windows python needs on top: sockets fail without SYSTEMROOT (WinError 10106)."""
+    for k in ('SYSTEMROOT', 'WINDIR', 'SYSTEMDRIVE', 'NUMBER_OF_PROCESSORS', 'PROCESSOR_ARCHITECTURE'):
+        v = os.environ.get(k)
+        if v:
+            env[k] = v
+    root = env.get('SYSTEMROOT') or env.get('WINDIR') or 'C:\\Windows'
+    env['PATH'] = os.pathsep.join([os.path.dirname(sys.executable), os.path.join(root, 'System32'), root])
+    env['TEMP'] = env['TMP'] = env['TMPDIR']
+    env['USERPROFILE'] = env['HOME']
     return env
 
 

@@ -1,21 +1,23 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "leks"
-version = "3.0.0"
+version = "3.1.0"
 description = "Local, offline search over a project's own notes, documents and code, served to AI coding agents over MCP."
 readme = "README.md"
 requires-python = ">=3.10"
-license = {file = "LICENSE"}
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{name = "Jakub Majewski"}]
 dependencies = []
 keywords = ["search", "mcp", "local", "offline", "retrieval", "embeddings", "reranker", "claude-code", "github-copilot"]
 classifiers = [
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Operating System :: MacOS",
   "Operating System :: POSIX :: Linux",
@@ -28,9 +30,12 @@ Homepage = "https://github.com/jacobemanuel/leks"
 Report = "https://github.com/jacobemanuel/leks/blob/main/docs/report-3.0.md"
 
 [project.optional-dependencies]
-models = ["torch", "transformers", "safetensors", "tokenizers", "numpy", "huggingface_hub"]
+# filelock comes in through torch, transformers and huggingface_hub. 4.2.1 is the first release with
+# the fixes for the advisories pip-audit reports against 4.1.0, the last filelock for python 3.10, so
+# the models extra needs python 3.11; words, code and files still run on 3.10 with the stdlib alone
+models = ["torch", "transformers", "safetensors", "tokenizers", "numpy", "huggingface_hub", "filelock>=4.2.1"]
 pdf = ["pypdf"]
-test = ["numpy", "pypdf"]
+test = ["numpy", "pypdf", "tomli; python_version < \"3.11\""]
 
 [project.scripts]
 leks = "leks.__main__:main"
@@ -48,3 +53,53 @@ target-version = "py310"
 [tool.ruff.lint]
 # pyflakes, the pycodestyle error set, warnings and bugbear
 select = ["E4", "E7", "E9", "F", "B", "W"]
+
+[tool.coverage.run]
+# lines of the package run inside the test process; the CLI, server and hook
+# processes the tests start are not counted
+source = ["leks"]
+
+[tool.coverage.report]
+precision = 1
+# the CI job runs on linux, where the daemon and socket tests run and the macOS-only tests skip. it
+# reported 88.3% for 3.1 (docs/testing.md, coverage), the floor sits a point under that
+fail_under = 87
+
+[tool.bandit]
+# bandit -c pyproject.toml -r leks bench (the security workflow runs exactly this).
+# the tests use assert and temp files on purpose and stay out
+exclude_dirs = ["tests"]
+# each skip below was read hit by hit with bandit 1.9.4 over leks and bench
+skips = [
+  # B103: chmod 0o755 on the OCR helper leks compiles itself, it has to be executable
+  "B103",
+  # B105: the one hit is the label 'secret pattern' for skipped files, no password
+  "B105",
+  # B108: the socket path falls back to /tmp when the normal one is too long for a
+  # unix socket (leks/config.py); a private folder there is an open follow-up
+  "B108",
+  # B110, B112: hooks and cleanup paths must never fail the host, they pass on purpose;
+  # the one B112 hit (leks/hooks spawn) tries the next way to detach when one fails
+  "B110",
+  "B112",
+  # B311: seeded random draws for bootstrap intervals in bench/stats.py, no secrets
+  "B311",
+  # B310: the one urlopen fetches the pinned PEP archive from ARCHIVE_URL, a fixed https
+  # url in bench/public/peps.py; only the tests point it at a local file: archive
+  "B310",
+  # B314, B405: office XML goes to xml.etree only after a check that refuses any
+  # DOCTYPE, ENTITY or ELEMENT declaration (leks/docs.py), the core stays stdlib only
+  "B314",
+  "B405",
+  # B324: sha1 as a fingerprint (config signature, near-duplicate passages, token
+  # buckets of the stand-in test model), never for security
+  "B324",
+  # B404, B603: subprocess with argument lists, never a shell
+  "B404",
+  "B603",
+  # B608: SQL text built from fixed column lists and ? placeholders, values are bound
+  "B608",
+  # B615: from_pretrained reads a local folder (local_files_only=True); leks models
+  # fetch downloads each model at a pinned revision
+  "B615",
+]

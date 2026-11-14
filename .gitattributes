@@ -1,0 +1,11 @@
+# LF in every checkout, also on windows with core.autocrlf=true: the fixtures, the hashes the tests
+# compare and the shell scripts expect the bytes as committed
+* text=auto eol=lf
+
+# never converted and never diffed as text
+*.pdf binary
+*.gif binary
+*.png binary
+*.jpg binary
+*.zip binary
+*.gz binary

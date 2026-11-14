@@ -1,0 +1,7 @@
+# shellcheck comes from pip too: actionlint runs it over every run block when it finds it,
+# so the check does not depend on what the runner image ships. PyYAML reads the workflows
+# for .github/scripts/check_workflows.py
+ruff==0.17.4
+actionlint-py==1.7.12.25
+shellcheck-py==0.11.0.1
+PyYAML==6.0.3

@@ -6,10 +6,16 @@ import json
 import os
 import shutil
 import tempfile
+import unittest
 
-from leks import config
+from leks import config, transport
 
-_ENV_KEYS = ('LEKS_HOME', 'LEKS_CONFIG', 'LEKS_PROFILE', 'LEKS_ALLOW_FAKE', 'LEKS_MODELD_SOCK')
+POSIX = os.name == 'posix'
+# windows python has no unix sockets with descriptor passing; its tcp path is tested in test_transport
+needs_unix_sockets = unittest.skipUnless(
+    transport.UNIX_OK, 'needs unix domain sockets with descriptor passing (not on windows, see test_transport)')
+
+_ENV_KEYS = ('LEKS_HOME', 'LEKS_CONFIG', 'LEKS_PROFILE', 'LEKS_ALLOW_FAKE', 'LEKS_MODELD_SOCK', transport.ENV)
 _SAVED = {}   # home -> env values to put back in cleanup()
 
 DEFAULT_PROFILES = {
@@ -117,7 +123,7 @@ DOCS = {
 
 def short_tmpdir() -> str:
     """A temp dir with a short path, so a unix socket inside it fits."""
-    return tempfile.mkdtemp(prefix='lk', dir='/tmp')
+    return tempfile.mkdtemp(prefix='lk', dir='/tmp' if POSIX else None)
 
 
 def _put(base: str, files: dict) -> None:
@@ -148,7 +154,7 @@ def make_home(models: bool = False, profiles: 'dict | None' = None):
     """
     home = short_tmpdir()
     _SAVED[home] = {k: os.environ.get(k) for k in _ENV_KEYS}
-    for k in ('LEKS_CONFIG', 'LEKS_PROFILE', 'LEKS_MODELD_SOCK'):
+    for k in ('LEKS_CONFIG', 'LEKS_PROFILE', 'LEKS_MODELD_SOCK', transport.ENV):
         os.environ.pop(k, None)
     os.environ['LEKS_HOME'] = home
     folders = write_corpus(os.path.join(home, 'corpus'))

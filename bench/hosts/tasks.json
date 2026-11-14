@@ -1,0 +1,14 @@
+{
+  "_note": "task set for the host runs, fixed before any host run: the odd-numbered questions of the bench fixtures (q01, q03 and so on to q39), which covers every category; run.py --all takes all 40. smoke is the small set smoke.sh runs: one fact, one current-state, one code and one PDF question, each with a gold file, so the automatic check applies to all four",
+  "questions": "../fixtures/questions.json",
+  "corpus": "../fixtures/corpus",
+  "config": "../fixtures/config.json",
+  "profile": "orchestrator",
+  "ids": ["q01", "q03", "q05", "q07", "q09", "q11", "q13", "q15", "q17", "q19",
+          "q21", "q23", "q25", "q27", "q29", "q31", "q33", "q35", "q37", "q39"],
+  "arms": ["plain", "leks", "team", "subagent"],
+  "repeats": 2,
+  "timeout_s": 600,
+  "smoke": {"ids": ["q01", "q15", "q25", "q33"], "repeats": 1},
+  "prompt": "Answer this question about the project in the current folder, using its files: {question}\nName the file or files your answer comes from, as paths relative to the project folder. If the files do not answer the question, say so."
+}

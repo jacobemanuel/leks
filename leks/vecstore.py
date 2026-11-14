@@ -5,10 +5,14 @@ not an access boundary):
 
     <home>/index/vectors/<key>/store.sqlite   emb(h, vec), meta(k, v)
     <home>/index/vectors/<key>/<profile>.f32  n * dim float32, row i = vecmap row i
-    <home>/index/vectors/<key>/<profile>.json side file: key, dim, n, covered, built, mtime
+    <home>/index/vectors/<key>/<profile>.json side file: key, dim, n, covered, built, mtime, file
 
 The side file is written last, so a half written state reads as out of step and
-the meaning lane stays closed. Stdlib only, numpy is needed just to map the file.
+the meaning lane stays closed. Windows refuses to replace a vector file that a
+running server has mapped: the new rows then go to a spare name, <profile>.1.f32
+up to .3, the side file names the one that holds them, and the next write goes
+back to <profile>.f32 and removes the spares nothing maps any more. Stdlib only,
+numpy is needed just to map the file.
 """
 from __future__ import annotations
 
@@ -16,6 +20,7 @@ import json
 import os
 import re
 import sqlite3
+import time
 import urllib.parse
 
 WHY_NO_MODELS = 'no models configured'
@@ -54,6 +59,72 @@ def profile_file(cfg, key, profile):
 
 def side_file(cfg, key, profile):
     return os.path.join(vec_dir(cfg, key), _profile(profile) + '.json')
+
+
+def _spares(f):
+    # the names a new vector file takes while a server on windows still maps the one before
+    base, ext = os.path.splitext(f)
+    return ['%s.%d%s' % (base, k, ext) for k in (1, 2, 3)]
+
+
+def current_file(cfg, key, profile, side=None):
+    """The vector file the side file names: <profile>.f32 or one of its spare names. Any other
+    name in the side file counts as <profile>.f32, so a side file never points outside the folder."""
+    f = profile_file(cfg, key, profile)
+    s = read_side(cfg, key, profile) if side is None else side
+    name = s.get('file') if isinstance(s, dict) else None
+    for cand in [f] + _spares(f):
+        if name == os.path.basename(cand):
+            return cand
+    return f
+
+
+def _in_use(e):
+    # windows says access denied or sharing violation (both PermissionError) while a process holds the file
+    # open, and 1224 once only a mapped view of it is left, which python raises as a plain OSError
+    return isinstance(e, PermissionError) or getattr(e, 'winerror', None) == 1224
+
+
+def _swap_in(tmp, f):
+    """Move a new vector file to <profile>.f32 and return where it went. When windows refuses because a
+    running server maps that file, the first spare name that is free takes it."""
+    try:
+        os.replace(tmp, f)
+        return f
+    except OSError as e:
+        if not _in_use(e):
+            raise
+        first = e
+    for alt in _spares(f):
+        try:
+            os.replace(tmp, alt)
+            return alt
+        except OSError as e:
+            if not _in_use(e):
+                raise
+    raise first
+
+
+def _replace(src, dst, tries=40):
+    # a reader holds the small side file open for a moment, and windows refuses the rename meanwhile
+    for i in range(tries):
+        try:
+            os.replace(src, dst)
+            return
+        except PermissionError:
+            if os.name != 'nt' or i == tries - 1:
+                raise
+            time.sleep(0.05)
+
+
+def _drop_others(f, keep):
+    # the vector files the side file no longer names; windows keeps one a server still maps, a later write retries
+    for cand in [f] + _spares(f):
+        if cand != keep:
+            try:
+                os.remove(cand)
+            except OSError:
+                pass
 
 
 def _open_ro(path):
@@ -143,7 +214,7 @@ def write_profile(cfg, key, profile, db_path=None):
                             hit += 1
                         else:
                             out.write(zero)
-            os.replace(f + '.tmp', f)
+            put = _swap_in(f + '.tmp', f)
         except BaseException:
             try:
                 os.remove(f + '.tmp')
@@ -153,10 +224,11 @@ def write_profile(cfg, key, profile, db_path=None):
     finally:
         e.close()
     d = {'key': key, 'dim': dim, 'n': len(rows), 'covered': hit, 'built': built,
-         'mtime': os.stat(f).st_mtime}
+         'mtime': os.stat(put).st_mtime, 'file': os.path.basename(put)}
     with open(side + '.tmp', 'w') as out:
         json.dump(d, out)
-    os.replace(side + '.tmp', side)
+    _replace(side + '.tmp', side)
+    _drop_others(f, put)
     return hit, len(rows)
 
 
@@ -184,12 +256,12 @@ def open_vectors(cfg, profile, built, spec):
         import numpy as np
     except ImportError:
         return None, 0, WHY_NO_NUMPY
+    s = read_side(cfg, spec.key, profile)
     try:
-        f = profile_file(cfg, spec.key, profile)
+        f = current_file(cfg, spec.key, profile, s)
         st = os.stat(f)
     except (OSError, ValueError):
         return None, 0, WHY_NO_VECTORS
-    s = read_side(cfg, spec.key, profile)
     dim = int(spec.dim)
     try:
         n, covered = s['n'], s['covered']

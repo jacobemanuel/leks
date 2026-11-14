@@ -85,6 +85,25 @@ def _parser():
     s = sub.add_parser('tried', help='was this proposal tried before')
     s.add_argument('proposal', nargs='+')
 
+    s = sub.add_parser('neighbours', help='the notes to bring in line after editing a note',
+                       description='The notes to bring in line after editing a note or code file: notes that '
+                                   'still hold numbers or sentences it no longer has, notes in its supersession '
+                                   'chain, notes that link to it, files it links to, and the closest files in '
+                                   'meaning (in words without vectors), each with its line and the reason.')
+    s.add_argument('path', help='the edited file, as search cites it or as a path on disk')
+    s.add_argument('--was', metavar='FILE', default=None, help='a file with the text the note had before the edit')
+    s.add_argument('--n', type=int, default=10, help='how many notes, at most 30')
+    s.add_argument('--json', action='store_true')
+
+    s = sub.add_parser('revisit', help='list the revisit dates and conditions of decisions and notes',
+                       description='Every Revisit: line in the notes of the profile: due ones (the date has '
+                                   'come) oldest first, then dates ahead, then conditions. Notes marked '
+                                   'superseded or in a history folder are left out.')
+    s.add_argument('--due', action='store_true', help='only the lines whose date has come')
+    s.add_argument('--by', metavar='YYYY-MM-DD', default=None,
+                   help='count a date as due when it is on or before this day, default today')
+    s.add_argument('--json', action='store_true')
+
     sub.add_parser('state', help='list the current state notes')
     sub.add_parser('status', help='index size, models and lanes')
     sub.add_parser('serve', help='run the MCP server on stdio')
@@ -100,15 +119,27 @@ def _parser():
     s = sub.add_parser('ocr', help='ocr helper')
     s.add_argument('action', choices=('build',))
 
-    s = sub.add_parser('check', help='check changed notes: empty, dead links, orphans, em dashes (exit 2 lists them)')
+    s = sub.add_parser('check', help='check changed notes: empty, dead links, orphans, em dashes, edit contracts '
+                                     '(exit 2 lists them)',
+                       description='Checks the notes changed since the last run: empty notes, dead links, new '
+                                   'notes nothing links to, em dashes, and the edit contracts of check.contracts '
+                                   'in the config (write-once, frozen and living notes, fields a note keeps, a '
+                                   'successor for a superseded note). Each finding is path:line: message.')
     s.add_argument('--root', action='extend', nargs='+', metavar='DIR', default=None,
                    help='notes folder to check, the current folder by default')
     s.add_argument('--changed', action='extend', nargs='+', metavar='FILE', default=None,
                    help='check these notes instead of the ones changed since the last check')
     s.add_argument('--no-em-dash', action='store_true', help='do not flag em dashes')
+    s.add_argument('--accept', action='extend', nargs='+', metavar='FILE', default=None,
+                   help='keep the current text of these write-once or frozen notes, nothing is checked')
 
-    s = sub.add_parser('hook', help='editor hooks, never fail')
+    s = sub.add_parser('hook', help='editor hooks, never fail',
+                       description='brief: the session brief (state notes, recent changes, notes past their '
+                                   'freshness budget, revisit dates that have come). update: a background '
+                                   'index update when one is due. warm: start and warm the model daemon.')
     s.add_argument('action', choices=('brief', 'warm', 'update'))
+
+    sub.add_parser('doctor', help='check the install: python, config, index, model transport, optional parts')
     return p
 
 
@@ -218,6 +249,63 @@ def _cmd_tried(a) -> int:
     return 0
 
 
+def _cmd_neighbours(a) -> int:
+    from . import config, query
+    cfg = config.load()
+    path = a.path
+    if os.path.exists(path):
+        # a file named from the shell: its path under a root, else the words as given
+        path = cfg.display_path(os.path.abspath(path)) or path
+    was = None
+    if a.was:
+        try:
+            with open(a.was, 'rb') as f:
+                was = f.read(query.MAX_WAS).decode('utf-8', errors='replace')
+        except OSError as e:
+            _err('cannot read the --was file (%s)' % (e.strerror or type(e).__name__))
+            return 1
+    eng = query.Engine(cfg)
+    try:
+        r = eng.neighbours(path, n=a.n, was=was)
+        if a.json:
+            _out(r)
+        else:
+            print(eng.render_neighbours(r))
+    finally:
+        eng.close()
+    return 0
+
+
+def _cmd_revisit(a) -> int:
+    import datetime
+    from . import config, revisit, schema
+    cfg = config.load()
+    profile = config.active_profile(cfg)
+    today = datetime.date.today().isoformat()
+    if a.by:
+        try:
+            today = datetime.date.fromisoformat(a.by).isoformat()
+        except ValueError:
+            _err('--by takes a date as YYYY-MM-DD')
+            return 1
+    db = cfg.profile_db(profile)
+    if not os.path.isfile(db):
+        _err('no index for profile %s yet, run leks build' % profile)
+        return 1
+    c = schema.open_ro(db)
+    try:
+        found = revisit.entries(c, cfg, today)
+    finally:
+        c.close()
+    if a.due:
+        found = [e for e in found if e['state'] == 'due']
+    if a.json:
+        _out({'profile': profile, 'today': today, 'revisit': found})
+    else:
+        print(revisit.render(found, today, profile))
+    return 0
+
+
 def _cmd_state(a) -> int:
     from . import config, query
     _out(query.Engine(config.load()).state())
@@ -296,7 +384,9 @@ def _cmd_ocr(a) -> int:
 
 def _cmd_check(a) -> int:
     from . import check
-    return check.run(a.root, a.changed, em_dash=not a.no_em_dash)
+    if a.accept:
+        return check.accept(a.accept, a.root)
+    return check.host_main(a.root, a.changed, em_dash=not a.no_em_dash)
 
 
 def _cmd_hook(a) -> int:
@@ -314,15 +404,77 @@ def _cmd_hook(a) -> int:
     return 0
 
 
+def _found(name):
+    import importlib.util
+    try:
+        return importlib.util.find_spec(name) is not None
+    except (ImportError, ValueError):
+        return False
+
+
+def _cmd_doctor(a) -> int:
+    """What this install can do, as json. Exit 0 when the config loads, 1 when it does not."""
+    import platform
+    from . import __version__, sandbox, transport
+    rep = {
+        'leks': __version__,
+        'python': platform.python_version(),
+        'system': sys.platform,
+        'model_transport': transport.kind(),
+        'pdf': 'pypdf found' if _found('pypdf') else 'pypdf not installed, PDFs are skipped',
+        'numpy': _found('numpy'),
+        'model_backend': all(_found(m) for m in ('torch', 'transformers', 'safetensors')),
+    }
+    ok, why = sandbox.available()
+    rep['sandbox'] = 'sandbox-exec' if ok else why
+    from . import config
+    try:
+        cfg = config.load()
+    except Exception as e:
+        rep['config'] = {'ok': False, 'why': str(e).split('\n')[0]}
+        _out(rep)
+        return 1
+    rep['config'] = {'ok': True, 'path': cfg.source_path, 'roots': [r.name for r in cfg.roots],
+                     'profiles': sorted(cfg.profiles)}
+    idx = {}
+    for prof in sorted(cfg.profiles):
+        try:
+            idx[prof] = os.path.isfile(cfg.profile_db(prof))
+        except Exception:
+            idx[prof] = False
+    rep['index'] = {'built': os.path.isfile(cfg.master_path()), 'profiles': idx}
+    from . import models
+    specs = [s for s in (cfg.embedder, cfg.reranker) if s is not None]
+    rep['models'] = {s.key: ('weights found' if models.weights_present(cfg, s.key) else 'no weights, run leks models fetch')
+                     for s in specs} or 'none configured, search runs on words'
+    _out(rep)
+    return 0
+
+
 _COMMANDS = {
     'init': _cmd_init, 'config': _cmd_config, 'build': _cmd_build, 'search': _cmd_search,
-    'read': _cmd_read, 'locate': _cmd_locate, 'tried': _cmd_tried, 'state': _cmd_state,
+    'read': _cmd_read, 'locate': _cmd_locate, 'tried': _cmd_tried, 'neighbours': _cmd_neighbours,
+    'revisit': _cmd_revisit, 'state': _cmd_state,
     'status': _cmd_status, 'serve': _cmd_serve, 'embed': _cmd_embed, 'modeld': _cmd_modeld,
     'models': _cmd_models, 'ocr': _cmd_ocr, 'check': _cmd_check, 'hook': _cmd_hook,
 }
 
+_COMMANDS['doctor'] = _cmd_doctor
+
+
+def _utf8_streams():
+    # windows pipes default to the ansi code page, which cannot hold every note title
+    if os.name != 'nt':
+        return
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding='utf-8', errors='replace')
+        except Exception:
+            pass
+
 
 def main(argv=None) -> int:
+    _utf8_streams()
     argv = list(sys.argv[1:] if argv is None else argv)
     _PROFILE_ARG[:] = []
     argv = _pull_globals(argv)

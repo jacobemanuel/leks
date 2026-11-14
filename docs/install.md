@@ -7,11 +7,11 @@ Almost everything LEKS writes goes into one home folder, `~/.leks` unless you pi
 ## What you need
 
 - **A Mac for the full set.** The model helper runs inside a macOS sandbox, and scanned PDFs and images are read with the Vision framework, which only macOS has. I built and measured everything on a Mac with Apple silicon and 18 GB of memory.
-- **Linux runs the words-only part.** The tests run on Linux and macOS for every push to main and every pull request, with the `pdf` and `test` extras and a stand-in model backend. The sandbox and the OCR helper are macOS parts, so the full set with the models is a macOS set-up.
-- **macOS and Linux.** The model helper talks over a Unix domain socket, so LEKS targets macOS and Linux.
-- **Python 3.10 or newer.** The tests run on 3.10 and 3.13. `python3 --version` tells you what you have.
+- **Linux and Windows.** The tests run on Linux, macOS and Windows for every push to main and every pull request, with the `pdf` and `test` extras and a stand-in model backend ([testing](testing.md)). Those jobs are the only test LEKS has had on Windows. On every push to main and once a week a job also loads the real models on Linux, on CPU, and runs the bench with them ([testing](testing.md#models)). The sandbox and the OCR helper are macOS parts: on Linux the models run without the sandbox, and scanned pages and images stay unread.
+- **How the model helper is reached.** On macOS and Linux over a Unix domain socket. Python on Windows lacks the socket calls that needs, so there it is reached over TCP on 127.0.0.1, with a token in a file in the LEKS home folder, which other standard users of the machine cannot read ([cli](cli.md#leks-modeld)).
+- **Python 3.10 or newer, 3.11 or newer for the `models` extra.** The tests run on 3.10, 3.11, 3.12 and 3.13. The `models` extra asks for filelock 4.2.1 or newer (torch, transformers and huggingface_hub use it), the first release with the fixes for the advisories against 4.1.0, and every release since needs Python 3.11; on 3.10 pip stops with `No matching distribution found for filelock>=4.2.1`. `python3 --version` tells you what you have.
 - **Space.** The `models` extra pulls in torch. On my Mac (Apple silicon, Python 3.13) that was 38 packages, 181 MB to download and about 1 GB once installed, 139 MB of the download for torch alone. On x86-64 Linux the torch wheel alone is 539 MB and brings CUDA libraries on top. The two models come to 2.54 GB at the pinned commits (1.26 GB for the embedder, 1.28 GB for the reranker). The index grows with your files. For scale: my own files, about 7,300 documents and 380,564 passages, gave a 2.7 GB word index and 1.89 GB of vectors for the shipped embedder ([report, section 3.1](report-3.0.md#31-the-record-and-the-machine) and [4.3](report-3.0.md#43-speed-and-memory)).
-- **Memory.** With both models loaded, LEKS used about 7 GB under load on my 18 GB Mac, with peaks up to 8.3 GB ([report, section 4.3](report-3.0.md#43-speed-and-memory)). Words only needs none of that.
+- **Memory.** With both models loaded, LEKS used about 6.8 GiB under load on my 18 GB Mac, with peaks up to 8.1 GiB ([report, section 4.3](report-3.0.md#43-speed-and-memory)). Words only needs none of that.
 - **Optional: the Xcode command line tools**, if you want the OCR helper for scans and images.
 
 ## Get LEKS
@@ -215,7 +215,7 @@ leks embed
 
 **Writes:** `~/.leks/index/vectors/mdense/store.sqlite` with every vector once. Next to it, each profile gets `<profile>.f32` and `<profile>.json`. A vector is 768 numbers, 3,072 bytes.
 
-**Takes:** on my 18 GB Mac the shipped embedder did about 29 passages a second ([report, section 4.3](report-3.0.md#43-speed-and-memory)). So 10,000 passages take about 6 minutes and 100,000 about an hour. The `to embed N of M` line near the top tells you your N. My run peaked at about 2.9 GB of memory while embedding.
+**Takes:** on my 18 GB Mac the shipped embedder did about 29 passages a second ([report, section 4.3](report-3.0.md#43-speed-and-memory)). So 10,000 passages take about 6 minutes and 100,000 about an hour. The `to embed N of M` line near the top tells you your N. My run peaked at about 2.8 GiB of memory while embedding.
 
 **Worked if:** the last line is `DONE mdense <count>` and the exit code is 0. `INCOMPLETE mdense <have> of <total>` (exit 1) means some passages still lack a vector; run it again and it picks up where it stopped. A line that starts with `refused:` (exit 2) says what's missing, such as `refused: no index yet, run a build first`. After a good run, `leks status` shows `"vector_mode": "meaning"` and `coverage` at 1.0.
 
@@ -235,39 +235,54 @@ leks search what did we decide about the cache
 
 After a search the helper stays up. It exits after an hour with no request (`daemon.idle_exit`) or when you run `leks modeld stop`. A background update and `leks embed` stop it too, when they finish.
 
-## Connect Claude Code and Copilot
+## Connect Claude Code, Copilot and Codex
 
-[examples/project-template](../examples/project-template) has what both hosts need. Copy it into the root of your project:
+[examples/project-template](../examples/project-template) has what the three hosts need. Copy it into the root of your project:
 
 ```bash
 cd ~/projects/myapp
 T=~/leks/examples/project-template    # wherever your clone is
-mkdir -p .claude/skills/leks-search .vscode .github/hooks
-cp -n "$T/AGENTS.md" "$T/CLAUDE.md" "$T/.mcp.json" .
+mkdir -p .claude/skills/leks-search .vscode .github/hooks .codex decisions
+cp -n "$T/AGENTS.md" "$T/CLAUDE.md" "$T/STATE.md" "$T/.mcp.json" .
+cp -n "$T/decisions/DECISIONS.md" decisions/
 cp -n "$T/.claude/settings.json" .claude/
 cp -n "$T/.claude/skills/leks-search/SKILL.md" .claude/skills/leks-search/
 cp -n "$T/.vscode/mcp.json" "$T/.vscode/settings.json" .vscode/
 cp -n "$T/.github/hooks/leks.json" .github/hooks/
+cp -n "$T/.codex/config.toml" "$T/.codex/hooks.json" .codex/
 ```
 
-`cp -n` won't overwrite a file you already have. Merge those by hand. For an existing `CLAUDE.md` that's one extra line, `@AGENTS.md`. The template's own `README.md` stays out on purpose: it explains the template, and your project has its own.
+`cp -n` won't overwrite a file you already have. Merge those by hand. For an existing `CLAUDE.md` that's one extra line, `@AGENTS.md`. The template's own `README.md` stays out on purpose: it explains the template, and your project has its own. The template holds more skills than `leks-search`, listed in [skills.md](skills.md); copy the folders you want the same way. Then run `python3 -m leks check` once in the project root: its first run in a folder only records the notes, so from then on the check at the end of a turn reports what that turn changed.
 
 | File | Read by | What it does |
 |---|---|---|
-| `AGENTS.md` | Copilot, and Claude Code through `CLAUDE.md` | the rules for the agent: search before answering, cite `path:line`, `read` the lines it relies on, `tried` before a proposal |
-| `CLAUDE.md` | Claude Code | one line, `@AGENTS.md`, which pulls in the file above |
+| `AGENTS.md` | Copilot, Codex, and Claude Code through `CLAUDE.md` | the rules for the agent: search before answering, cite `path:line`, `read` the lines it relies on, `tried` before a proposal |
+| `CLAUDE.md` | Claude Code | `@AGENTS.md`, which pulls in the file above, and a line on slash commands and the agent team |
+| `STATE.md` | every host, through LEKS | the state note, which the skills link new notes from; leave it out when your project has one |
+| `decisions/DECISIONS.md` | every host, through LEKS | the decision log, one row per decision note |
 | `.mcp.json` | Claude Code | starts `python3 -m leks serve` as the MCP server `leks` |
 | `.claude/settings.json` | Claude Code | the brief and the index update at session start, and the warm-up before `search` and `tried`. The notes check runs at `Stop`. |
-| `.claude/skills/leks-search/SKILL.md` | both | the search routine as a skill |
+| `.claude/skills/leks-search/SKILL.md` | Claude Code, Copilot, Codex through a link | the search routine as a skill |
 | `.vscode/mcp.json` | Copilot | starts the same server in VS Code |
 | `.github/hooks/leks.json` | Copilot | the same session-start hooks, and the notes check at `agentStop`. No warm-up. |
 | `.vscode/settings.json` | Copilot | turns `chat.useClaudeHooks` off, so VS Code doesn't run the Claude Code hooks as well |
+| `.codex/config.toml` | Codex | starts the same server in a trusted project, with `tool_timeout_sec` at 120 |
+| `.codex/hooks.json` | Codex | the same session-start hooks, the warm-up before `search` and `tried`, and the notes check at `Stop`, once you trust the hooks |
 
-**Profile.** The four files that start LEKS set `LEKS_PROFILE` to `architect`: `.mcp.json`, `.claude/settings.json`, `.vscode/mcp.json` and `.github/hooks/leks.json`. Put in a profile from your config, or delete those lines and LEKS takes `default_profile`.
+**Codex.** Codex starts the servers in a project's `.codex/config.toml` only when you have marked the project as trusted; otherwise put the two `leks` tables into `~/.codex/config.toml`. It runs the hooks in `.codex/hooks.json` only after you have reviewed and trusted them with `/hooks`, and a changed hook needs a new review. It reads skills from `.agents/skills`, so link them there:
+
+```bash
+mkdir -p .agents/skills
+for d in .claude/skills/*/; do n=$(basename "$d"); ln -s "../../.claude/skills/$n" ".agents/skills/$n"; done
+```
+
+The template's [README](../examples/project-template/README.md#codex) has the details.
+
+**Profile.** The files that start LEKS set `LEKS_PROFILE` to `architect`: `.mcp.json`, `.claude/settings.json`, `.vscode/mcp.json`, `.github/hooks/leks.json` and `.codex/config.toml`. The Codex hooks carry it on their command line instead, as `--profile architect` in `.codex/hooks.json`. Put in a profile from your config, or delete those settings and LEKS takes `default_profile`.
 
 **Interpreter.** Every command in these files starts with `python3`. If that isn't the Python with LEKS in it, put the full path from the venv step in its place, in every file.
 
-**One config per project.** Add `LEKS_CONFIG` with an absolute path to the same `env` blocks. In `.vscode/mcp.json` the path may start with `${workspaceFolder}`. More in [hosts.md](hosts.md#config-and-interpreter).
+**One config per project.** Add `LEKS_CONFIG` with an absolute path to the same `env` blocks, and to the `[mcp_servers.leks.env]` table of `.codex/config.toml`. A Codex hook has no `env` of its own, so add `--config` with the same path to each command in `.codex/hooks.json`. In `.vscode/mcp.json` the path may start with `${workspaceFolder}`. More in [hosts.md](hosts.md#config-and-interpreter).
 
 Check it before you open the agent:
 
@@ -275,7 +290,7 @@ Check it before you open the agent:
 LEKS_PROFILE=architect python3 -m leks hook brief
 ```
 
-After a build this prints one line of JSON whose `additionalContext` starts with `Project search is on (leks)`. That's the brief the agent gets at session start, with up to four current state notes and up to six files changed in the last three days. It prints nothing when that profile has no index yet, or when the config or the profile is wrong. `leks status` with the same profile tells you which.
+After a build this prints one line of JSON whose `additionalContext` starts with `Project search is on (leks)`. That's the brief the agent gets at session start, with up to four current state notes and up to six files changed in the last three days, and, when the config sets [freshness](configuration.md#freshness) budgets or a note has a revisit date, up to six notes past their budget and up to six revisit dates that have come. It prints nothing when that profile has no index yet, or when the config or the profile is wrong. `leks status` with the same profile tells you which.
 
 ```bash
 printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"status","arguments":{}}}' | LEKS_PROFILE=architect python3 -m leks serve
@@ -283,7 +298,7 @@ printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"s
 
 That's the MCP server answering one call by hand. You get one line back, with the same report as `leks status` inside `result.content`. Then open the project in the host and ask the agent to call the `status` tool.
 
-**The notes check.** When a turn ends, both hosts run `python3 -m leks check` (`Stop` in Claude Code, `agentStop` in Copilot). It looks at the Markdown notes that changed since its last run and lists empty notes, dead links, new notes that nothing links to, and em dashes. The agent gets the list and fixes it before it stops, and a turn is held at most once. The opening run in a folder only records the notes. The check walks the project folder. In Claude Code that's the folder the session started in (`CLAUDE_PROJECT_DIR`), even after the agent changed folders in its shell; I tested that in a real session. In Copilot it's the folder the hook runs in, which the template sets to the repository root with `"cwd": "."`, as GitHub's hook reference describes. In a big repo point the check at your notes, as in `python3 -m leks check --root notes`. A relative `--root` is read from the project folder, and above 100,000 files the check refuses. `--no-em-dash` drops the em dash rule. The rest is in [cli.md](cli.md#leks-check).
+**The notes check.** When a turn ends, the three hosts run `python3 -m leks check` (`Stop` in Claude Code, `agentStop` in Copilot, `Stop` in Codex once its hooks are trusted). It looks at the Markdown notes that changed since its last run and lists empty notes, dead links, new notes that nothing links to, em dashes and, where `check.contracts` in the config sets rules, edits that break an [edit contract](how-it-works.md#edit-contracts). The agent gets the list and fixes it before it stops, and a turn is held at most once. The opening run in a folder only records the notes. The check walks the project folder. In Claude Code that's the folder the session started in (`CLAUDE_PROJECT_DIR`), even after the agent changed folders in its shell; I tested that in a real session. In Copilot it's the folder the hook runs in, which the template sets to the repository root with `"cwd": "."`, as GitHub's hook reference describes. In Codex it's the session's working folder. In a big repo point the check at your notes, as in `python3 -m leks check --root notes`. A relative `--root` is read from the project folder, and above 100,000 files the check refuses. `--no-em-dash` drops the em dash rule. The rest is in [cli.md](cli.md#leks-check).
 
 **Copilot and the model helper.** Copilot hooks can't match a tool, so the template gives Copilot no warm-up hook. A search that finds the helper down starts it itself and waits for the models; background updates and `leks embed` stop it again when they finish. If a model takes longer to load than the search allows, that search runs without it and the lanes line says so, and the next one finds it loaded. If every search ends with `model unavailable`, the helper can't start: `leks modeld serve` in a terminal shows why. Host details are in [hosts.md](hosts.md).
 

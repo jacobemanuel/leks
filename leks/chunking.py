@@ -18,7 +18,10 @@ STATUS_WORDS = {
     'superseded': 'superseded', 'replaced': 'superseded', 'deprecated': 'superseded',
     'obsolete': 'superseded', 'withdrawn': 'superseded', 'rejected': 'superseded',
     'retired': 'superseded', 'historical': 'superseded',
-    'stale': 'stale', 'outdated': 'stale',
+    'stale': 'stale', 'outdated': 'stale', 'needs-update': 'stale', 'needs update': 'stale',
+    # a note kept for the record, same as a file in an archive folder
+    'archive': 'historical-record', 'archived': 'historical-record',
+    'stable': 'current',
 }
 
 
@@ -33,6 +36,57 @@ def front(lines):
             if m:
                 fm[m.group(1).lower()] = m.group(2).strip()[:300]
     return fm
+
+
+# "Date: 2026-08-14. Status: superseded by D-07." in the first lines of a note without front matter
+HEAD_KEYS = ('status', 'date', 'updated', 'created', 'superseded by', 'superseded-by', 'supersedes',
+             'replaced by', 'replaces', 'revisit')
+# a key starts the line or follows the end of the field before it: a full stop and a space, a semicolon
+# or a table bar. "Due date:", "Build status:" or "(status: draft)" are words of a sentence, no keys
+_HEAD_FIELD = re.compile(r'(?i)(?:^|\.\s+|;\s*|\|\s*)[*_]*(' + '|'.join(k.replace(' ', r'[\s-]+') for k in HEAD_KEYS)
+                         + r')[*_]*\s*:[*_]*\s*[*_]*(.+?)\s*[*_]*(?=\.\s|\.?$|;|\s\|)')
+
+
+def head_zone(lines, n=8):
+    """The few lines under the title that hold a note's own facts: after the front matter, before the
+    first sub-heading or code fence, at most n lines that are not blank."""
+    out = []
+    for line in lines[body_start(lines):]:
+        s = line.strip()
+        if not s:
+            continue
+        if s.startswith('```') or s.startswith('## '):
+            break
+        if s.startswith('# '):
+            if out:
+                break
+            continue
+        out.append(s)
+        if len(out) >= n:
+            break
+    return out
+
+
+def head_fields(lines):
+    """Keys like Status, Date, Supersedes written as plain lines under the title, lowercased, first one wins."""
+    hf = {}
+    for s in head_zone(lines):
+        for m in _HEAD_FIELD.finditer(s.lstrip('-*+> ')):
+            k = re.sub(r'[\s-]+', ' ', m.group(1).lower())
+            # bold inside the value, as in "superseded** by D-07", is markup and no part of it
+            hf.setdefault(k, m.group(2).replace('*', '').strip()[:300])
+    return hf
+
+
+def meta_of(lines):
+    """Front matter, filled in from the head lines for keys it lacks. Returns (fm, keys taken from head lines)."""
+    fm = front(lines)
+    took = set()
+    for k, v in head_fields(lines).items():
+        if k not in fm:
+            fm[k] = v
+            took.add(k)
+    return fm, took
 
 
 def body_start(lines):
@@ -104,8 +158,9 @@ def _status_word(v):
     return 'unknown', False
 
 
-def status_of(kind, rel, fm, classify):
-    """(status, status_src). path history first, then state notes, frozen, front matter, default."""
+def status_of(kind, rel, fm, classify, head=()):
+    """(status, status_src). path history first, then state notes, frozen, front matter or a status line
+    under the title (head names the keys that came from there), default."""
     if _hit(rel, classify, 'history'):
         return 'historical-record', 'path'
     if kind == 'state':
@@ -115,9 +170,10 @@ def status_of(kind, rel, fm, classify):
         return 'record', 'frozen'
     if raw:
         word, known = _status_word(raw)
+        src = 'status-line' if 'status' in head else 'front-matter'
         if known:
-            return word, 'front-matter'
-        return 'unknown', 'front-matter-unchecked'
+            return word, src
+        return 'unknown', src + '-unchecked'
     return 'unknown', 'rule'
 
 
@@ -218,6 +274,30 @@ EXPL = re.compile(r'(?i)(superseded|replaced|overtaken|obsoleted|withdrawn in fa
                   r'\s*(by|with|in|:)?\s*[:\s`*]*\[\[([^\]|#]+)')
 FM_SUP = re.compile(r'(?im)^superseded_by:\s*["\']?\[*([^\]\n"\']+)')
 VER = re.compile(r'(?i)(?:^|[-_ .])(v|r|rev|revision)[-_ ]?(\d+(?:[._]\d+)*)(?=$|[-_ .])')
+# an id like D-07, ADR-0012 or DEC-ARCH-001 named in a status line: "superseded by D-07", "Supersedes D-03"
+ID_REF = re.compile(r'(?i)\b(superseded[\s-]+by|replaced[\s-]+by|supersedes|replaces)\b\s*:?\s*[`*_\[]*'
+                    r'([A-Za-z]{1,10}(?:-[A-Za-z]{1,10})*-?\d{1,5}[a-z]?)(?![\w-])')
+FM_OLD = re.compile(r'(?im)^(?:supersedes|replaces):\s*["\']?\[*([^\]\n"\']+)')
+
+
+def _id_index(by_stem):
+    """Every file name, and each start of it that ends before a separator, to its notes: d-07_pedestal is
+    found as d-07_pedestal, d-07 and d. One dict lookup per id, so a long decision log builds in linear time."""
+    out = {}
+    for st, cs in by_stem.items():
+        for key in {st} | {st[:i] for i, ch in enumerate(st) if ch in '_- .'}:
+            out.setdefault(key, []).extend(cs)
+    return out
+
+
+def _by_id(ids, ident, here):
+    """Notes whose file name is the id or starts with it and a separator. One answer or none.
+    ids comes from _id_index."""
+    hits = [c for c in ids.get(ident.lower(), ()) if c[0] != here[0]]
+    if len(hits) > 1:
+        same = [c for c in hits if os.path.dirname(c[1]) == os.path.dirname(here[1])]
+        hits = same if len(same) == 1 else []
+    return hits[0] if len(hits) == 1 else None
 
 
 def succession(rows):
@@ -239,6 +319,28 @@ def succession(rows):
                 cand = [c for c in by_stem.get(st, []) if c[0] != doc_id]
                 if cand:
                     edges.setdefault(doc_id, (max(cand, key=lambda c: (c[2], c[3]))[0], 'the note says so'))
+    # a status line or front matter that names the other note by its id. Only the head lines count:
+    # "D-09 was superseded by D-11" further down a third note says nothing about that note.
+    later, ids = [], _id_index(by_stem)
+    for doc_id, path, _name, _date, _mtime, head in rows:
+        hl = (head or '').split('\n')
+        here = (doc_id, path)
+        for m in ID_REF.finditer('\n'.join(head_zone(hl))):
+            other = _by_id(ids, m.group(2), here)
+            if other is None:
+                continue
+            if m.group(1).lower().startswith(('superseded', 'replaced')):
+                edges.setdefault(doc_id, (other[0], 'the note says so'))
+            else:
+                later.append((other[0], doc_id))
+        for m in FM_OLD.finditer('\n'.join(hl[:body_start(hl)])):
+            st = os.path.basename(m.group(1).strip()).lower()
+            st = st[:-3] if st.endswith('.md') else st
+            other = _by_id(ids, st, here)
+            if other is not None:
+                later.append((other[0], doc_id))
+    for old, new in later:
+        edges.setdefault(old, (new, 'the newer note says so'))
     series = {}
     for doc_id, path, name, date, mtime, _head in rows:
         b = os.path.splitext(name)[0]

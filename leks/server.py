@@ -1,7 +1,7 @@
 """MCP server over stdio (JSON-RPC 2.0, one message per line).
 
-Six read-only tools: search, read, locate, tried, state, status. The profile
-comes from the environment (LEKS_PROFILE), never from a tool argument. No model
+Seven read-only tools: search, read, locate, tried, neighbours, state, status.
+The profile comes from the environment (LEKS_PROFILE), never from a tool argument. No model
 runs in this process: the engine asks the model daemon for numbers or goes on
 with the words lanes.
 """
@@ -15,7 +15,15 @@ import sys
 import leks
 
 SERVER_NAME = 'leks'
-DEFAULT_PROTOCOL = '2024-11-05'
+# protocol versions this server speaks, newest first. initialize echoes a version from this list
+# and answers the newest one for anything else (the lifecycle rules of the spec)
+PROTOCOLS = ('2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05')
+LATEST_PROTOCOL = PROTOCOLS[0]
+# json-rpc error codes
+PARSE_ERROR = -32700
+INVALID_REQUEST = -32600
+METHOD_NOT_FOUND = -32601
+INVALID_PARAMS = -32602
 
 INSTRUCTIONS = (
     "Local search over this project's own record: the notes, documents and code under the folders this index was "
@@ -24,7 +32,8 @@ INSTRUCTIONS = (
     'for a PDF; read the cited lines before relying on them. A line NEWER VERSION names a note that replaces the one '
     'above it. The last line of a search says which lanes ran: words only means the meaning model was not available, '
     'so a miss proves less. Split a many-part question into one search per part. Call tried before a design proposal '
-    'or an implementation plan. Use locate for a file or a code definition by name, and grep for an exact string in code.'
+    'or an implementation plan. Use locate for a file or a code definition by name, and grep for an exact string in code. '
+    'After editing a note, call neighbours and bring the listed notes in line.'
 )
 
 _STATUSES = ['current', 'record', 'historical-record', 'superseded', 'stale', 'unknown']
@@ -93,6 +102,25 @@ TOOLS = [
             'properties': {'proposal': {'type': 'string',
                                         'description': 'The proposal in one or two sentences'}},
             'required': ['proposal'],
+        },
+    },
+    {
+        'name': 'neighbours',
+        'description': (
+            'After editing a note or code file: the notes to bring in line with it. Lists notes that still hold '
+            'numbers or sentences this file no longer has, the newer and older versions in its supersession chain, '
+            'notes that link to it, files it links to, and the files closest to it in meaning, each with path, '
+            'line, status, date and why. The old text is the indexed one; pass was when the index already holds '
+            'the new text.'
+        ),
+        'inputSchema': {
+            'type': 'object',
+            'properties': {
+                'path': {'type': 'string', 'description': 'The edited file, as search cites it'},
+                'was': {'type': 'string', 'description': 'The text the file had before the edit'},
+                'n': {'type': 'integer', 'description': 'How many notes, default 10, at most 30'},
+            },
+            'required': ['path'],
         },
     },
     {
@@ -213,7 +241,7 @@ def _names():
 
 
 def call(name, args):
-    """Run one tool. Returns text for search and tried, a dict for the rest."""
+    """Run one tool. Returns text for search, tried and neighbours, a dict for the rest."""
     a = args if isinstance(args, dict) else {}
     if not isinstance(name, str) or name not in _names():
         # the asked name is never echoed back
@@ -228,6 +256,13 @@ def call(name, args):
         end = _int_arg(a, 'end', None, name)
     elif name in ('locate', 'tried'):
         q = _text_arg(a, 'query' if name == 'locate' else 'proposal', name)
+    elif name == 'neighbours':
+        path = _text_arg(a, 'path', name)
+        was = a.get('was')
+        if was is not None and not isinstance(was, str):
+            raise ToolError('neighbours needs the argument was as text, it got %s'
+                            % _KINDS.get(type(was), 'something else'))
+        n = max(1, min(_int_arg(a, 'n', 10, name), 30))
     eng = _engine()
     if name == 'search':
         return eng.render(eng.search(q, k=k, root=_opt_str(a, 'root'), status=_opt_str(a, 'status'), rerank=True))
@@ -237,6 +272,8 @@ def call(name, args):
         return eng.locate(q)
     if name == 'tried':
         return eng.tried(q)
+    if name == 'neighbours':
+        return eng.render_neighbours(eng.neighbours(path, n=n, was=was))
     if name == 'state':
         return eng.state()
     return eng.status()
@@ -278,20 +315,45 @@ def _result_text(out):
     return clean(s)
 
 
+def _error(i, code, message):
+    return {'jsonrpc': '2.0', 'id': i, 'error': {'code': code, 'message': message}}
+
+
+def _call_problem(params):
+    """Why a tools/call request breaks the CallToolRequest shape, or None. Never echoes the asked name."""
+    if not isinstance(params, dict):
+        return 'Invalid params: tools/call needs params as an object'
+    name = params.get('name')
+    if not isinstance(name, str) or not name:
+        return 'Invalid params: tools/call needs the tool name as text'
+    if name not in _names():
+        return 'Unknown tool: the tools are ' + ', '.join(_names()[:-1]) + ' and ' + _names()[-1]
+    args = params.get('arguments')
+    if args is not None and not isinstance(args, dict):
+        return 'Invalid params: arguments must be an object'
+    return None
+
+
 def handle(m, tools=None):
     """One JSON-RPC message in, the reply dict out (None for notifications and junk)."""
     if not isinstance(m, dict) or m.get('id') is None:
         return None
     i, me = m['id'], m.get('method')
     params = m.get('params')
+    if me == 'tools/call':
+        # unknown tools and requests that break the CallToolRequest shape are protocol errors;
+        # argument values the tool cannot use come back as a tool result with isError
+        bad = _call_problem(params)
+        if bad:
+            return _error(i, INVALID_PARAMS, bad)
     if not isinstance(params, dict):
         params = {}
     if me == 'initialize':
         ver = params.get('protocolVersion')
         r = {
-            'protocolVersion': ver if isinstance(ver, str) and ver else DEFAULT_PROTOCOL,
+            'protocolVersion': ver if ver in PROTOCOLS else LATEST_PROTOCOL,
             'capabilities': {'tools': {}},
-            'serverInfo': {'name': SERVER_NAME, 'version': getattr(leks, '__version__', '3.0.0')},
+            'serverInfo': {'name': SERVER_NAME, 'version': getattr(leks, '__version__', '3.1.0')},
             'instructions': INSTRUCTIONS,
         }
     elif me == 'tools/list':
@@ -306,8 +368,37 @@ def handle(m, tools=None):
             # a short line that says what to do, never a path, note text or a traceback
             r = {'content': [{'type': 'text', 'text': clean(error_text(params.get('name'), e))}], 'isError': True}
     else:
-        return {'jsonrpc': '2.0', 'id': i, 'error': {'code': -32601, 'message': 'no such method'}}
+        return _error(i, METHOD_NOT_FOUND, 'no such method')
     return {'jsonrpc': '2.0', 'id': i, 'result': r}
+
+
+def reply_to_line(line):
+    """The text to write back for one input line, or None.
+
+    A batch (a JSON array, which protocol version 2025-03-26 allows) gets an array
+    of the replies; an empty array is an invalid request. A line that is not JSON
+    gets a parse error with a null id, as JSON-RPC 2.0 asks. So does a line nested
+    deeper than the decoder goes, which would else end the server.
+    """
+    try:
+        m = json.loads(line)
+    except (ValueError, RecursionError):
+        if not line.strip():
+            return None
+        return json.dumps(_error(None, PARSE_ERROR, 'Parse error'))
+    if isinstance(m, list):
+        if not m:
+            return json.dumps(_error(None, INVALID_REQUEST, 'Invalid Request: empty batch'))
+        out = [r for r in (_one(x) for x in m) if r is not None]
+        return json.dumps(out) if out else None
+    reply = _one(m)
+    return None if reply is None else json.dumps(reply)
+
+
+def _one(m):
+    if not isinstance(m, dict):
+        return _error(None, INVALID_REQUEST, 'Invalid Request: a message must be an object')
+    return handle(m)
 
 
 def main(cfg=None):
@@ -327,14 +418,10 @@ def main(cfg=None):
         except Exception:
             pass
     for line in sys.stdin:
-        try:
-            m = json.loads(line)
-        except ValueError:
+        out = reply_to_line(line)
+        if out is None:
             continue
-        reply = handle(m)
-        if reply is None:
-            continue
-        sys.stdout.write(json.dumps(reply) + '\n')
+        sys.stdout.write(out + '\n')
         sys.stdout.flush()
 
 

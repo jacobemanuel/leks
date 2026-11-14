@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="820" height="560" viewBox="0 0 820 560" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
 <title id="title">30 model stacks, English dev top five against the search helper memory under load</title>
-<desc id="desc">mdense__mlate 86.6% at 6.8 GB, flag; arctic__q3r 85.4% at 16.0 GB, miss; gemma2__mlate 85.4% at 6.9 GB, flag; arctic__mlate 84.1% at 8.0 GB, flag; granite311__mlate 84.1% at 7.4 GB, flag; qwen3e__mlate 84.1% at 7.9 GB, flag; arctic__none 82.9% at 3.6 GB, pass; bgem3__mlate 82.9% at 8.1 GB, flag; bgem3__q3r 82.9% at 13.0 GB, miss; granite311__q3r 82.9% at 14.0 GB, miss; mdense__q3r 82.9% at 14.0 GB, miss; qwen3e__q3r 82.9% at 16.0 GB, miss; arctic__granite_rerank 81.7% at 4.7 GB, pass; bgem3__granite_rerank 81.7% at 4.8 GB, pass; gemma2__granite_rerank 81.7% at 4.1 GB, pass; gemma2__q3r 81.7% at 15.0 GB, miss; qwen3e__granite_rerank 81.7% at 4.3 GB, pass; granite311__granite_rerank 80.5% at 4.0 GB, pass; mdense__granite_rerank 80.5% at 3.7 GB, pass; arctic__msmarco 79.3% at 3.7 GB, pass; bgem3__msmarco 79.3% at 3.8 GB, pass; bgem3__none 79.3% at 2.7 GB, pass; gemma2__none 79.3% at 3.0 GB, pass; granite311__none 79.3% at 1.9 GB, pass; mdense__none 79.3% at 1.7 GB, pass; qwen3e__none 79.3% at 3.6 GB, pass; gemma2__msmarco 78.0% at 3.1 GB, pass; granite311__msmarco 78.0% at 3.0 GB, pass; mdense__msmarco 78.0% at 2.7 GB, pass; qwen3e__msmarco 76.8% at 4.7 GB, pass. LEKS 2.0 default 68.3%.</desc>
+<desc id="desc">mdense__mlate 86.6% at 6.8 GiB, flag; arctic__q3r 85.4% at 16.0 GiB, miss; gemma2__mlate 85.4% at 6.9 GiB, flag; arctic__mlate 84.1% at 8.0 GiB, flag; granite311__mlate 84.1% at 7.4 GiB, flag; qwen3e__mlate 84.1% at 7.9 GiB, flag; arctic__none 82.9% at 3.6 GiB, pass; bgem3__mlate 82.9% at 8.1 GiB, flag; bgem3__q3r 82.9% at 13.0 GiB, miss; granite311__q3r 82.9% at 14.0 GiB, miss; mdense__q3r 82.9% at 14.0 GiB, miss; qwen3e__q3r 82.9% at 16.0 GiB, miss; arctic__granite_rerank 81.7% at 4.7 GiB, pass; bgem3__granite_rerank 81.7% at 4.8 GiB, pass; gemma2__granite_rerank 81.7% at 4.1 GiB, pass; gemma2__q3r 81.7% at 15.0 GiB, miss; qwen3e__granite_rerank 81.7% at 4.3 GiB, pass; granite311__granite_rerank 80.5% at 4.0 GiB, pass; mdense__granite_rerank 80.5% at 3.7 GiB, pass; arctic__msmarco 79.3% at 3.7 GiB, pass; bgem3__msmarco 79.3% at 3.8 GiB, pass; bgem3__none 79.3% at 2.7 GiB, pass; gemma2__none 79.3% at 3.0 GiB, pass; granite311__none 79.3% at 1.9 GiB, pass; mdense__none 79.3% at 1.7 GiB, pass; qwen3e__none 79.3% at 3.6 GiB, pass; gemma2__msmarco 78.0% at 3.1 GiB, pass; granite311__msmarco 78.0% at 3.0 GiB, pass; mdense__msmarco 78.0% at 2.7 GiB, pass; qwen3e__msmarco 76.8% at 4.7 GiB, pass. LEKS 2.0 default 68.3%.</desc>
 <rect x="0.5" y="0.5" width="819" height="559" fill="#FFFFFF" stroke="#D0D7DE"/>
 <text x="24.0" y="34.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">30 model stacks: accuracy against memory</text>
 <text x="24.0" y="56.0" font-size="13" fill="#59636E" font-weight="normal" text-anchor="start">Right note in the top five on 82 English dev questions, against the search helper's memory under load</text>
@@ -8,7 +8,7 @@
 <circle cx="30" cy="100" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"/>
 <text x="42.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">passed both gates</text>
 <rect x="178" y="94" width="12" height="12" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 184 100)"/>
-<text x="196.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">over the first 6 GB memory guard</text>
+<text x="196.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">over the first 6 GiB memory guard</text>
 <circle cx="430" cy="100" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"/>
 <text x="442.0" y="104.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">missed a gate (8 s latency or memory)</text>
 <line x1="78.0" y1="387.3" x2="790.0" y2="387.3" stroke="#EAEEF2"/>
@@ -19,53 +19,53 @@
 <text x="70.0" y="259.5" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">80%</text>
 <line x1="78.0" y1="189.5" x2="790.0" y2="189.5" stroke="#EAEEF2"/>
 <text x="70.0" y="193.5" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">85%</text>
-<text x="78.0" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0 GB</text>
-<text x="245.5" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">4 GB</text>
-<text x="413.1" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">8 GB</text>
-<text x="580.6" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">12 GB</text>
-<text x="748.1" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">16 GB</text>
+<text x="78.0" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">0 GiB</text>
+<text x="245.5" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">4 GiB</text>
+<text x="413.1" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">8 GiB</text>
+<text x="580.6" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">12 GiB</text>
+<text x="748.1" y="460.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">16 GiB</text>
 <line x1="78.0" y1="440.0" x2="790.0" y2="440.0" stroke="#D0D7DE"/>
 <line x1="329.3" y1="144.0" x2="329.3" y2="440.0" stroke="#59636E" stroke-width="1" stroke-dasharray="2 3"/>
 <line x1="413.1" y1="144.0" x2="413.1" y2="440.0" stroke="#59636E" stroke-width="1" stroke-dasharray="2 3"/>
-<text x="323.3" y="140.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="end">first guard 6 GB</text>
-<text x="419.1" y="140.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">raised guard 8 GB</text>
+<text x="323.3" y="140.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="end">first guard 6 GiB</text>
+<text x="419.1" y="140.0" font-size="11" fill="#59636E" font-weight="normal" text-anchor="start">raised guard 8 GiB</text>
 <line x1="78.0" y1="409.7" x2="790.0" y2="409.7" stroke="#6E7781" stroke-width="1.5" stroke-dasharray="6 4"/>
 <text x="790.0" y="403.7" font-size="11" fill="#59636E" font-weight="normal" text-anchor="end">LEKS 2.0 default, 68.3%</text>
-<rect x="356.1" y="163.5" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 361.1 168.5)"><title>mdense__mlate: 86.6%, 6.8 GB, over the first guard</title></rect>
-<circle cx="748.1" cy="184.3" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>arctic__q3r: 85.4%, 16.0 GB, missed a gate</title></circle>
-<rect x="362.7" y="179.3" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 367.7 184.3)"><title>gemma2__mlate: 85.4%, 6.9 GB, over the first guard</title></rect>
-<rect x="409.9" y="196.4" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 414.9 201.4)"><title>arctic__mlate: 84.1%, 8.0 GB, over the first guard</title></rect>
-<rect x="384.0" y="196.4" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 389.0 201.4)"><title>granite311__mlate: 84.1%, 7.4 GB, over the first guard</title></rect>
-<rect x="405.6" y="196.4" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 410.6 201.4)"><title>qwen3e__mlate: 84.1%, 7.9 GB, over the first guard</title></rect>
-<rect x="414.3" y="212.2" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 419.3 217.2)"><title>bgem3__mlate: 82.9%, 8.1 GB, over the first guard</title></rect>
-<circle cx="622.5" cy="217.2" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>bgem3__q3r: 82.9%, 13.0 GB, missed a gate</title></circle>
-<circle cx="664.4" cy="217.2" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>granite311__q3r: 82.9%, 14.0 GB, missed a gate</title></circle>
-<circle cx="664.4" cy="217.2" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>mdense__q3r: 82.9%, 14.0 GB, missed a gate</title></circle>
-<circle cx="748.1" cy="217.2" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>qwen3e__q3r: 82.9%, 16.0 GB, missed a gate</title></circle>
-<circle cx="706.2" cy="233.0" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>gemma2__q3r: 81.7%, 15.0 GB, missed a gate</title></circle>
-<circle cx="230.6" cy="217.2" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>arctic__none: 82.9%, 3.6 GB, passed</title></circle>
-<circle cx="274.3" cy="233.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>arctic__granite_rerank: 81.7%, 4.7 GB, passed</title></circle>
-<circle cx="278.3" cy="233.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>bgem3__granite_rerank: 81.7%, 4.8 GB, passed</title></circle>
-<circle cx="249.0" cy="233.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>gemma2__granite_rerank: 81.7%, 4.1 GB, passed</title></circle>
-<circle cx="258.4" cy="233.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>qwen3e__granite_rerank: 81.7%, 4.3 GB, passed</title></circle>
-<circle cx="243.6" cy="248.9" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>granite311__granite_rerank: 80.5%, 4.0 GB, passed</title></circle>
-<circle cx="232.4" cy="248.9" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>mdense__granite_rerank: 80.5%, 3.7 GB, passed</title></circle>
-<circle cx="232.2" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>arctic__msmarco: 79.3%, 3.7 GB, passed</title></circle>
-<circle cx="235.9" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>bgem3__msmarco: 79.3%, 3.8 GB, passed</title></circle>
-<circle cx="192.5" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>bgem3__none: 79.3%, 2.7 GB, passed</title></circle>
-<circle cx="205.2" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>gemma2__none: 79.3%, 3.0 GB, passed</title></circle>
-<circle cx="158.3" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>granite311__none: 79.3%, 1.9 GB, passed</title></circle>
-<circle cx="147.9" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>mdense__none: 79.3%, 1.7 GB, passed</title></circle>
-<circle cx="230.3" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>qwen3e__none: 79.3%, 3.6 GB, passed</title></circle>
-<circle cx="206.8" cy="281.8" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>gemma2__msmarco: 78.0%, 3.1 GB, passed</title></circle>
-<circle cx="201.8" cy="281.8" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>granite311__msmarco: 78.0%, 3.0 GB, passed</title></circle>
-<circle cx="191.5" cy="281.8" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>mdense__msmarco: 78.0%, 2.7 GB, passed</title></circle>
-<circle cx="273.8" cy="297.6" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>qwen3e__msmarco: 76.8%, 4.7 GB, passed</title></circle>
+<rect x="356.1" y="163.5" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 361.1 168.5)"><title>mdense__mlate: 86.6%, 6.8 GiB, over the first guard</title></rect>
+<circle cx="748.1" cy="184.3" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>arctic__q3r: 85.4%, 16.0 GiB, missed a gate</title></circle>
+<rect x="362.7" y="179.3" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 367.7 184.3)"><title>gemma2__mlate: 85.4%, 6.9 GiB, over the first guard</title></rect>
+<rect x="409.9" y="196.4" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 414.9 201.4)"><title>arctic__mlate: 84.1%, 8.0 GiB, over the first guard</title></rect>
+<rect x="384.0" y="196.4" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 389.0 201.4)"><title>granite311__mlate: 84.1%, 7.4 GiB, over the first guard</title></rect>
+<rect x="405.6" y="196.4" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 410.6 201.4)"><title>qwen3e__mlate: 84.1%, 7.9 GiB, over the first guard</title></rect>
+<rect x="414.3" y="212.2" width="10" height="10" fill="#BF8700" stroke="#FFFFFF" stroke-width="2" transform="rotate(45 419.3 217.2)"><title>bgem3__mlate: 82.9%, 8.1 GiB, over the first guard</title></rect>
+<circle cx="622.5" cy="217.2" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>bgem3__q3r: 82.9%, 13.0 GiB, missed a gate</title></circle>
+<circle cx="664.4" cy="217.2" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>granite311__q3r: 82.9%, 14.0 GiB, missed a gate</title></circle>
+<circle cx="664.4" cy="217.2" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>mdense__q3r: 82.9%, 14.0 GiB, missed a gate</title></circle>
+<circle cx="748.1" cy="217.2" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>qwen3e__q3r: 82.9%, 16.0 GiB, missed a gate</title></circle>
+<circle cx="706.2" cy="233.0" r="5" fill="#FFFFFF" stroke="#6E7781" stroke-width="2"><title>gemma2__q3r: 81.7%, 15.0 GiB, missed a gate</title></circle>
+<circle cx="230.6" cy="217.2" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>arctic__none: 82.9%, 3.6 GiB, passed</title></circle>
+<circle cx="274.3" cy="233.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>arctic__granite_rerank: 81.7%, 4.7 GiB, passed</title></circle>
+<circle cx="278.3" cy="233.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>bgem3__granite_rerank: 81.7%, 4.8 GiB, passed</title></circle>
+<circle cx="249.0" cy="233.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>gemma2__granite_rerank: 81.7%, 4.1 GiB, passed</title></circle>
+<circle cx="258.4" cy="233.0" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>qwen3e__granite_rerank: 81.7%, 4.3 GiB, passed</title></circle>
+<circle cx="243.6" cy="248.9" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>granite311__granite_rerank: 80.5%, 4.0 GiB, passed</title></circle>
+<circle cx="232.4" cy="248.9" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>mdense__granite_rerank: 80.5%, 3.7 GiB, passed</title></circle>
+<circle cx="232.2" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>arctic__msmarco: 79.3%, 3.7 GiB, passed</title></circle>
+<circle cx="235.9" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>bgem3__msmarco: 79.3%, 3.8 GiB, passed</title></circle>
+<circle cx="192.5" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>bgem3__none: 79.3%, 2.7 GiB, passed</title></circle>
+<circle cx="205.2" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>gemma2__none: 79.3%, 3.0 GiB, passed</title></circle>
+<circle cx="158.3" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>granite311__none: 79.3%, 1.9 GiB, passed</title></circle>
+<circle cx="147.9" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>mdense__none: 79.3%, 1.7 GiB, passed</title></circle>
+<circle cx="230.3" cy="264.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>qwen3e__none: 79.3%, 3.6 GiB, passed</title></circle>
+<circle cx="206.8" cy="281.8" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>gemma2__msmarco: 78.0%, 3.1 GiB, passed</title></circle>
+<circle cx="201.8" cy="281.8" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>granite311__msmarco: 78.0%, 3.0 GiB, passed</title></circle>
+<circle cx="191.5" cy="281.8" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>mdense__msmarco: 78.0%, 2.7 GiB, passed</title></circle>
+<circle cx="273.8" cy="297.6" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>qwen3e__msmarco: 76.8%, 4.7 GiB, passed</title></circle>
 <line x1="353.1" y1="164.5" x2="321.1" y2="152.5" stroke="#59636E"/>
 <text x="317.1" y="154.5" font-size="12" fill="#1F2328" font-weight="600" text-anchor="end">shipped: mDenseOn + mLateOn</text>
 <line x1="246.0" y1="240.0" x2="209.0" y2="339.8" stroke="#59636E"/>
 <text x="86.0" y="353.8" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">tournament pick:</text>
 <text x="86.0" y="368.8" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">EmbeddingGemma 2 + Granite reranker</text>
-<text x="24.0" y="526.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="start">Latency gate: 8 s p95 under load. Memory budget: 6 GB in the tournament, 8 GB from the finals on (amendment G).</text>
+<text x="24.0" y="526.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="start">Latency gate: 8 s p95 under load. Memory budget: 6 GiB in the tournament, 8 GiB from the finals on (Amendment G). 1 GiB = 1,024 MiB.</text>
 <text x="24.0" y="542.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="start">Every stack with the Qwen3 reranker (q3r) took 25 to 28.5 s p95 under load and dropped out.</text>
 </svg>

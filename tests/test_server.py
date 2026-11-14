@@ -12,11 +12,12 @@ import unittest
 from types import SimpleNamespace
 from unittest import mock
 
+import leks
 from leks import build, config, server
 from tests import helpers
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-NAMES = ['search', 'read', 'locate', 'tried', 'state', 'status']
+NAMES = ['search', 'read', 'locate', 'tried', 'neighbours', 'state', 'status']
 
 
 class FakeEngine:
@@ -71,7 +72,12 @@ class InProcessTests(unittest.TestCase):
         self.assertEqual(r['serverInfo']['name'], 'leks')
         self.assertEqual(r['capabilities'], {'tools': {}})
         self.assertEqual(r['instructions'], server.INSTRUCTIONS)
-        self.assertEqual(self.rpc('initialize')['result']['protocolVersion'], '2024-11-05')
+        # no version or one it does not speak: the newest it does speak
+        self.assertEqual(self.rpc('initialize')['result']['protocolVersion'], server.LATEST_PROTOCOL)
+        self.assertEqual(self.rpc('initialize', {'protocolVersion': '1999-01-01'})['result']['protocolVersion'],
+                         '2025-11-25')
+        for v in server.PROTOCOLS:
+            self.assertEqual(self.rpc('initialize', {'protocolVersion': v})['result']['protocolVersion'], v)
 
     def test_tools_list(self):
         tools = self.rpc('tools/list')['result']['tools']
@@ -97,6 +103,27 @@ class InProcessTests(unittest.TestCase):
         self.assertIsNone(server.handle({'jsonrpc': '2.0', 'method': 'notifications/initialized'}))
         self.assertIsNone(server.handle({'jsonrpc': '2.0', 'method': 'no/such'}))
         self.assertIsNone(server.handle([1, 2]))
+
+    def test_lines_batches_and_parse_errors(self):
+        one = json.loads(server.reply_to_line('{"jsonrpc": "2.0", "id": 7, "method": "ping"}\n'))
+        self.assertEqual(one, {'jsonrpc': '2.0', 'id': 7, 'result': {}})
+        # a batch (2025-03-26) answers every request in it and skips notifications
+        out = json.loads(server.reply_to_line(json.dumps([
+            {'jsonrpc': '2.0', 'id': 1, 'method': 'ping'},
+            {'jsonrpc': '2.0', 'method': 'notifications/initialized'},
+            {'jsonrpc': '2.0', 'id': 2, 'method': 'no/such'}, 5])))
+        self.assertEqual([r.get('id') for r in out], [1, 2, None])
+        self.assertEqual([r.get('error', {}).get('code') for r in out], [None, -32601, -32600])
+        self.assertIsNone(server.reply_to_line(json.dumps([{'jsonrpc': '2.0', 'method': 'notifications/x'}])))
+        self.assertEqual(json.loads(server.reply_to_line('[]'))['error']['code'], -32600)
+        bad = json.loads(server.reply_to_line('{not json'))
+        self.assertEqual((bad['id'], bad['error']['code']), (None, -32700))
+        self.assertEqual(json.loads(server.reply_to_line('"text"'))['error']['code'], -32600)
+        self.assertIsNone(server.reply_to_line('\n'))
+        # nested deeper than the decoder goes: a parse error, and the server answers the next line
+        deep = json.loads(server.reply_to_line('[' * 200000 + ']' * 200000))
+        self.assertEqual((deep['id'], deep['error']['code']), (None, -32700))
+        self.assertEqual(json.loads(server.reply_to_line('{"jsonrpc": "2.0", "id": 8, "method": "ping"}'))['id'], 8)
 
     def call(self, name, args=None):
         r = self.rpc('tools/call', {'name': name, 'arguments': args or {}})['result']
@@ -162,9 +189,14 @@ class InProcessTests(unittest.TestCase):
         self.assertEqual(text, 'read needs the argument end as a whole number')
         r, text = self.call('tried', {'proposal': None})
         self.assertEqual(text, 'tried needs the argument proposal as text, it got null')
-        r, text = self.call('nope /etc/passwd')
-        self.assertEqual(text, 'unknown tool: the tools are search, read, locate, tried, state and status')
-        r = self.rpc('tools/call', {'name': 'state', 'arguments': 'junk'})['result']
+        # an unknown tool and arguments that are not an object are protocol errors, the name is never echoed
+        e = self.rpc('tools/call', {'name': 'nope /etc/passwd'})['error']
+        self.assertEqual(e, {'code': -32602, 'message': 'Unknown tool: the tools are ' + ', '.join(
+            server._names()[:-1]) + ' and ' + server._names()[-1]})
+        self.assertEqual(self.rpc('tools/call', {'name': 'state', 'arguments': 'junk'})['error']['code'], -32602)
+        self.assertEqual(self.rpc('tools/call', {'arguments': {}})['error']['code'], -32602)
+        self.assertEqual(self.rpc('tools/call', [1])['error']['code'], -32602)
+        r = self.rpc('tools/call', {'name': 'state'})['result']
         self.assertNotIn('isError', r)
         # a null number takes the default
         self.call('search', {'query': 'x', 'k': None})
@@ -306,7 +338,7 @@ class SubprocessTests(unittest.TestCase):
     def test_a_handshake_and_tool_list(self):
         r = self.c.rpc('initialize', {'protocolVersion': '2024-11-05', 'capabilities': {}})['result']
         self.assertEqual(r['serverInfo']['name'], 'leks')
-        self.assertEqual(r['serverInfo']['version'], '3.0.0')
+        self.assertEqual(r['serverInfo']['version'], leks.__version__)
         tools = self.c.rpc('tools/list')['result']['tools']
         self.assertEqual([t['name'] for t in tools], NAMES)
         self.assertNotIn('use it first', json.dumps(tools).lower())

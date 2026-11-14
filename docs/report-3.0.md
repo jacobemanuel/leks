@@ -1,10 +1,10 @@
 # LEKS 3.0: how the models were chosen and what the tests show
 
-Report for release 3.0.0, November 2026. Every number below comes from my own research knowledge base, a real and private record I have worked in every day since February 2026, measured on macOS with Apple silicon. Each table says how many questions stand behind it.
+Report for release 3.0.0, November 2026. Every number below comes from a real and private record I have worked in every day since February 2026, measured on macOS with Apple silicon. Each table says how many questions stand behind it.
 
 ## Summary
 
-LEKS 3.0 is a local search layer that finds the right project note for a coding agent before it answers. Its two models came out of a tournament fixed in advance: 30 stacks (6 embedding models by 5 reranker settings) on 82 frozen English development questions, under a latency gate and a memory budget. Inside the 6 GB budget the fixed rule picked gemma2 with granite_rerank. Eight finalists, drawn by rule before any held-out question was loaded, then met 158 held-out English questions, scored once. mDenseOn with mLateOn (mdense__mlate) won the finals with the right note in the top five for 85.4% (95% CI 79.7 to 90.5), 10.8 points above the pick (20 questions against 3, Holm-adjusted p 0.0034). With the finals the memory budget moved to 8 GB (Amendment G); the pair holds about 6.9 GB under load, so it fits, and it ships. R1, the default engine of LEKS 2.0, read 61.4% (53.8 to 69.0) on the same questions, and the pick beat it as well: 74.7% (67.7 to 81.6), 29 questions against 8, exact McNemar p 0.0008, Holm p 0.0015. In my Polish wording R1 found 9.5% and the shipped pair 69.0%.
+LEKS 3.0 is a local search layer that finds the right project note for a coding agent before it answers. Its two models came out of a tournament fixed in advance: 30 stacks (6 embedding models by 5 reranker settings) on 82 frozen English development questions, under a latency gate and a memory budget. Inside the 6 GiB budget the fixed rule picked gemma2 with granite_rerank. Eight finalists, drawn by rule before any held-out question was loaded, then met 158 held-out English questions, scored once. mDenseOn with mLateOn (mdense__mlate) won the finals with the right note in the top five for 85.4% (95% CI 79.7 to 90.5), 10.8 points above the pick (20 questions against 3, Holm-adjusted p 0.0034). With the finals the memory budget moved to 8 GiB (Amendment G); the pair holds about 6.8 GiB under load, so it fits, and it ships. R1, the default engine of LEKS 2.0, read 61.4% (53.8 to 69.0) on the same questions, and the pick beat it as well: 74.7% (67.7 to 81.6), 29 questions against 8, exact McNemar p 0.0008, Holm p 0.0015. In my Polish wording R1 found 9.5% and the shipped pair 69.0%.
 
 A confirmation test fixed in advance (Amendment L, section 4.4) then put 120 fresh questions, written after the pair went live from documents drawn at random, 40 of them with a PDF page as the answer, to the shipped pair, the pick and R1, each part scored once. The shipped pair reached 83.3% against 46.7% for R1 (46 questions found only by the pair, 2 only by R1, Holm p < 0.0001) and 80.0% for the pick. It reads PDF pages at 95.0%, and it leads R1 on English notes as well (77.5 against 70.0%). Its widest margins over the pick are PDF pages (95.0 against 82.5%) and questions asked in German (84.2 against 58.3%) and Polish (70.0 against 40.8%). Put into English first, German and Polish questions reach the English level (84.2 and 82.5% against 83.3%).
 
@@ -93,7 +93,7 @@ R1 ran untouched through my harness on the same notes. The scoring counts only q
 | fresh, Polish put into English (120) | 47.5 | 76.7 | 82.5 |
 | characters read to the gold passage, held-out English | 1,949 | 1,522 | 1,272 |
 | median search time, held-out English | 437 ms | 1,220 ms | 1,436 ms |
-| memory of the search | 2.0 publishes about 51 MB on its 91 pages | 4,180 MB under load | 6,921 MB under load, peaks up to 8,325 MB |
+| memory of the search | 2.0 publishes about 51 MB on its 91 pages | 4,180 MiB under load | 6,921 MiB under load, peaks up to 8,325 MiB |
 
 Two reconstructions of 2.0's optional engines ran on dev as comparison arms (section 3.4): R4-like read 73.2% English top-5 and R5-like 75.6%, with 40.2% and 32.9% on Polish as written.
 
@@ -164,7 +164,7 @@ A question counts when it is answerable and its gold note is visible to the aski
 
 **Metrics.** The primary metric is English dev top-5: answerable questions with gold visible to the role, scored to rank 10, one passage per note. Secondary: top-1, top-10, MRR, both Polish forms, latency, memory, cold start, embedding rate, store size and the cost proxy. The cost proxy is the mean of 700 + 260 x (r - 1) characters for a gold passage at rank r from 1 to 5, and 3,480 characters for a miss, which stands for the whole output read plus one more search. It counts passage characters only; section 4.9 measures the real bill.
 
-**Gates under load.** Latency gate: p95 search time of at most 8 s in the live path, with 20 s for the embedder and 8 s for the reranker; a search that lost a model lane counts as over. Memory guard: 6,144 MB for the helper holding both models; a stack above it is flagged and wins only if no other stack passes. Each stack ran in its own helper while four CPU busy loops and one other search ran beside it, over 42 timed searches; p95 is the third largest of the 42. Memory is the larger of `top` and `ps`, sampled every 2 s.
+**Gates under load.** Latency gate: p95 search time of at most 8 s in the live path, with 20 s for the embedder and 8 s for the reranker; a search that lost a model lane counts as over. Memory guard: 6,144 MiB (6 GiB) for the helper holding both models; a stack above it is flagged and wins only if no other stack passes. Each stack ran in its own helper while four CPU busy loops and one other search ran beside it, over 42 timed searches; p95 is the third largest of the 42. Memory is the larger of `top` and `ps`, sampled every 2 s, in MiB as both report it (1 MiB = 1,048,576 bytes, 1 GiB = 1,024 MiB).
 
 **Choice rule.** The leader is the stack with the highest English dev top-5 among those that pass the gate and the guard. A stack within 2.0 points of the leader and not separated from it at Holm p below 0.05 is tied. Among tied stacks, in this order: lower cost proxy (to 100 characters), higher English MRR (to 0.01), lower p95 under load (to 100 ms), higher translated Polish top-5, higher Polish top-5 as written, lower memory (to half a gigabyte), a model-provenance preference of mine, name. The same rule run only on the stacks that preference does not flag names a second pick.
 
@@ -193,7 +193,7 @@ Each amendment is dated; section 6 lists the hashes of the plan and the main ame
 - **D**, 7 Nov, a real error fixed end to end: the steps after the merge (pushing down a replaced note, lifting the newer one) re-sorted by merged scores and discarded the reranker's order in the libraries that have replaced notes. A test with a stand-in reranker failed 6 checks on the old code and passes on the new one; 40 result files ran again. Only counts of changed ranks and timings were read to find it.
 - **E**, 7 Nov: an independent read-only audit, blind to top-k, MRR and cost, found no error that moves a number in the choice and added six checks for after the run (section 4.1).
 - **F**, 8 Nov, before any held-out question was loaded: finalists by rule, held-out scoring, the switch rule and the end-to-end test. It names no stack.
-- **G**, 9 Nov, with the finals: the memory guard went from 6,144 to 8,192 MB, for live use and for the switch rule (section 4.2).
+- **G**, 9 Nov, with the finals: the memory guard went from 6,144 to 8,192 MiB (6 to 8 GiB), for live use and for the switch rule (section 4.2).
 - **H**, 10 Nov, before any end-to-end run, with an addendum after a review of the harness: arms, settings, questions, measures, hygiene and budget of F5.
 - **I**, 10 Nov, before any run on the live stack: a long mixed session and ten development tasks, search on and off.
 - **J**, 10 Nov, before any analysed run: three working days of mixed work.
@@ -222,18 +222,18 @@ F5 asks what the agent pays, in tokens and time, per correct answer, with each k
 
 ### 4.1 Development tournament
 
-Of the 30 stacks, 18 pass both the latency gate and the memory guard. The six mlate stacks pass the latency gate (p95 4,401.5 to 4,809.8 ms) and are flagged by the guard (6,921 to 8,345 MB). The six q3r stacks miss both: 41 or 42 of their 42 timed searches lost a model lane, at 13,312 to 16,384 MB.
+Of the 30 stacks, 18 pass both the latency gate and the memory guard. The six mlate stacks pass the latency gate (p95 4,401.5 to 4,809.8 ms) and are flagged by the guard (6,921 to 8,345 MiB). The six q3r stacks miss both: 41 or 42 of their 42 timed searches lost a model lane, at 13,312 to 16,384 MiB.
 
 - Leader among the 18: arctic__none, 82.9 (95% CI 74.4 to 90.2).
 - Tied with it (within 2.0 points, Holm p 1.0000 over 17 comparisons): arctic__granite_rerank, bgem3__granite_rerank, gemma2__granite_rerank and qwen3e__granite_rerank, all 81.7.
 - Tie-breaks: all five cost proxies round to 1,300 characters; English MRR rounds to 0.70 for gemma2__granite_rerank (0.703) and bgem3__granite_rerank (0.698), lower for the rest; p95 under load then decides, 4,018.0 against 4,171.1 ms.
 - Pick: **gemma2__granite_rerank**. It is also the best stack the provenance preference does not flag, so that preference changed nothing.
 
-Six flagged stacks score above the pick, and the 6 GB guard held them back from the pick; all six went on to the finals: mdense__mlate 86.6, gemma2__mlate 85.4, arctic__mlate, granite311__mlate and qwen3e__mlate 84.1, bgem3__mlate 82.9.
+Six flagged stacks score above the pick, and the 6 GiB guard held them back from the pick; all six went on to the finals: mdense__mlate 86.6, gemma2__mlate 85.4, arctic__mlate, granite311__mlate and qwen3e__mlate 84.1, bgem3__mlate 82.9.
 
-**Table 1. All 30 stacks on dev, sorted by English top-5.** n = 82 counted questions per form. Status: pass (both limits), flag (passes latency, above the 6,144 MB guard), miss (over 8 s at p95 and over the guard).
+**Table 1. All 30 stacks on dev, sorted by English top-5.** n = 82 counted questions per form. Status: pass (both limits), flag (passes latency, above the 6,144 MiB guard), miss (over 8 s at p95 and over the guard).
 
-| stack | EN top-5 (95% CI) | EN top-1 | EN MRR | cost proxy, chars | PL translated top-5 | PL as written top-5 | p95 under load, ms | memory under load, MB | status |
+| stack | EN top-5 (95% CI) | EN top-1 | EN MRR | cost proxy, chars | PL translated top-5 | PL as written top-5 | p95 under load, ms | memory under load, MiB | status |
 |---|---|---|---|---|---|---|---|---|---|
 | mdense__mlate | 86.6 (79.3 to 93.9) | 62.2 | 0.718 | 1,200 | 85.4 | 72.0 | 4,593.8 | 6,921 | flag |
 | arctic__q3r | 85.4 (76.8 to 92.7) | 48.8 | 0.627 | 1,294 | 81.7 | 70.7 | 28,338.1, 42 of 42 lost a lane | 16,384 | miss |
@@ -298,7 +298,7 @@ The tie band holds a difference of one question, and an exact McNemar test at 0.
 
 **Supplementary dev questions** (70, gold in PDFs, code or file names; PDF passages had no vectors yet). English top-5: reranked stacks 57.1 to 68.6 (the pick 68.6, mdense__mlate 65.7), stacks with no reranker 32.9 to 40.0, words_hybrid 62.9, bm25 24.3, grep 0.0. Polish: reranked stacks 14.3 to 31.4, words_hybrid 15.7.
 
-**Checks after the run (Amendment E).** At live settings (5 results, 2 passages per note) the full rule gives the same pick. Replays of two stacks: 98 rows each, 0 rank differences. One coarser vector grid step (1/256 instead of 1/512) moved the pick's top-5 by one question. All six mlate stacks stayed above 6,144 MB at batch 8 as well, so every flag stood. 18 direct tests of the rule on the real code passed.
+**Checks after the run (Amendment E).** At live settings (5 results, 2 passages per note) the full rule gives the same pick. Replays of two stacks: 98 rows each, 0 rank differences. One coarser vector grid step (1/256 instead of 1/512) moved the pick's top-5 by one question. All six mlate stacks stayed above 6,144 MiB at batch 8 as well, so every flag stood. 18 direct tests of the rule on the real code passed.
 
 ### 4.2 Held-out test
 
@@ -341,7 +341,7 @@ R1 was not run on the supplementary parts.
 
 **Paired tests on held-out English.** Exact McNemar, Holm within each family. Gap: the other arm minus the pick.
 
-| family | compared with the pick | gap, points | pick only / other only | p | Holm p | passes every gate the pick passes, guard 8,192 MB |
+| family | compared with the pick | gap, points | pick only / other only | p | Holm p | passes every gate the pick passes, guard 8,192 MiB |
 |---|---|---|---|---|---|---|
 | finalists | mdense__mlate | +10.8 | 3 / 20 | 0.0005 | 0.0034 | yes |
 | finalists | arctic__mlate | +7.0 | 3 / 14 | 0.0127 | 0.0764 | no |
@@ -357,9 +357,9 @@ R1 was not run on the supplementary parts.
 
 **The pick against 2.0.** The tournament pick against R1 on held-out English: 74.7% against 61.4%, +13.3 points, 29 questions only the pick finds and 8 only R1 finds, exact McNemar p 0.0008, Holm p 0.0015. The pick also beats bm25, words_hybrid and grep. On dev the same pair read 17 against 6 with Holm p 0.2081, so it took the held-out test to separate it.
 
-**What went live.** One finalist beats the pick by more than 2.0 points at Holm p below 0.05: mdense__mlate, +10.8 points (20 questions only it finds against 3 only the pick finds, Holm p 0.0034). With the finals the memory guard went to 8,192 MB (Amendment G). mdense__mlate holds 6,921 MB under load, so it passes every gate the pick passes, and it went live at 85.4%, the best of the eight finalists. With an 8,192 MB guard from the start the dev rule would also have picked a stack with the mlate reranker (gemma2__mlate). The fresh set of section 4.4 then tested the shipped pair on questions no choice had touched.
+**What went live.** One finalist beats the pick by more than 2.0 points at Holm p below 0.05: mdense__mlate, +10.8 points (20 questions only it finds against 3 only the pick finds, Holm p 0.0034). With the finals the memory guard went to 8,192 MiB (Amendment G). mdense__mlate holds 6,921 MiB under load, so it passes every gate the pick passes, and it went live at 85.4%, the best of the eight finalists. With an 8,192 MiB guard from the start the dev rule would also have picked a stack with the mlate reranker (gemma2__mlate). The fresh set of section 4.4 then tested the shipped pair on questions no choice had touched.
 
-**Polish.** On held-out Polish as written the order changes: arctic__mlate leads with 75.9, mdense__mlate reads 69.0, the pick 55.1 and R1 9.5. Unadjusted paired counts: mdense__mlate against arctic__mlate, 5 against 16 discordant questions in Polish (p 0.027) and 8 against 2 in English (p 0.109). Read the same way, the 6,144 MB guard would have cost about 11 points of English held-out top-5 and about 14 points of Polish.
+**Polish.** On held-out Polish as written the order changes: arctic__mlate leads with 75.9, mdense__mlate reads 69.0, the pick 55.1 and R1 9.5. Unadjusted paired counts: mdense__mlate against arctic__mlate, 5 against 16 discordant questions in Polish (p 0.027) and 8 against 2 in English (p 0.109). Read the same way, the 6,144 MiB guard would have cost about 11 points of English held-out top-5 and about 14 points of Polish.
 
 **From dev to held-out.** The pick fell from 81.7 to 74.7 and R1 from 68.3 to 61.4, almost the same drop; mdense__mlate went from 86.6 to 85.4. The dev set served for tuning and the held-out questions are new, so a drop is expected, and the shipped pair held its level best.
 
@@ -369,7 +369,7 @@ R1 was not run on the supplementary parts.
 
 **Table 5. Latency and memory by reranker setting**, ranges over the six embedders. Under load: 42 searches per stack, with four busy loops and one parallel search.
 
-| reranker setting | p50 under load, ms | p95 under load, ms | searches that lost a model lane, of 42 | memory under load, MB | p50 no load, ms | peak memory no load, MB |
+| reranker setting | p50 under load, ms | p95 under load, ms | searches that lost a model lane, of 42 | memory under load, MiB | p50 no load, ms | peak memory no load, MiB |
 |---|---|---|---|---|---|---|
 | none | 59.2 to 84.2 | 506.4 to 787.6 | 0 | 1,709 to 3,730 | 37 to 58 | 1,708 to 3,731 |
 | msmarco | 318.1 to 354.8 | 501.0 to 586.6 | 0 | 2,774 to 4,786 | 185 to 200 | 2,776 to 4,781 |
@@ -377,13 +377,13 @@ R1 was not run on the supplementary parts.
 | mlate | 2,890.0 to 2,997.9 | 4,401.5 to 4,809.8 | 0 | 6,921 to 8,345 | 1,473 to 1,533 | 7,104 to 8,791 |
 | q3r | 18,895.9 to 28,167.3 | 24,963.8 to 28,488.6 | 41 to 42 | 13,312 to 16,384 | 11,035 to 29,901 | 14,336 to 16,384 |
 
-**The shipped pair**, mdense__mlate: about 1.5 s per search with nothing else running (p50 1,484 ms, p95 1,877 ms), 4.6 s at p95 under load, about 6.9 GB under load and 7.1 GB with nothing else running. In the held-out run its helper peaked at up to 8,325 MB. The guard is a selection rule; the helper itself runs with no memory cap. At batch 8 instead of 32 the six mlate stacks kept the same top-5 and used 600 to 1,250 MB less.
+**The shipped pair**, mdense__mlate: about 1.5 s per search with nothing else running (p50 1,484 ms, p95 1,877 ms), 4.6 s at p95 under load, about 6.8 GiB under load and 6.9 GiB with nothing else running. In the held-out run its helper peaked at up to 8,325 MiB. The guard is a selection rule; the helper itself runs with no memory cap. At batch 8 instead of 32 the six mlate stacks kept the same top-5 and used 600 to 1,250 MiB less.
 
 **Cold start**, the opening request after a helper start, median of three: arctic 9.1 s, bgem3 9.6, gemma2 9.5, granite311 7.7, granite_rerank 7.4, mdense 21.5, mlate 8.1, msmarco 7.3, q3r 6.9, qwen3e 7.3. A whole cold search with the shipped pair took 20.2 s after the fixes in section 4.13, and the next two 2.6 and 2.8 s.
 
 **Table 6. Embedding cost per embedder**, non-PDF passages of the dev corpus.
 
-| embedder | inputs embedded | hours | inputs per s | peak MB while embedding | vector folder, GB |
+| embedder | inputs embedded | hours | inputs per s | peak MiB while embedding | vector folder, GB |
 |---|---|---|---|---|---|
 | granite311 | 205,997 | 1.87 | 30.6 | 3,098 | 1.89 |
 | mdense | 205,997 | 1.99 | 28.8 | 2,910 | 1.89 |
@@ -604,10 +604,10 @@ Every session searched once and read D-07, and every final answer named D-07 and
 
 ## 5 Scope
 
-- Measured on macOS with Apple silicon and 18 GB of memory, on a private research knowledge base. The test suite runs on macOS and Linux in CI, on Python 3.10 and 3.13.
+- Measured on macOS with Apple silicon and 18 GB of memory, on a private record. The test suite runs on macOS and Linux in CI, on Python 3.10 and 3.13.
 - R1's numbers here stand apart from 2.0's published ones (section 2.4): the questions, the record and the scoring differ, so every comparison in this report runs both engines side by side.
 - PDF retrieval by meaning is scored in the L test (40 questions, 95.0% top-5). In the tournament and the held-out run PDF passages went through the word lanes and the reranker.
-- The memory budget is a selection rule set for the measured machine; the helper wants about 7 GB under load.
+- The memory budget is a selection rule set for the measured machine; the helper wants about 6.8 GiB under load.
 - LEKS returns its best passages, and deciding that the notes hold no answer stays with the agent.
 - Costs come from the CLI's own report at API list prices, with prompt caching as the host applies it; the cold column prices the same sessions with no cache reuse between them. Each question ran once per arm, graded by a blind judge, and a second blind pass agreed on 131 of 140 grades (section 4.14).
 - The isolation results describe my set-up with a sandbox per library. This repository keeps one library per profile and sandboxes the model helper.
@@ -636,4 +636,4 @@ The tool-server test of section 4.15 can be rerun as a whole. [bench/integration
 
 ## 7 Conclusion
 
-A tournament fixed in advance on my own research knowledge base chose the models of LEKS 3.0. Inside the 6 GB budget the fixed rule picked gemma2 with granite_rerank, and on 158 held-out English questions it beat R1, the default of LEKS 2.0, by 13.3 points of top-5 (74.7 against 61.4%, Holm p 0.0015). In the finals mDenseOn with mLateOn reached 85.4%, 10.8 points above the pick (Holm p 0.0034); with the budget moved to 8 GB it fits at about 6.9 GB under load, and it ships. On 120 fresh questions written after it went live it beat R1 by 36.7 points of top-5 (83.3 against 46.7%, Holm p < 0.0001), read PDF pages at 95.0%, and answered German and Polish questions at 84.2 and 70.0% as asked and at the English level once put into English. Polish questions gain the most from a reranker: on the held-out set R1 finds 9.5%, the finalists 55.1 to 75.9%. End to end, the live search cut the agent's cost per correct answer to 0.72 of the bill without search tools (95% CI 0.56 to 0.88), and over three working days the agent with search answered 89 of 100 question turns right against 75 without it, at 0.85 of the cost. With a small model as the only agent, search lifted it from 17 to 23 of 35 right at half its cost per correct answer. Next to the Blender and Unity MCP servers, an agent took the current decision from the notes through LEKS and built it in the tool in all 20 sessions.
+A tournament fixed in advance on my own private record chose the models of LEKS 3.0. Inside the 6 GiB budget the fixed rule picked gemma2 with granite_rerank, and on 158 held-out English questions it beat R1, the default of LEKS 2.0, by 13.3 points of top-5 (74.7 against 61.4%, Holm p 0.0015). In the finals mDenseOn with mLateOn reached 85.4%, 10.8 points above the pick (Holm p 0.0034); with the budget moved to 8 GiB it fits at about 6.8 GiB under load, and it ships. On 120 fresh questions written after it went live it beat R1 by 36.7 points of top-5 (83.3 against 46.7%, Holm p < 0.0001), read PDF pages at 95.0%, and answered German and Polish questions at 84.2 and 70.0% as asked and at the English level once put into English. Polish questions gain the most from a reranker: on the held-out set R1 finds 9.5%, the finalists 55.1 to 75.9%. End to end, the live search cut the agent's cost per correct answer to 0.72 of the bill without search tools (95% CI 0.56 to 0.88), and over three working days the agent with search answered 89 of 100 question turns right against 75 without it, at 0.85 of the cost. With a small model as the only agent, search lifted it from 17 to 23 of 35 right at half its cost per correct answer. Next to the Blender and Unity MCP servers, an agent took the current decision from the notes through LEKS and built it in the tool in all 20 sessions.

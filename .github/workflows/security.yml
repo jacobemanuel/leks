@@ -1,0 +1,151 @@
+name: security
+
+# static analysis of the code, a secret scan of every commit and a vulnerability audit of everything
+# the extras resolve to. what each job proves and what it cannot prove: docs/testing.md
+
+on:
+  push:
+    branches: [main, "release-*"]
+  pull_request:
+  schedule:
+    # advisories appear without any change here, so the audit also runs once a week
+    - cron: "23 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  codeql:
+    name: codeql (python)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      # needed to upload the results to code scanning
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+        with:
+          languages: python
+          build-mode: none
+      - uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+        with:
+          category: /language:python
+
+  secrets:
+    name: secret scan of every commit (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # the whole history, every branch and tag, not just the last commit
+          fetch-depth: 0
+          persist-credentials: false
+      # the release archive, checked against the sha256 that gitleaks publishes in
+      # gitleaks_8.30.1_checksums.txt, so a changed download fails here
+      - name: install gitleaks 8.30.1
+        env:
+          GITLEAKS_VERSION: "8.30.1"
+          GITLEAKS_SHA256: "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+        run: |
+          url="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSfL --retry 3 -o "$RUNNER_TEMP/gitleaks.tar.gz" "$url"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/gitleaks"
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks" gitleaks
+          "$RUNNER_TEMP/gitleaks/gitleaks" version
+      # exit 1 on any finding; --redact keeps a found secret out of the log
+      - name: gitleaks over the whole history
+        run: >-
+          "$RUNNER_TEMP/gitleaks/gitleaks" git
+          --log-opts="--all"
+          --redact
+          --no-banner
+          --exit-code 1
+          --report-format sarif
+          --report-path "$RUNNER_TEMP/gitleaks.sarif"
+          .
+      - name: keep the report of a failed scan
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: gitleaks-report
+          path: ${{ runner.temp }}/gitleaks.sarif
+          if-no-files-found: ignore
+          retention-days: 14
+
+  bandit:
+    name: bandit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: install bandit
+        run: python -m pip install -r .github/ci/requirements-bandit.txt
+      # the skips and the reason for each are in [tool.bandit] in pyproject.toml
+      - name: bandit over the package and the bench
+        run: bandit -c pyproject.toml -r leks bench
+
+  pip-audit:
+    name: pip-audit of the extras (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        # the oldest and the newest supported Python resolve to different versions. the models extra
+        # needs 3.11 (filelock>=4.2.1 in pyproject.toml), so 3.10 checks what it can install
+        include:
+          - python: "3.10"
+            extras: "pdf,test"
+          - python: "3.11"
+            extras: "models,pdf,test"
+          - python: "3.13"
+            extras: "models,pdf,test"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: install pip-audit
+        run: python -m pip install -r .github/ci/requirements-audit.txt
+      # pip resolves what pip install ".[<extras>]" would install here, from PyPI, without
+      # installing it; leks itself is not on PyPI and is left out of the list
+      - name: resolve the extras
+        env:
+          EXTRAS: ${{ matrix.extras }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/audit"
+          python -m pip install --dry-run --ignore-installed --quiet --report "$RUNNER_TEMP/audit/report.json" ".[$EXTRAS]"
+          python -B - "$RUNNER_TEMP/audit/report.json" "$RUNNER_TEMP/audit/requirements.txt" <<'EOF'
+          import json, sys
+          with open(sys.argv[1], encoding='utf-8') as f:
+              report = json.load(f)
+          pins = sorted('%s==%s' % (i['metadata']['name'], i['metadata']['version'])
+                        for i in report['install'] if i['metadata']['name'].lower() != 'leks')
+          with open(sys.argv[2], 'w', encoding='utf-8') as f:
+              f.write('\n'.join(pins) + '\n')
+          print('%d packages resolved' % len(pins))
+          EOF
+          cat "$RUNNER_TEMP/audit/requirements.txt"
+      - name: pip-audit
+        run: pip-audit --requirement "$RUNNER_TEMP/audit/requirements.txt" --no-deps --strict --desc

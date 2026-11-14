@@ -19,7 +19,7 @@ flowchart TD
         DAEMON["model daemon<br/>embedder and reranker"]
     end
 
-    AGENT(["agent in Claude Code or Copilot"])
+    AGENT(["agent in Claude Code, Copilot or Codex"])
     MCP["MCP server<br/>leks serve"]
 
     subgraph SEARCHPATH["search path"]
@@ -62,7 +62,7 @@ flowchart TD
     MCP -->|"answer text"| AGENT
     ROOTS -->|"live lines for read"| MCP
 
-    START -->|"brief: state notes, recent changes"| AGENT
+    START -->|"brief: state notes, recent changes, notes due a look"| AGENT
     START -->|"background build and embed"| BUILD
     WARM -->|"start and warm"| DAEMON
     STOP -->|"problems in changed notes"| AGENT
@@ -78,7 +78,7 @@ The rest of this page goes through each box. Setup is in [install.md](install.md
 - The OCR helper is a small Swift program that reads scanned PDFs and images on macOS. `leks ocr build` compiles it.
 - `leks embed` sends passage text to the model daemon and stores the vectors that come back.
 - The model daemon is one shared process that holds the embedder and the reranker. Text goes in, numbers come out.
-- `leks serve` is the MCP server. It answers six read-only tools over stdio.
+- `leks serve` is the MCP server. It answers seven read-only tools over stdio.
 - The hooks connect it all to a host: a brief and a background update at session start, a warm-up before a search, and the notes check at the end of a turn.
 
 ## Building the index
@@ -131,8 +131,11 @@ A note may start with a block of `key: value` lines between two `---` lines. The
 | `summary`, `description` | the summary shown as `what` in JSON results |
 | `warning` | a caution line shown with every result from this note |
 | `superseded_by` | the note that replaces this one ([Newer versions](#newer-versions)) |
+| `supersedes`, `replaces` | the note this one replaces ([Newer versions](#newer-versions)) |
 
 A note without a summary gets its opening paragraph, up to 300 characters. Code files get no summary. A file without a date key takes a `20YY-MM-DD` date from its name, else its modification day.
+
+**Lines under the title.** Many decision logs keep these facts as plain lines under the title, such as `Date: 2026-08-14. Status: superseded by D-07.`, and the build reads them too. It looks at the lines after the front matter and the `#` title, up to the first `##` heading or code fence and at most 8 lines that are not blank. The keys are `Status`, `Date`, `Updated`, `Created`, `Superseded by`, `Supersedes`, `Replaced by`, `Replaces` and `Revisit`, in any case, also as a list item, in bold (the key or the value), in a quote or in a table cell. One line may hold several, each ending with a full stop and a space, a semicolon or a table bar. A key counts only at the start of the line or after one of those ends, so `Due date:`, `Build status:` or `(status: draft)` is read as part of a sentence. The front matter wins where a note has both, and of two lines with the same key the first counts. A status read from such a line is recorded with the source `status-line`.
 
 ### Kind
 
@@ -144,19 +147,25 @@ Every file gets one kind. The `classify` globs are tried in the order `state`, `
 |---|---|---|
 | the path matches a `classify.history` glob | `historical-record` | `path` |
 | the kind is `state` | `current` | `entry` |
-| front matter `frozen: true`, or `status: frozen` or `locked` | `record` | `frozen` |
+| front matter `frozen: true`, or the status `frozen` or `locked` | `record` | `frozen` |
 | front matter `status` is a known word | that word's group | `front-matter` |
-| front matter `status` is some other word | `unknown` | `front-matter-unchecked` |
-| no `status` | `unknown` | `rule` |
+| no front matter `status`, and a `Status:` line under the title ([Lines under the title](#front-matter)) is a known word | that word's group | `status-line` |
+| either one is some other word | `unknown` | `front-matter-unchecked` or `status-line-unchecked` |
+| no status | `unknown` | `rule` |
+
+A status with more words after it, such as `superseded by D-07` or `accepted (2026-01-02)`, is read by its leading words.
 
 The known words fall into groups:
 
 | Group | Words |
 |---|---|
-| `current` | current, active, accepted, approved, live, in progress |
+| `current` | current, active, accepted, approved, live, in progress, stable |
 | `record` | done, final, closed, record, published, released |
 | `superseded` | superseded, replaced, deprecated, obsolete, withdrawn, rejected, retired, historical |
-| `stale` | stale, outdated |
+| `stale` | stale, outdated, needs update |
+| `historical-record` | archive, archived: a note kept for the record, like a file in a history folder |
+
+The words match in lower case, and `in-progress` and `needs-update` count the same as with a space.
 
 ### Source class
 
@@ -165,7 +174,7 @@ Each result also carries one short word for what kind of source it is (`leks/sou
 | Class | When |
 |---|---|
 | `frozen` | the status came from `frozen`, no newer version exists, and the status is neither superseded nor stale |
-| `history` | a newer version exists, or the status is superseded or stale, or the path is in a history folder |
+| `history` | a newer version exists, or the status is superseded, stale or historical-record (a note in a history folder, or one whose front matter or status line says `archived` or `archive`) |
 | the kind | `state`, `rule`, `code`, `decision`, `result`, `document` or `image` |
 | `note` | everything else |
 
@@ -173,9 +182,10 @@ Each result also carries one short word for what kind of source it is (`leks/sou
 
 ### Newer versions
 
-The build links an older note to its newer version when one of two kinds of proof is there:
+The build links an older note to its newer version when one of three kinds of proof is there:
 
 - The note says so in its opening passages. A phrase such as `superseded by`, `replaced by`, `see instead` or `moved to`, followed by a `[[wikilink]]`, or a `superseded_by:` front matter line. The link is matched by file name against the files of the same profile.
+- A status line under the title names the other note by an id such as `D-07`, `ADR-0012` or `DEC-ARCH-001`: `superseded by D-07` or `replaced by D-07` on the older note, `Supersedes D-03` or `Replaces D-03` on the newer one. A `supersedes:` or `replaces:` front matter line on the newer note counts the same. The id matches a note whose file name is the id or starts with it and a separator, as `D-07_pedestal.md` does. When several notes match, only one in the same folder counts, else none. A mention further down a note, such as "D-09 was superseded by D-11" in a third note, links nothing. These keys take one value each: a YAML list under them is not read.
 - The file name carries a version number in a series: `v2`, `r3`, `rev4` or `revision 5` style, in the same folder, with the same extension, and with at least two words of three or more letters in the rest of the name. The highest number is the newest.
 
 Shared dates or similar words count for nothing here. Search uses these links in its last step ([Newer over older](#newer-over-older)).
@@ -344,14 +354,69 @@ The documents lane gives `pdf extra not installed` when the roots hold PDFs and 
 - `read` takes a path as search cites it. For a note or code file it returns the live lines from `start` to `end`, at most 120 per call, each cut at 1500 characters. For a PDF, `.docx` or image it returns the indexed text, each unit marked like `[page 3]` or `[paragraph 4]`: at most 5 pages or 120 paragraphs per call, and it stops before 16000 characters. A copy answers with the text of the file that won. When the file is gone, or its real location leaves its root, `read` returns the indexed text and says the file is not reachable now.
 - `locate` finds files by name and folder words, from the name rows. It reads no content. It takes filters inside the query: `ext:pdf,docx`, `folder:` or `in:`, `root:`, `class:` (note, code, document, image, data, other), `size:>10m` or `size:<500k`, `n:` for the row count (1 to 200) and `symbol:` for a code definition. All words must match; when nothing does, any word may. Exact names rank above partial ones and live files above history folders.
 - `tried` runs a search for a proposal (no status priors, one passage per file, reranker on) and keeps decision, result, state and note rows that hold at least 65 % of the proposal's word weight and at least two of its rare words. Plain notes count only when they mention an outcome, such as rejected, failed or decided. It returns at most 5 rows, or a `nothing certain` answer with up to three of the closest decision or result rows, labelled as such.
+- `neighbours` takes a note or code file that was just edited and lists the notes to bring in line with it, each with the reason ([Neighbours](#neighbours)).
 - `state` lists up to 12 state notes that are not history, newest date at the top. `status` reports the index size, the models, what search runs on now with the command that fixes a missing lane, whether `pypdf` and OCR are available, the sandbox state and the build time.
+
+## Keeping notes in line
+
+Four parts help notes stay true after they are written. `neighbours` lists what an edit touches, freshness budgets and revisit lines bring old notes to the session brief, and edit contracts let `leks check` hold notes to how they may change. With nothing in the config, the brief names only the revisit lines whose date has come, and the check and the rest of the brief work as before.
+
+### Neighbours
+
+`neighbours` (an MCP tool and `leks neighbours`, see [cli.md](cli.md#leks-neighbours)) takes the path of a note or code file as search cites it. It lists the notes to look at after an edit, each with its path, line, status, date and reason, in this order:
+
+1. Notes that still hold what the edit removed. The old text is the `was` argument when the call gives it (up to 2 MiB), else the indexed text when the file changed since the last build. Removed facts are numbers, with their unit when they have one, and sentences of six words or more that are gone from the new text: up to 24 numbers and 16 sentences per call. A number without a unit counts from three characters on. Front matter and status and date lines give no facts, and a code file gives numbers only. The word index finds up to 200 candidates per fact, and the text on disk of at most 300 of them confirms which still hold it. The reason reads `still holds what this note removed:` and names up to three facts.
+2. The supersession chain from [Newer versions](#newer-versions): the newer versions, then the older ones, up to 10 steps each way.
+3. Notes that link to this one with a `[[wikilink]]` or a Markdown link, found the way `leks check` resolves links.
+4. Files this note links to, with the line of the link.
+5. The 5 notes and code files closest in meaning, by the mean of this note's passage vectors, with the cosine. Without vectors it takes the 5 closest in words to the note's title, summary and headings, and says so.
+
+A note met in several groups is listed once and gathers the reasons. In the first and third groups, plain notes come before notes marked record, superseded or historical-record. When such a note is listed, the answer adds that it keeps what held at its time and its text should stay as it is. The call returns 10 notes by default and at most 30. When the file is as indexed and no `was` is given, there is no removed text, and the answer says to pass `was`. When the file is gone, only its chain and the notes that link to it are listed. Documents and images get an error.
+
+### Freshness budgets
+
+The `freshness` section of the config ([configuration.md](configuration.md#freshness)) gives notes a budget in days: per source class with `classes`, or per path glob under the root with `paths`. A path glob beats the class budget, and of several path globs that fit, the smallest budget wins. Notes marked record, superseded, stale or historical-record, notes in a history folder and notes with a newer version take no budget, since they keep what held at their time. The classes `frozen` and `history` cannot be given one.
+
+A note's age is the days since its last commit when its root is in a git repo. Commits with the trailer `Meta: true` do not count, and a note with changes not yet committed takes its file time. With `"git": false`, outside a repo, or when git has not answered within 2 seconds for the whole brief, the age comes from the file time. Up to 1000 budgeted notes get an age per brief, the ones with the oldest file times first.
+
+The brief names up to six notes past their budget, most important first: state notes, then rules, decisions, results, notes, code, documents and images. Within one class the note furthest past its budget (age divided by budget) comes first. Each reads `path (N days, budget M)`.
+
+### Edit contracts
+
+`check.contracts` in the config ([configuration.md](configuration.md#check)) gives notes rules for how they may change. Each entry has a `glob`, matched against the note's path under the folder the check walks, and at least one rule. The first entry whose glob fits a note wins. `leks check` looks at the contract of every changed note and reports each broken rule as `path:line: message`, next to its other findings.
+
+| Rule | What a changed note must do |
+|---|---|
+| `"type": "write-once"` | keep its body. Front matter, blank lines, status, superseded, replaced by and deprecated lines, and link targets may change, so a note can be marked superseded and a moved note relinked. The finding names the first changed line. |
+| `"type": "frozen"` | keep its whole text, front matter included. The finding names the first changed line. |
+| `"type": "living"` | hold no line that starts with a date outside a section whose heading says log, changelog, history or journal (a subsection counts as inside). The finding names the first such line and the count. |
+| `"keep": [...]` | still have each named field: a front matter key or a `Key: value` line outside code (also as a list item, in bold or in a quote), either one with a value, or a heading. Names match in lower case, with runs of spaces, `-` and `_` read as one space. The finding is on line 1. |
+| `"successor": true` | name its successor when its status says superseded or replaced: a `superseded by` or `replaced by` key, or a line with that phrase and something after it. The finding is on the status line. |
+
+A write-once or frozen note is measured against a kept text. The opening run of the check keeps the text of every such note, and a later run keeps it for a note it has not seen under that contract yet, so a new note or a new glob starts with no finding. These baselines share the 8 second budget of the scan for unlinked notes, and a note left out is kept when it is next changed. `leks check --accept FILE...` keeps the current text of write-once and frozen notes after a change that should stay. The record holds up to five kept texts per note, newest first, and a note that goes back to any of them passes. A note whose contract type changes loses its kept texts. A kept text over 5000 lines has no line hashes, and its finding then names no line. The check reads up to 2 MiB from the start of each note, so a write-once or frozen contract covers only that part: in a longer note a change beyond those 2 MiB goes unreported.
+
+The messages:
+
+- `write-once note changed, it is a record: restore its text and put the change in a new note, or keep it with leks check --accept <path>`
+- `frozen note changed: restore its text, or keep the change with leks check --accept <path>`
+- `dated line outside a log section (N in this note), rewrite it as what holds now or move it under a Log heading`
+- `missing field date, the contract for decisions/** keeps status, date and revisit`
+- `marked superseded but names no successor, add a superseded by line with a link to the note that replaces it`
+
+### Revisit lines
+
+A decision or note says when to look at it again with a line `Revisit: <date or condition>` of its own, maybe as a list item or in bold, outside code blocks. A `revisit:` key in the front matter reads the same, also with quotes around the date, as in `revisit: "2027-01-01"`. A revisit line in a quote, in a table cell or after another key on the same line is not read. A date (`YYYY-MM-DD`) at the start makes the line due from that day on. Any other text is a condition: it is listed and never due, as no clock can tell when it holds. A note may hold many revisit lines, one per entry of a decision log for example, and each is listed with the heading above it.
+
+Only notes of kind state, rule, decision, result and note are read, and notes marked superseded or in a history folder are left out. The index finds the notes that mention revisit, and their text on disk gives the lines: up to 2000 notes per call, 1 MiB read per note and 200 revisit lines per note, with conditions and headings cut at 200 characters.
+
+`leks revisit` ([cli.md](cli.md#leks-revisit)) lists them all: due lines oldest first, then dates ahead soonest first, then conditions by path. The session brief names up to six due lines as `path:line (date)`, read from at most 200 notes.
 
 ## The model daemon
 
 One process holds both models, so several agent sessions can search at once without each loading the weights. It holds no notes. It turns the text it is given into numbers and hands only numbers back.
 
 - It starts on demand: from the warm hook, the background update, `leks search`, `leks tried`, `leks embed`, `leks modeld start`, and from a `search` or `tried` call in the MCP server that finds it down. There only a call that needs a model starts it; `status` never talks to the daemon. A host with no warm-up hook, such as Copilot, relies on this.
-- It listens on a unix socket, `<home>/run/modeld.sock` by default, created with owner-only permissions. One JSON line goes in, one comes back, then the connection closes.
+- It listens on a unix socket, `<home>/run/modeld.sock` by default, created with owner-only permissions. On Windows, or with `LEKS_MODELD_TRANSPORT=tcp`, it listens on a TCP port on 127.0.0.1 instead and answers only requests that carry a token ([cli.md](cli.md#leks-modeld)). One JSON line goes in, one comes back, then the connection closes.
 - A reply is a vector block (`{"shape": [n, d], "b64": "..."}`), a list of scores, or `{"error": "<code>"}` with a fixed code: `bad_request`, `bad_input`, `too_big`, `unknown_op`, `model_refused`, `model_missing`, `model_check`, `busy` or `internal`. The client keeps numbers of the expected count and shape and nothing else.
 - Limits: 64 texts per request, 8000 characters per text, 2000 characters per query, a 3 MiB line, 30 seconds to send it, and 32 open connections, beyond which the answer is `busy`. A message that carries file descriptors is refused.
 - Only the configured embedder and reranker load. Before loading, the weights are checked against their manifest: files up to 64 MiB by hash on every load, bigger files by size.
@@ -377,14 +442,14 @@ File reads are not narrowed by the profile. The daemon runs as `python -I` with 
 |---|---|---|
 | `leks hook brief` | session start | prints the session brief as hook JSON |
 | `leks hook update` | session start | starts a background update when one is due |
-| `leks hook warm` | before `search` or `tried` (Claude Code) | starts the daemon when it is down and warms both models |
+| `leks hook warm` | before `search` or `tried` (Claude Code, Codex) | starts the daemon when it is down and warms both models |
 | `leks check` | end of turn | the notes check, set up by the template; what it reports is in [cli.md](cli.md#leks-check) |
 
 Every `leks hook` command swallows its own errors and exits 0, so a hook never breaks the host.
 
-The brief is at most three lines. A fixed line says project search is on and which tool does what. Below it come up to four state notes and up to six files other than code changed in the last three days. Only plain paths of files that exist get in. It is printed as `{"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "..."}}`. With no index yet, it prints nothing.
+The brief is at most five lines. A fixed line says project search is on and which tool does what. Below it come up to four state notes, up to six files other than code changed in the last three days, up to six notes past their [freshness budget](#freshness-budgets) and up to six [revisit lines](#revisit-lines) whose date has come. A line with nothing to name is left out, and a part that cannot be read leaves out only its own line. Only plain paths of files that exist get in. It is printed as `{"hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": "..."}}`. With no index yet, it prints nothing.
 
-The update is due when `<home>/run/update.stamp` is missing or older than `update.min_interval`. It takes `run/update_job.lock`, starts a detached child and returns. The child starts the daemon, runs the build, embeds every profile when an embedder is configured and then tells the daemon to exit, and touches the stamp. It writes to `run/update.log`, which rotates at 5 MB.
+The update is due when `<home>/run/update.stamp` is missing or older than `update.min_interval`. It takes `run/update_job.lock`, starts a detached child and returns. The child starts the daemon, runs the build, embeds every profile when an embedder is configured and then tells the daemon to exit, and touches the stamp. It writes to `run/update.log`, which rotates at 5 MiB.
 
 When the daemon is already up, the warm hook does nothing. Otherwise it starts the daemon and returns at once. A detached follow-up waits up to 20 seconds for the socket, then sends one tiny request to the reranker and one to the embedder, so both load their weights before the search arrives. Each may take up to 90 seconds.
 
@@ -414,7 +479,7 @@ Search never fails for a missing optional part. It runs on what is there and say
 
 ## The MCP server
 
-`leks serve` speaks JSON-RPC 2.0 over stdio, one message per line. It echoes the protocol version the client asks for, or answers with `2024-11-05`. It tells the host when to search, to read cited lines before relying on them, what a `NEWER VERSION` line means, and that `words only` means a miss proves less.
+`leks serve` speaks JSON-RPC 2.0 over stdio, one message per line. It answers with the protocol version the client asks for when it supports that version (`2025-11-25`, `2025-06-18`, `2025-03-26` or `2024-11-05`), and with `2025-11-25` otherwise. It tells the host when to search, to read cited lines before relying on them, what a `NEWER VERSION` line means, and that `words only` means a miss proves less.
 
 | Tool | Arguments |
 |---|---|
@@ -422,7 +487,8 @@ Search never fails for a missing optional part. It runs on what is there and say
 | `read` | `path`, `start`, `end` |
 | `locate` | `query` |
 | `tried` | `proposal` |
+| `neighbours` | `path`, `was` (the text before the edit), `n` (default 10, at most 30) |
 | `state` | none |
 | `status` | none |
 
-All six are read-only. The server takes its profile from `LEKS_PROFILE` and a tool call cannot change it. It reopens the index and reloads the config when the profile database, the config file or the vector side files change, so a background update shows up without a restart. Unknown methods get the JSON-RPC error `-32601`.
+All seven are read-only. The server takes its profile from `LEKS_PROFILE` and a tool call cannot change it. It reopens the index and reloads the config when the profile database, the config file or the vector side files change, so a background update shows up without a restart. Unknown methods get the JSON-RPC error `-32601`.

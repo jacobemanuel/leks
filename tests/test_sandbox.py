@@ -68,13 +68,14 @@ def fake_cfg(run, sock, daemon=None, home='~/projects/example/.leks', source=Non
 
 class ProfileTextTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.mkdtemp(prefix='lk', dir='/tmp')
+        self.tmp = tempfile.mkdtemp(prefix='lk', dir='/tmp' if os.name == 'posix' else None)
         self.addCleanup(shutil.rmtree, self.tmp, True)
         self.run = os.path.join(self.tmp, 'run')
         self.sock = os.path.join(self.run, 'modeld.sock')
         self.cfg = fake_cfg(self.run, self.sock)
         self.real_run = os.path.realpath(self.run)
 
+    @unittest.skipIf(os.name == 'nt', 'the profile is for the macos sandbox, no windows path reaches it')
     def test_core_rules_in_order(self):
         t = sandbox.profile_text(self.cfg, sys.executable)
         want = ['(version 1)', '(allow default)', '(deny network*)', '(allow network-bind network-inbound',
@@ -105,6 +106,7 @@ class ProfileTextTests(unittest.TestCase):
         self.assertIn(os.path.realpath(os.confstr(65538).rstrip('/')), t)
         self.assertIn(os.path.realpath(os.confstr(65537).rstrip('/')), t)
 
+    @unittest.skipIf(os.name == 'nt', 'the profile is for the macos sandbox, no windows path reaches it')
     def test_extra_read(self):
         t = sandbox.profile_text(self.cfg, sys.executable, extra_read=[self.tmp])
         self.assertIn('(allow file-read* (subpath "%s"))' % os.path.realpath(self.tmp), t)
@@ -117,6 +119,7 @@ class ProfileTextTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             sandbox.profile_text(fake_cfg('/tmp/a\nb/run', '/tmp/a\nb/run/s.sock'), sys.executable)
 
+    @unittest.skipUnless(os.name == 'posix', 'file modes are a posix feature')
     def test_write_profile(self):
         p = sandbox.write_profile(self.cfg)
         self.assertEqual(p, os.path.join(self.run, 'modeld.sb'))
@@ -131,6 +134,7 @@ class EnvTests(unittest.TestCase):
         self.addCleanup(helpers.cleanup, self.home)
         self.run = os.path.realpath(self.cfg.run_dir())
 
+    @unittest.skipIf(os.name == 'nt', 'windows adds SYSTEMROOT, TEMP and a python PATH (test_transport)')
     def test_exact_whitelist(self):
         env = sandbox.clean_env(self.cfg)
         self.assertEqual(set(env), ENV_KEYS | {'LEKS_ALLOW_FAKE'})
@@ -154,7 +158,13 @@ class EnvTests(unittest.TestCase):
                  'PYTHONSTARTUP': '/s', 'HF_TOKEN': 'abc', 'SOME_SECRET': 'q', 'LEKS_PROFILE': 'architect'}
         with mock.patch.dict(os.environ, dirty):
             env = sandbox.clean_env(self.cfg)
-        self.assertEqual(set(env), ENV_KEYS | {'LEKS_ALLOW_FAKE'})
+        want = ENV_KEYS | {'LEKS_ALLOW_FAKE'}
+        if os.name == 'nt':
+            # what a windows python needs to start, none of it from the dirty set
+            want |= {'TEMP', 'TMP', 'USERPROFILE'} | {k for k in ('SYSTEMROOT', 'WINDIR', 'SYSTEMDRIVE',
+                                                               'NUMBER_OF_PROCESSORS', 'PROCESSOR_ARCHITECTURE')
+                                                      if os.environ.get(k)}
+        self.assertEqual(set(env), want)
         self.assertFalse(set(dirty) & set(env))
 
     def test_hub_cache_goes_under_leks_home(self):
@@ -165,7 +175,7 @@ class EnvTests(unittest.TestCase):
 
     def test_hub_cache_of_the_user_wins(self):
         with mock.patch.dict(os.environ, {'HF_HOME': '/srv/hf-cache'}):
-            self.assertEqual(sandbox.clean_env(self.cfg)['HF_HOME'], '/srv/hf-cache')
+            self.assertEqual(sandbox.clean_env(self.cfg)['HF_HOME'], os.path.abspath('/srv/hf-cache'))
 
     def test_fake_switch_only_when_set(self):
         with mock.patch.dict(os.environ):
@@ -179,7 +189,7 @@ class EnvTests(unittest.TestCase):
 
 class CommandTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.mkdtemp(prefix='lk', dir='/tmp')
+        self.tmp = tempfile.mkdtemp(prefix='lk', dir='/tmp' if os.name == 'posix' else None)
         self.addCleanup(shutil.rmtree, self.tmp, True)
         self.run = os.path.join(self.tmp, 'run')
         self.argv = [sys.executable, '-I', '-c', 'pass']

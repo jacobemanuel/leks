@@ -76,6 +76,14 @@ POOLINGS = ('cls', 'mean', 'last', 'maxsim')
 BACKENDS = ('torch', 'fake')
 DEVICES = ('auto', 'cpu', 'mps', 'cuda')
 CLASSES = ('state', 'rule', 'decision', 'result', 'history')
+# source classes that can go stale, the freshness budgets go by these. frozen and history notes
+# keep what held at their time, so they take no budget
+FRESH_CLASSES = ('state', 'rule', 'decision', 'result', 'note', 'code', 'document', 'image')
+CONTRACT_TYPES = ('write-once', 'living', 'frozen')
+MAX_CONTRACTS = 200          # entries in check.contracts, and globs in freshness.paths
+MAX_KEEP = 20                # fields one contract keeps
+_FIELD_NAME = re.compile(r'[A-Za-z][A-Za-z0-9 _-]{0,39}')
+MAX_BUDGET_DAYS = 36500
 
 
 class ConfigError(Exception):
@@ -141,9 +149,14 @@ _TEMPLATE = {
 }
 
 # sections a config may have that `leks init` does not write, with their defaults.
-# check.em_dash: false stops `leks check` from flagging em dashes in changed notes
+# check.em_dash: false stops `leks check` from flagging em dashes in changed notes.
+# check.contracts: [{"glob": ..., "type": write-once | living | frozen, "keep": [field, ...],
+# "successor": true}], how a note may change. the first glob that fits a note wins.
+# freshness: days a note may go without a change before the session brief names it, by source class
+# or by path glob; git: false takes the file time even inside a git repo
 _OPTIONAL = {
-    'check': {'em_dash': True},
+    'check': {'em_dash': True, 'contracts': []},
+    'freshness': {'classes': {}, 'paths': {}, 'git': True},
 }
 
 _TOP_KEYS = frozenset(_TEMPLATE) | frozenset(_OPTIONAL)
@@ -214,6 +227,7 @@ class Config:
     server: dict
     source_path: 'str | None' = None
     check: dict = field(default_factory=lambda: copy.deepcopy(_OPTIONAL['check']))
+    freshness: dict = field(default_factory=lambda: copy.deepcopy(_OPTIONAL['freshness']))
 
     # ----- derived paths -----
     def index_dir(self) -> str:
@@ -236,7 +250,9 @@ class Config:
     def socket_path(self) -> str:
         env = os.environ.get('LEKS_MODELD_SOCK')
         p = os.path.expanduser(env) if env else os.path.join(self.run_dir(), 'modeld.sock')
-        if len(p.encode('utf-8')) >= SOCK_MAX:
+        from . import transport
+        # the length limit is a unix socket one; over tcp the path only names the endpoint file
+        if len(p.encode('utf-8')) >= SOCK_MAX and transport.kind() == 'unix':
             h = hashlib.sha256(self.home.encode('utf-8')).hexdigest()[:8]
             uid = os.getuid() if hasattr(os, 'getuid') else 0
             p = '/tmp/leks-%d-%s.sock' % (uid, h)
@@ -283,12 +299,16 @@ class Config:
         rest = parts[1:]
         if any(p in ('', '.', '..') for p in rest):
             return None
-        return root.path + '/' + '/'.join(rest)
+        # the system's own separator, so the result compares equal to what walk and realpath give
+        return os.path.join(root.path, *rest)
 
     def display_path(self, abs_path: str):
         """Inverse of abs_path. None when the path is under no root."""
         if not isinstance(abs_path, str) or not abs_path or '\x00' in abs_path:
             return None
+        if os.sep != '/':
+            # windows: walk and realpath give backslashes, display paths always use '/'
+            abs_path = abs_path.replace(os.sep, '/')
         if '..' in abs_path.split('/'):
             return None
         hit = self._display(abs_path)
@@ -303,6 +323,8 @@ class Config:
         best = None
         for r in self.roots:
             base = os.path.realpath(r.path) if real else r.path
+            if os.sep != '/':
+                base, p = base.replace(os.sep, '/'), p.replace(os.sep, '/')
             if p.startswith(base + '/') and (best is None or len(base) > len(best[1])):
                 best = (r, base)
         if best is None:
@@ -335,7 +357,8 @@ class Config:
             'ocr': dict(self.ocr),
             'limits': dict(self.limits),
             'server': dict(self.server),
-            'check': dict(self.check),
+            'check': copy.deepcopy(self.check),
+            'freshness': copy.deepcopy(self.freshness),
         }
 
 
@@ -526,6 +549,62 @@ def _patterns(v, what) -> tuple:
             raise ConfigError('glob in %s must be relative and without ..' % what)
         out.append(p)
     return tuple(out)
+
+
+def _contracts(v) -> list:
+    """check.contracts: a list of {"glob", "type", "keep", "successor"}, checked one by one. glob and at
+    least one rule are needed. Field names in keep are lowercased, runs of spaces, - and _ made one space."""
+    if not isinstance(v, list):
+        raise ConfigError('check.contracts must be a list of objects with a glob and a rule')
+    if len(v) > MAX_CONTRACTS:
+        raise ConfigError('check.contracts takes at most %d entries' % MAX_CONTRACTS)
+    out = []
+    for i, c in enumerate(v):
+        what = 'check.contracts[%d]' % i
+        if not isinstance(c, dict):
+            raise ConfigError('%s must be an object with a glob and a rule' % what)
+        _unknown(c, ('glob', 'type', 'keep', 'successor'), what)
+        if 'glob' not in c or not any(k in c for k in ('type', 'keep', 'successor')):
+            raise ConfigError('%s needs a glob and at least one of type, keep and successor' % what)
+        e = {'glob': _patterns([c['glob']], what + '.glob')[0]}
+        if 'type' in c:
+            e['type'] = _need_choice(c['type'], what + '.type', CONTRACT_TYPES)
+        if 'keep' in c:
+            keep = c['keep']
+            if not isinstance(keep, list) or not 1 <= len(keep) <= MAX_KEEP:
+                raise ConfigError('%s.keep must be a list of 1 to %d field names' % (what, MAX_KEEP))
+            names = []
+            for k in keep:
+                if not isinstance(k, str) or not _FIELD_NAME.fullmatch(k):
+                    raise ConfigError('bad field name in %s.keep, use letters, digits, spaces, - and _' % what)
+                k = re.sub(r'[\s_-]+', ' ', k).strip().lower()
+                if k not in names:
+                    names.append(k)
+            e['keep'] = names
+        if 'successor' in c:
+            e['successor'] = _need_bool(c['successor'], what + '.successor')
+        out.append(e)
+    return out
+
+
+def _budgets(v, what, classes=False) -> dict:
+    """{source class or glob: days} for the freshness section."""
+    if not isinstance(v, dict):
+        raise ConfigError('%s must be an object of name: days' % what)
+    if len(v) > MAX_CONTRACTS:
+        raise ConfigError('%s takes at most %d entries' % (what, MAX_CONTRACTS))
+    out = {}
+    for k, days in v.items():
+        if classes:
+            if k in ('frozen', 'history'):
+                raise ConfigError('%s: %s notes keep what held at their time and take no budget' % (what, k))
+            if k not in FRESH_CLASSES:
+                raise ConfigError('unknown class in %s: %s, the classes are %s'
+                                  % (what, k, ', '.join(FRESH_CLASSES)))
+        else:
+            _patterns([k], what)
+        out[k] = _need_int(days, '%s.%s' % (what, k), 1, MAX_BUDGET_DAYS)
+    return out
 
 
 def _abs(p: str, base_dir) -> str:
@@ -740,11 +819,16 @@ def from_dict(d: dict, base_dir: 'str | None' = None) -> Config:
     server['always_load'] = _need_bool(server['always_load'], 'server.always_load')
     check = _section(d, 'check')
     check['em_dash'] = _need_bool(check['em_dash'], 'check.em_dash')
+    check['contracts'] = _contracts(check['contracts'])
+    fresh = _section(d, 'freshness')
+    fresh['classes'] = _budgets(fresh['classes'], 'freshness.classes', classes=True)
+    fresh['paths'] = _budgets(fresh['paths'], 'freshness.paths')
+    fresh['git'] = _need_bool(fresh['git'], 'freshness.git')
 
     return Config(home=home, roots=roots, profiles=profiles, default_profile=dp, classify=classify,
                   backend=backend, device=device, weights_dir=weights_dir, embedder=emb, reranker=rer,
                   budgets=budgets, daemon=daemon, update=update, ocr=ocr, limits=limits, server=server,
-                  check=check)
+                  check=check, freshness=fresh)
 
 
 # ---------- loading ----------

@@ -21,7 +21,6 @@ import json
 import os
 import re
 import shutil
-import socket
 import statistics
 import subprocess
 import sys
@@ -456,11 +455,13 @@ def effective_config(args, config_mod, home, models_mode):
 
 def raw_ping(sock_path, timeout=1.0):
     """Ping the daemon on a plain socket. No client, so no cool-down is set."""
-    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    s.settimeout(timeout)
+    from leks import transport  # unix socket, or tcp with a token where unix sockets are missing
     try:
-        s.connect(sock_path)
-        s.sendall(b'{"op": "ping"}\n')
+        s, token = transport.connect(sock_path, timeout)
+    except OSError:
+        return False
+    try:
+        s.sendall(json.dumps(transport.with_token({"op": "ping"}, token)).encode("utf-8") + b"\n")
         data = b""
         while not data.endswith(b"\n") and len(data) < 65536:
             chunk = s.recv(4096)

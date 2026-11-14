@@ -1,0 +1,3 @@
+# the sdist also carries the project template that docs/install.md copies
+graft examples
+global-exclude __pycache__ *.py[cod] .DS_Store
