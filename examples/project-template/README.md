@@ -22,8 +22,8 @@ Copy the files in this folder, apart from this README, into the root of a projec
 1. Install LEKS (see the main README) and run `leks init`. The config is written to `~/.leks/config.json`. List your folders under `roots`.
 2. Build the index once with `leks build`.
 3. Replace the profile name `architect` in these files with a profile from your config, or delete the `LEKS_PROFILE` lines and the `--profile architect` of each command in `.codex/hooks.json` to use the config's default profile.
-4. If `python3` on your PATH is not the interpreter that has LEKS installed, write the full path to that interpreter in place of `python3` in every file here.
-5. Once the files are in place, run `python3 -m leks check` once in the project root. Its first run in a folder only records the notes, so after this run the check at the end of a turn reports what that turn changed.
+4. If `python3` on your PATH is not the interpreter that has LEKS installed, write the full path to that interpreter in place of `python3` in every file here. For the venv of the install guide, one loop does it ([install](../../docs/install.md#connect-claude-code-copilot-and-codex)).
+5. Once the files are in place, run `python3 -m leks check` once in the project root, with that same interpreter in place of `python3`. Its first run in a folder only records the notes, so after this run the check at the end of a turn reports what that turn changed.
 
 LEKS looks for its config in `$LEKS_CONFIG`, then in `$LEKS_HOME/config.json`, then in `~/.leks/config.json`. To keep one config per project, add `LEKS_CONFIG` with an absolute path to the `env` blocks of `.mcp.json`, `.claude/settings.json`, `.vscode/mcp.json` and `.github/hooks/leks.json`, and to the `[mcp_servers.leks.env]` table of `.codex/config.toml`. A Codex hook has no `env` of its own, so add `--config` with the same path to each command in `.codex/hooks.json`. In `.vscode/mcp.json` the path may start with `${workspaceFolder}`.
 

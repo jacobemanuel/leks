@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use LEKS in your work, please cite it as below."
+title: "LEKS: local search for coding agents"
+abstract: >-
+  LEKS is a local search engine for coding agents. It indexes a project's notes, decisions,
+  PDFs, Word files and code, answers an agent's question with the passages that answer it,
+  each cited by file and line, ranks a replaced note below the note that replaced it, and
+  runs its index and models on the user's machine. Claude Code, GitHub Copilot and Codex
+  reach it through the Model Context Protocol.
+type: software
+authors:
+  - family-names: Majewski
+    given-names: Jakub
+    website: "https://majewski.studio"
+version: 3.1.0
+date-released: 2026-11-14
+license: MIT
+repository-code: "https://github.com/jacobemanuel/leks"
+keywords:
+  - information retrieval
+  - hybrid search
+  - coding agents
+  - model context protocol
+  - knowledge management
+  - local-first

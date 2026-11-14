@@ -1,12 +1,12 @@
 version: 2
 updates:
-  # pull requests for the actions the workflows use, once a week, grouped into one.
+  # pull requests for the actions the workflows use, once a month, grouped into one.
   # every action is pinned to a full commit SHA with its version in a comment:
   # when reviewing an update, check that the new SHA and its comment agree
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
     groups:
       actions:
         patterns: ["*"]
@@ -17,7 +17,7 @@ updates:
   - package-ecosystem: pip
     directory: /.github/ci
     schedule:
-      interval: weekly
+      interval: monthly
     groups:
       ci-tools:
         patterns: ["*"]
@@ -28,7 +28,7 @@ updates:
   - package-ecosystem: pip
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
     groups:
       extras:
         patterns: ["*"]

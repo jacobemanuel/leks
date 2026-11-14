@@ -20,8 +20,9 @@ This page lists every job in `.github/workflows` and every group of tests, with 
 | [secret scan](#secret-scan) | security.yml: Ubuntu, gitleaks 8.30.1 | no gitleaks rule matches in any commit of any branch or tag | secrets in a form its rules do not know |
 | [bandit](#bandit) | security.yml: Ubuntu, Python 3.13 | no bandit finding in `leks/` and `bench/` outside the skips documented in pyproject.toml | what a check over the syntax of one file cannot see |
 | [pip-audit](#pip-audit) | security.yml: Ubuntu, Python 3.10, 3.11 and 3.13 | on the day of the run, no published advisory names a version that pip resolves for `.[pdf,test]` on 3.10 and for `.[models,pdf,test]` on 3.11 and 3.13 | advisories that are not published yet; what other platforms resolve |
-| [Dependabot](#dependabot) | GitHub, weekly | pull requests with new versions of the actions, the CI tools and the extras | that an update is safe; its pull request runs the jobs above like any other |
+| [Dependabot](#dependabot) | GitHub, monthly | pull requests with new versions of the actions, the CI tools and the extras | that an update is safe; its pull request runs the jobs above like any other |
 | [real host sessions](#real-host-sessions) | by hand: `bench/hosts/smoke.sh` | which host CLIs are installed and signed in, and that a short run with LEKS completes on each | never runs in CI, since it needs an account on each host and spends its usage |
+| [a new user's install](#a-new-users-install) | by hand on macOS, 14 November 2026 | the Quick start and [install](install.md) work as written from a fresh clone of main with Homebrew's Python 3.13 and 3.14, up to the three hosts' config files and hooks starting LEKS with no venv on PATH | Linux and Windows; the model download and embed, which the models job and the benchmark runs cover |
 
 ## What the workflows share
 
@@ -31,7 +32,7 @@ This page lists every job in `.github/workflows` and every group of tests, with 
 | models | `.github/workflows/models.yml` | every push to main and to `release-*` branches, Mondays at 04:17 UTC, by hand |
 | security | `.github/workflows/security.yml` | every push to main and to `release-*` branches, every pull request, Mondays at 05:23 UTC, by hand |
 | public benchmark | `.github/workflows/public-bench.yml` | by hand only |
-| Dependabot | `.github/dependabot.yml` | once a week |
+| Dependabot | `.github/dependabot.yml` | once a month |
 
 The models workflow leaves pull requests out: it downloads 2.54 GB of weights on a cache miss ([install](install.md#what-you-need)), which is too slow for every push to a pull request.
 
@@ -124,6 +125,10 @@ These tests run in every unit job and in the mcp jobs, Windows included.
 ### real host sessions
 
 Real Claude Code, Copilot and Codex sessions do not run in CI. Each needs a signed in account and spends that account's usage, and a hosted runner has neither. `sh bench/hosts/smoke.sh` is the check by hand: it finds which host CLIs are installed and signed in, runs a short set of sessions with LEKS on each and writes one summary file. `bench/hosts/README.md` has its settings and what it costs. So a change in how a host calls hooks or starts MCP servers shows up only in such a run, or when someone uses the host.
+
+### a new user's install
+
+By hand, on 14 November 2026, on a Mac with Apple silicon, in a throwaway home folder. From a fresh clone of main I followed the README's Quick start and [install](install.md) to the letter with the Python 3.13 and 3.14 that Homebrew installs: the venv, `pip install -e ".[models,pdf]"` with torch importing afterwards, the demo, `leks init`, a words-only config, `build`, `search`, `status`, the project template copied with the commands from install, and the loop that puts the venv's Python into the template. Then the MCP server and the hooks were started straight from `.mcp.json`, `.vscode/mcp.json`, `.codex/config.toml` and the three hook files, with a PATH that holds no venv: each server listed the seven tools and answered a search, and every hook exited 0. The same walk-through is why install starts with a version check and a venv: outside one, pip stops with `externally-managed-environment` on Homebrew's Python, and Apple's own Python 3.9 is too old for LEKS. It did not fetch the models or embed, and it did not run on Linux or Windows.
 
 ### packaging
 
@@ -260,7 +265,7 @@ It says nothing about advisories that are not published yet, or about the versio
 
 ### Dependabot
 
-`.github/dependabot.yml` asks once a week for grouped pull requests with updates to the actions the workflows use, to the CI tools pinned in `.github/ci/requirements-*.txt` and to the extras in pyproject.toml ([Dependabot options](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference)). Every action is pinned to a full commit SHA with its version in a comment, so when such a pull request comes, check that each new SHA belongs to the release its comment names before merging it.
+`.github/dependabot.yml` asks once a month for grouped pull requests with updates to the actions the workflows use, to the CI tools pinned in `.github/ci/requirements-*.txt` and to the extras in pyproject.toml ([Dependabot options](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference)). Every action is pinned to a full commit SHA with its version in a comment, so when such a pull request comes, check that each new SHA belongs to the release its comment names before merging it.
 
 ## public benchmark
 
@@ -268,7 +273,7 @@ It says nothing about advisories that are not published yet, or about the versio
 
 ## Run the checks on your computer
 
-The commands of each job work outside GitHub too. On macOS:
+The commands of each job work outside GitHub too. On macOS, inside the activated venv from [Get LEKS](install.md#get-leks), so that `python3` is the venv's Python:
 
 ```bash
 # the whole suite with its floor, as in the unit jobs

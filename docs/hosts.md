@@ -50,4 +50,4 @@ A host can hand reading and searching to a subagent, and that subagent can run o
 
 LEKS finds its config in `$LEKS_CONFIG`, then `$LEKS_HOME/config.json`, then `~/.leks/config.json`. It never looks in the working folder. The simplest set-up is one config for all projects and a `LEKS_PROFILE` per project. For a config per project, set `LEKS_CONFIG` to an absolute path in every `env` block of the template and in the `[mcp_servers.leks.env]` table of `.codex/config.toml`, and add `--config` with the same path to each command in `.codex/hooks.json`; in `.vscode/mcp.json` the path may start with `${workspaceFolder}`.
 
-Every file in the template calls `python3`. When that is not the interpreter that has LEKS installed, write the full path to the right interpreter in its place, in every file.
+Every file in the template calls `python3`. When that is not the interpreter that has LEKS installed, write the full path to the right interpreter in its place, in every file; the loop in [install](install.md#connect-claude-code-copilot-and-codex) does it for the venv.

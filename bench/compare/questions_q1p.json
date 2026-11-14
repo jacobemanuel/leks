@@ -1,0 +1,8346 @@
+{
+ "_note": "Written by hand from each PEP title and general knowledge of the PEP, blind to the note files, the runs and every system's output, then checked by check_q1p.py and frozen before any system ran on it.",
+ "rule": "One paraphrase per q1 question (the PEP title). English; 4 to 14 words; no PEP number in any form; keep names a user cannot avoid (Python, version numbers, module or keyword names); replace the title's other content words by natural synonyms or a description; never copy the title; not shaped toward any search method. Content-word overlap with the title (lowercase words of 3 or more letters, minus a short stop list, minus python, minus digits, as a share of the title's content words) must stay below 0.5.",
+ "questions": [
+  {
+   "id": "q1p-0001",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 1,
+   "question": "how to write and submit a python enhancement proposal",
+   "gold": [
+    "peps/pep-0001.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0002",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 2,
+   "question": "how a new module gets accepted into the standard library",
+   "gold": [
+    "peps/pep-0002.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0004",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 4,
+   "question": "process for phasing out and removing old stdlib modules",
+   "gold": [
+    "peps/pep-0004.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0006",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 6,
+   "question": "how maintenance point versions with only fixes are produced",
+   "gold": [
+    "peps/pep-0006.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0007",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 7,
+   "question": "coding conventions for the C source of the interpreter",
+   "gold": [
+    "peps/pep-0007.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0008",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8,
+   "question": "official formatting conventions for indentation, naming and line length",
+   "gold": [
+    "peps/pep-0008.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0009",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 9,
+   "question": "example plain text skeleton for drafting an enhancement proposal",
+   "gold": [
+    "peps/pep-0009.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0010",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 10,
+   "question": "how core developers express plus one or minus one opinions",
+   "gold": [
+    "peps/pep-0010.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0011",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 11,
+   "question": "which operating systems and architectures the interpreter officially targets, tiers",
+   "gold": [
+    "peps/pep-0011.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0012",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 12,
+   "question": "example rst skeleton document for drafting an enhancement proposal",
+   "gold": [
+    "peps/pep-0012.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0013",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 13,
+   "question": "who decides on changes, steering council powers and elections",
+   "gold": [
+    "peps/pep-0013.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0020",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 20,
+   "question": "import this aphorisms like beautiful is better than ugly",
+   "gold": [
+    "peps/pep-0020.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0101",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 101,
+   "question": "steps the release manager follows to ship a new version",
+   "gold": [
+    "peps/pep-0101.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0102",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 102,
+   "question": "steps to ship a bugfix point version like 2.x.y",
+   "gold": [
+    "peps/pep-0102.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0103",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 103,
+   "question": "tips and tutorial for using the git version control tool",
+   "gold": [
+    "peps/pep-0103.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0160",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 160,
+   "question": "planned dates and milestones for the 1.6 version",
+   "gold": [
+    "peps/pep-0160.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0201",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 201,
+   "question": "loop over several sequences in parallel with zip",
+   "gold": [
+    "peps/pep-0201.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0203",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 203,
+   "question": "in-place operators like += and *= on objects",
+   "gold": [
+    "peps/pep-0203.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0204",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 204,
+   "question": "bracket syntax like [1:10] to create integer lists",
+   "gold": [
+    "peps/pep-0204.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0205",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 205,
+   "question": "pointers to objects that don't prevent garbage collection, weakref module",
+   "gold": [
+    "peps/pep-0205.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0207",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 207,
+   "question": "overloading < > == separately with __lt__ and __eq__ methods",
+   "gold": [
+    "peps/pep-0207.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0208",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 208,
+   "question": "new way numeric types convert operands for mixed arithmetic",
+   "gold": [
+    "peps/pep-0208.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0209",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 209,
+   "question": "built-in n-dimensional matrix type for numeric computing",
+   "gold": [
+    "peps/pep-0209.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0212",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 212,
+   "question": "getting the index while looping over a sequence, indices function",
+   "gold": [
+    "peps/pep-0212.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0215",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 215,
+   "question": "embedding variables in text with dollar-sign substitution",
+   "gold": [
+    "peps/pep-0215.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0218",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 218,
+   "question": "builtin unordered collection of unique elements with union and intersection",
+   "gold": [
+    "peps/pep-0218.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0222",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 222,
+   "question": "improving cgi and url handling modules for http programming",
+   "gold": [
+    "peps/pep-0222.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0223",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 223,
+   "question": "hex escape sequences in literals should consume exactly two digits",
+   "gold": [
+    "peps/pep-0223.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0224",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 224,
+   "question": "documentation strings placed after class variable assignments",
+   "gold": [
+    "peps/pep-0224.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0228",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 228,
+   "question": "unify ints, floats and exact numbers into one number system",
+   "gold": [
+    "peps/pep-0228.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0229",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 229,
+   "question": "compile the interpreter's extension modules with setup.py instead of Makefile",
+   "gold": [
+    "peps/pep-0229.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0232",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 232,
+   "question": "attaching arbitrary data to functions via func.__dict__",
+   "gold": [
+    "peps/pep-0232.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0236",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 236,
+   "question": "opt into upcoming language behavior early with a special import",
+   "gold": [
+    "peps/pep-0236.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0237",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 237,
+   "question": "merge int and long so overflow promotes automatically",
+   "gold": [
+    "peps/pep-0237.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0238",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 238,
+   "question": "true division with / and floor division with //",
+   "gold": [
+    "peps/pep-0238.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0239",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 239,
+   "question": "builtin fraction number type for exact ratios",
+   "gold": [
+    "peps/pep-0239.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0240",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 240,
+   "question": "literal syntax for writing exact fraction numbers in source code",
+   "gold": [
+    "peps/pep-0240.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0241",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 241,
+   "question": "PKG-INFO fields describing a distribution: name, version, author",
+   "gold": [
+    "peps/pep-0241.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0242",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 242,
+   "question": "specifying precision and kind of numbers, fortran-like",
+   "gold": [
+    "peps/pep-0242.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0243",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 243,
+   "question": "setup.py command to publish distributions to the package index",
+   "gold": [
+    "peps/pep-0243.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0244",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 244,
+   "question": "a pragma-like keyword telling the compiler how to treat a module",
+   "gold": [
+    "peps/pep-0244.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0245",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 245,
+   "question": "declaring interfaces with a dedicated keyword, protocols for classes",
+   "gold": [
+    "peps/pep-0245.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0246",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 246,
+   "question": "adapt() function converting a value to a required protocol",
+   "gold": [
+    "peps/pep-0246.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0247",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 247,
+   "question": "common interface for md5 and sha digest modules",
+   "gold": [
+    "peps/pep-0247.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0248",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 248,
+   "question": "first version of the standard interface for database modules",
+   "gold": [
+    "peps/pep-0248.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0249",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 249,
+   "question": "standard connection and cursor interface for database drivers, second version",
+   "gold": [
+    "peps/pep-0249.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0250",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 250,
+   "question": "where third-party libraries get installed on windows",
+   "gold": [
+    "peps/pep-0250.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0251",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 251,
+   "question": "planned dates and milestones for the 2.2 version",
+   "gold": [
+    "peps/pep-0251.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0252",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 252,
+   "question": "new-style object model unifying builtin type and user class",
+   "gold": [
+    "peps/pep-0252.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0253",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 253,
+   "question": "inheriting from list, dict and other builtins in C and python",
+   "gold": [
+    "peps/pep-0253.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0254",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 254,
+   "question": "user-defined class objects behaving as type instances, metaclass unification",
+   "gold": [
+    "peps/pep-0254.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0255",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 255,
+   "question": "yield keyword to write resumable functions producing values lazily",
+   "gold": [
+    "peps/pep-0255.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0256",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 256,
+   "question": "tooling to extract and render documentation strings from modules",
+   "gold": [
+    "peps/pep-0256.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0257",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 257,
+   "question": "how to format documentation strings, triple quotes, one-line summary",
+   "gold": [
+    "peps/pep-0257.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0258",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 258,
+   "question": "architecture of the rst documentation tooling: readers, parsers, writers",
+   "gold": [
+    "peps/pep-0258.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0259",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 259,
+   "question": "print statement should skip the extra line break when text already ends with one",
+   "gold": [
+    "peps/pep-0259.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0260",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 260,
+   "question": "strip down the lazy range object to only iteration and len",
+   "gold": [
+    "peps/pep-0260.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0261",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 261,
+   "question": "UCS-4 build option for characters beyond the basic multilingual plane",
+   "gold": [
+    "peps/pep-0261.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0262",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 262,
+   "question": "record which distributions are installed and their files",
+   "gold": [
+    "peps/pep-0262.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0263",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 263,
+   "question": "coding: utf-8 magic comment at the top of a file",
+   "gold": [
+    "peps/pep-0263.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0264",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 264,
+   "question": "making __future__ imports work in interactive consoles and IDLE",
+   "gold": [
+    "peps/pep-0264.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0265",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 265,
+   "question": "order dict items by their values instead of keys",
+   "gold": [
+    "peps/pep-0265.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0266",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 266,
+   "question": "speed up lookup of module-level names and dotted names",
+   "gold": [
+    "peps/pep-0266.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0267",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 267,
+   "question": "faster lookup of globals and builtins using a dict entries cache",
+   "gold": [
+    "peps/pep-0267.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0268",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 268,
+   "question": "more http features in httplib, authentication and DAV support",
+   "gold": [
+    "peps/pep-0268.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0269",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 269,
+   "question": "expose the parser generator to python code to build grammars",
+   "gold": [
+    "peps/pep-0269.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0270",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 270,
+   "question": "dedupe a sequence in place, dropping repeated elements",
+   "gold": [
+    "peps/pep-0270.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0271",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 271,
+   "question": "add directories to the module search path from interpreter flags",
+   "gold": [
+    "peps/pep-0271.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0272",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 272,
+   "question": "common interface for symmetric cipher modules like AES and DES",
+   "gold": [
+    "peps/pep-0272.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0273",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 273,
+   "question": "load code directly from a .zip file on sys.path",
+   "gold": [
+    "peps/pep-0273.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0274",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 274,
+   "question": "build a dictionary with {k: v for k in iterable} syntax",
+   "gold": [
+    "peps/pep-0274.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0275",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 275,
+   "question": "faster dispatch on constants, switch statement via dict lookup",
+   "gold": [
+    "peps/pep-0275.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0276",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 276,
+   "question": "make integers iterable so for i in 5 loops five times",
+   "gold": [
+    "peps/pep-0276.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0277",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 277,
+   "question": "non-ascii filenames on windows using wide character APIs",
+   "gold": [
+    "peps/pep-0277.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0278",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 278,
+   "question": "open text files with any line ending style, \\r\\n or \\r",
+   "gold": [
+    "peps/pep-0278.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0279",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 279,
+   "question": "get index and item together when looping over a list",
+   "gold": [
+    "peps/pep-0279.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0280",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 280,
+   "question": "cache global and builtin name lookups for speed",
+   "gold": [
+    "peps/pep-0280.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0281",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 281,
+   "question": "passing a sequence to range to get its indices",
+   "gold": [
+    "peps/pep-0281.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0282",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 282,
+   "question": "standard module for log messages with handlers and levels",
+   "gold": [
+    "peps/pep-0282.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0283",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 283,
+   "question": "planned dates and milestones for the 2.3 version",
+   "gold": [
+    "peps/pep-0283.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0284",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 284,
+   "question": "numeric loop syntax using comparison bounds like 0 <= i < n",
+   "gold": [
+    "peps/pep-0284.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0285",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 285,
+   "question": "True and False constants with a boolean subclass of int",
+   "gold": [
+    "peps/pep-0285.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0286",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 286,
+   "question": "better PyArg_ParseTuple conversions with cleanup of resources",
+   "gold": [
+    "peps/pep-0286.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0287",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 287,
+   "question": "use rst markup inside documentation strings",
+   "gold": [
+    "peps/pep-0287.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0288",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 288,
+   "question": "passing data and raising errors into a running generator",
+   "gold": [
+    "peps/pep-0288.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0289",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 289,
+   "question": "lazy comprehension in parentheses like sum(x*x for x in data)",
+   "gold": [
+    "peps/pep-0289.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0290",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 290,
+   "question": "guide for updating old code to newer language idioms",
+   "gold": [
+    "peps/pep-0290.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0291",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 291,
+   "question": "which older versions each stdlib module must keep working with",
+   "gold": [
+    "peps/pep-0291.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0292",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 292,
+   "question": "string.Template with $name placeholders",
+   "gold": [
+    "peps/pep-0292.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0293",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 293,
+   "question": "custom handlers for encode and decode errors, register_error",
+   "gold": [
+    "peps/pep-0293.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0294",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 294,
+   "question": "rename constants such as IntType to match builtin names",
+   "gold": [
+    "peps/pep-0294.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0295",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 295,
+   "question": "strip indentation from triple-quoted literals automatically",
+   "gold": [
+    "peps/pep-0295.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0296",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 296,
+   "question": "mutable byte array type separate from str",
+   "gold": [
+    "peps/pep-0296.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0297",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 297,
+   "question": "keep upgraded stdlib modules separate from the system install",
+   "gold": [
+    "peps/pep-0297.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0298",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 298,
+   "question": "C protocol to pin memory of an object while it is accessed",
+   "gold": [
+    "peps/pep-0298.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0299",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 299,
+   "question": "run a designated entry routine automatically when a file is executed as a script",
+   "gold": [
+    "peps/pep-0299.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0301",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 301,
+   "question": "central catalog of third-party libraries with register command and classifiers",
+   "gold": [
+    "peps/pep-0301.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0302",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 302,
+   "question": "finder and loader objects via sys.meta_path and path importers",
+   "gold": [
+    "peps/pep-0302.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0303",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 303,
+   "question": "divmod with several moduli for converting seconds to days hours minutes",
+   "gold": [
+    "peps/pep-0303.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0304",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 304,
+   "question": "stop writing .pyc files, PYTHONDONTWRITEBYTECODE",
+   "gold": [
+    "peps/pep-0304.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0305",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 305,
+   "question": "module to read and write comma separated values",
+   "gold": [
+    "peps/pep-0305.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0306",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 306,
+   "question": "steps for adding new syntax to the parser and compiler",
+   "gold": [
+    "peps/pep-0306.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0307",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 307,
+   "question": "serializing new-style objects more compactly, __reduce_ex__ and copyreg",
+   "gold": [
+    "peps/pep-0307.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0308",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 308,
+   "question": "x if cond else y ternary operator",
+   "gold": [
+    "peps/pep-0308.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0309",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 309,
+   "question": "functools.partial to freeze some arguments of a callable",
+   "gold": [
+    "peps/pep-0309.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0310",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 310,
+   "question": "statement to guarantee a lock is let go, early with idea",
+   "gold": [
+    "peps/pep-0310.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0311",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 311,
+   "question": "PyGILState_Ensure API for C code calling into the interpreter from threads",
+   "gold": [
+    "peps/pep-0311.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0312",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 312,
+   "question": "shorthand for anonymous functions without the lambda keyword",
+   "gold": [
+    "peps/pep-0312.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0313",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 313,
+   "question": "write numbers like MMVI in source code, april fools joke",
+   "gold": [
+    "peps/pep-0313.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0314",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 314,
+   "question": "package metadata version adding requires, provides and classifiers",
+   "gold": [
+    "peps/pep-0314.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0315",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 315,
+   "question": "do-until style looping with the exit test in the middle",
+   "gold": [
+    "peps/pep-0315.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0316",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 316,
+   "question": "preconditions, postconditions and invariants written in docstrings",
+   "gold": [
+    "peps/pep-0316.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0317",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 317,
+   "question": "raise should require an instance, not a class plus arguments",
+   "gold": [
+    "peps/pep-0317.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0318",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 318,
+   "question": "@ syntax for wrapping a function, like staticmethod",
+   "gold": [
+    "peps/pep-0318.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0319",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 319,
+   "question": "synchronized keyword for thread-safe code sections",
+   "gold": [
+    "peps/pep-0319.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0320",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 320,
+   "question": "planned dates and milestones for the 2.4 version",
+   "gold": [
+    "peps/pep-0320.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0321",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 321,
+   "question": "converting datetime objects to and from text, ISO 8601",
+   "gold": [
+    "peps/pep-0321.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0322",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 322,
+   "question": "reversed() builtin to loop backwards over sequences",
+   "gold": [
+    "peps/pep-0322.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0323",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 323,
+   "question": "duplicating an iterator's state with copy, itertools.tee",
+   "gold": [
+    "peps/pep-0323.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0324",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 324,
+   "question": "spawn child programs and capture output, replacing os.system and popen",
+   "gold": [
+    "peps/pep-0324.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0325",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 325,
+   "question": "allow try/finally in generators, close method for cleanup",
+   "gold": [
+    "peps/pep-0325.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0326",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 326,
+   "question": "objects that compare greater or less than everything, Max and Min sentinels",
+   "gold": [
+    "peps/pep-0326.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0327",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 327,
+   "question": "exact base-ten arithmetic for money calculations",
+   "gold": [
+    "peps/pep-0327.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0328",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 328,
+   "question": "parenthesized import lists and leading dot relative import syntax",
+   "gold": [
+    "peps/pep-0328.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0329",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 329,
+   "question": "bind builtin names at compile time for speed",
+   "gold": [
+    "peps/pep-0329.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0330",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 330,
+   "question": "checking .pyc instructions are valid before running them",
+   "gold": [
+    "peps/pep-0330.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0331",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 331,
+   "question": "parse and format decimals with a dot regardless of setlocale",
+   "gold": [
+    "peps/pep-0331.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0332",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 332,
+   "question": "merge str and unicode, separate type for raw binary data",
+   "gold": [
+    "peps/pep-0332.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0333",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 333,
+   "question": "standard calling convention between http servers and app frameworks",
+   "gold": [
+    "peps/pep-0333.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0334",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 334,
+   "question": "suspendable functions using a special exception, lightweight coroutines",
+   "gold": [
+    "peps/pep-0334.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0335",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 335,
+   "question": "custom and, or, not behavior via special methods",
+   "gold": [
+    "peps/pep-0335.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0336",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 336,
+   "question": "calling None as a no-op function",
+   "gold": [
+    "peps/pep-0336.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0337",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 337,
+   "question": "stdlib modules emitting messages through the log module",
+   "gold": [
+    "peps/pep-0337.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0338",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 338,
+   "question": "python -m to run a library as a program",
+   "gold": [
+    "peps/pep-0338.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0340",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 340,
+   "question": "block statement with generator templates, predecessor of the with statement",
+   "gold": [
+    "peps/pep-0340.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0341",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 341,
+   "question": "single block with both error handlers and cleanup clause",
+   "gold": [
+    "peps/pep-0341.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0342",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 342,
+   "question": "send() and throw() methods for two-way generator communication",
+   "gold": [
+    "peps/pep-0342.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0343",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 343,
+   "question": "context managers with __enter__ and __exit__",
+   "gold": [
+    "peps/pep-0343.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0345",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 345,
+   "question": "package metadata adding Requires-Python and Requires-Dist fields",
+   "gold": [
+    "peps/pep-0345.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0346",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 346,
+   "question": "context manager protocol design, merging generator blocks with try",
+   "gold": [
+    "peps/pep-0346.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0347",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 347,
+   "question": "move core source repository from CVS to SVN",
+   "gold": [
+    "peps/pep-0347.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0348",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 348,
+   "question": "redesign the builtin error class hierarchy for py3k",
+   "gold": [
+    "peps/pep-0348.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0349",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 349,
+   "question": "str() builtin returning text objects instead of byte strings",
+   "gold": [
+    "peps/pep-0349.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0351",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 351,
+   "question": "turn mutable containers into immutable hashable copies",
+   "gold": [
+    "peps/pep-0351.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0352",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 352,
+   "question": "all raised objects must inherit from BaseException",
+   "gold": [
+    "peps/pep-0352.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0353",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 353,
+   "question": "Py_ssize_t for 64-bit container sizes in the C API",
+   "gold": [
+    "peps/pep-0353.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0354",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 354,
+   "question": "enum type for named integer constants",
+   "gold": [
+    "peps/pep-0354.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0355",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 355,
+   "question": "class for file system path manipulation instead of os.path",
+   "gold": [
+    "peps/pep-0355.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0356",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 356,
+   "question": "planned dates and milestones for the 2.5 version",
+   "gold": [
+    "peps/pep-0356.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0357",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 357,
+   "question": "__index__ method so custom integers work as list indices",
+   "gold": [
+    "peps/pep-0357.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0358",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 358,
+   "question": "immutable binary sequence type for py3k",
+   "gold": [
+    "peps/pep-0358.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0359",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 359,
+   "question": "generalized class-like block calling any callable with a namespace",
+   "gold": [
+    "peps/pep-0359.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0360",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 360,
+   "question": "stdlib modules whose upstream lives outside the core repository",
+   "gold": [
+    "peps/pep-0360.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0361",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 361,
+   "question": "planned dates and milestones for the 2.6 and 3.0 versions",
+   "gold": [
+    "peps/pep-0361.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0362",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 362,
+   "question": "inspect.signature to introspect parameters of callables",
+   "gold": [
+    "peps/pep-0362.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0363",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 363,
+   "question": "obj.(name) expression instead of getattr",
+   "gold": [
+    "peps/pep-0363.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0364",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 364,
+   "question": "renamed stdlib modules and compatibility for 2 to 3 migration",
+   "gold": [
+    "peps/pep-0364.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0365",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 365,
+   "question": "include setuptools resource and entry point API in stdlib",
+   "gold": [
+    "peps/pep-0365.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0366",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 366,
+   "question": "using dotted imports when launching a package submodule with -m, __package__",
+   "gold": [
+    "peps/pep-0366.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0368",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 368,
+   "question": "common interface for passing picture data between libraries",
+   "gold": [
+    "peps/pep-0368.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0369",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 369,
+   "question": "callbacks triggered when a module finishes loading",
+   "gold": [
+    "peps/pep-0369.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0370",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 370,
+   "question": "install libraries into the home folder with --user",
+   "gold": [
+    "peps/pep-0370.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0371",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 371,
+   "question": "process-based parallelism module with a threading-like API",
+   "gold": [
+    "peps/pep-0371.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0372",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 372,
+   "question": "OrderedDict remembering insertion order of keys",
+   "gold": [
+    "peps/pep-0372.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0373",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 373,
+   "question": "planned dates and milestones for the 2.7 version",
+   "gold": [
+    "peps/pep-0373.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0374",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 374,
+   "question": "deciding between git, mercurial and bazaar for core development",
+   "gold": [
+    "peps/pep-0374.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0375",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 375,
+   "question": "planned dates and milestones for the 3.1 version",
+   "gold": [
+    "peps/pep-0375.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0376",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 376,
+   "question": "dist-info directories and RECORD file for installed projects",
+   "gold": [
+    "peps/pep-0376.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0377",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 377,
+   "question": "let a context manager bypass the block inside with",
+   "gold": [
+    "peps/pep-0377.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0378",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 378,
+   "question": "comma grouping in format strings like {:,}",
+   "gold": [
+    "peps/pep-0378.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0379",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 379,
+   "question": "binding a name inside an expression, early walrus idea",
+   "gold": [
+    "peps/pep-0379.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0380",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 380,
+   "question": "yield from to pass control to an inner generator",
+   "gold": [
+    "peps/pep-0380.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0381",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 381,
+   "question": "running copies of the package index, mirror protocol",
+   "gold": [
+    "peps/pep-0381.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0382",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 382,
+   "question": "split one top-level package across several directories",
+   "gold": [
+    "peps/pep-0382.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0383",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 383,
+   "question": "surrogateescape error handler for undecodable filenames",
+   "gold": [
+    "peps/pep-0383.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0384",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 384,
+   "question": "limited C API so extensions work across versions, Py_LIMITED_API",
+   "gold": [
+    "peps/pep-0384.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0385",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 385,
+   "question": "moving the core repository from SVN to hg",
+   "gold": [
+    "peps/pep-0385.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0386",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 386,
+   "question": "new rules for ordering release numbers of packages",
+   "gold": [
+    "peps/pep-0386.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0387",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 387,
+   "question": "rules for deprecation periods before breaking changes",
+   "gold": [
+    "peps/pep-0387.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0389",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 389,
+   "question": "parse command line options and subcommands, replacing optparse",
+   "gold": [
+    "peps/pep-0389.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0390",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 390,
+   "question": "declaring package info in setup.cfg instead of setup.py",
+   "gold": [
+    "peps/pep-0390.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0391",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 391,
+   "question": "logging.config.dictConfig to set up handlers from a dict",
+   "gold": [
+    "peps/pep-0391.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0392",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 392,
+   "question": "planned dates and milestones for the 3.2 version",
+   "gold": [
+    "peps/pep-0392.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0393",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 393,
+   "question": "compact unicode storage choosing 1, 2 or 4 bytes per character",
+   "gold": [
+    "peps/pep-0393.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0394",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 394,
+   "question": "whether python should point to python2 or python3 on linux",
+   "gold": [
+    "peps/pep-0394.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0395",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 395,
+   "question": "module __qualname__ and fixing pickling of __main__ code",
+   "gold": [
+    "peps/pep-0395.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0396",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 396,
+   "question": "convention for the __version__ attribute in packages",
+   "gold": [
+    "peps/pep-0396.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0397",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 397,
+   "question": "py.exe to pick an interpreter from a shebang line",
+   "gold": [
+    "peps/pep-0397.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0398",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 398,
+   "question": "planned dates and milestones for the 3.3 version",
+   "gold": [
+    "peps/pep-0398.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0399",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 399,
+   "question": "stdlib modules with both pure and C implementations must behave the same",
+   "gold": [
+    "peps/pep-0399.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0400",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 400,
+   "question": "drop codec stream classes in favor of io.TextIOWrapper",
+   "gold": [
+    "peps/pep-0400.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0402",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 402,
+   "question": "namespace packages without __init__ files, splitting a library across folders",
+   "gold": [
+    "peps/pep-0402.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0403",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 403,
+   "question": "@in clause to define a callback inline after a statement",
+   "gold": [
+    "peps/pep-0403.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0404",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 404,
+   "question": "there will never be a 2.8 version, official announcement",
+   "gold": [
+    "peps/pep-0404.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0405",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 405,
+   "question": "venv module for isolated per-project interpreter setups",
+   "gold": [
+    "peps/pep-0405.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0406",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 406,
+   "question": "ImportEngine object holding sys.modules and path state",
+   "gold": [
+    "peps/pep-0406.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0407",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 407,
+   "question": "faster feature cadence plus extended maintenance branches",
+   "gold": [
+    "peps/pep-0407.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0408",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 408,
+   "question": "staging area for experimental stdlib modules before the API is final",
+   "gold": [
+    "peps/pep-0408.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0409",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 409,
+   "question": "raise ... from None to hide the chained traceback",
+   "gold": [
+    "peps/pep-0409.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0410",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 410,
+   "question": "exact high-resolution times from os.stat using decimal numbers",
+   "gold": [
+    "peps/pep-0410.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0411",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 411,
+   "question": "APIs added to the stdlib that may still change",
+   "gold": [
+    "peps/pep-0411.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0412",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 412,
+   "question": "instance __dict__ objects sharing keys to save memory",
+   "gold": [
+    "peps/pep-0412.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0413",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 413,
+   "question": "ship the stdlib on its own schedule separate from the language",
+   "gold": [
+    "peps/pep-0413.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0414",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 414,
+   "question": "allow the u'' prefix again in 3.3 for easier porting",
+   "gold": [
+    "peps/pep-0414.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0415",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 415,
+   "question": "__suppress_context__ attribute behind raise from None",
+   "gold": [
+    "peps/pep-0415.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0416",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 416,
+   "question": "immutable hashable dictionary as a builtin",
+   "gold": [
+    "peps/pep-0416.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0417",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 417,
+   "question": "unittest.mock for fake objects in tests",
+   "gold": [
+    "peps/pep-0417.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0418",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 418,
+   "question": "clocks that never go backwards and high-resolution benchmarking timers",
+   "gold": [
+    "peps/pep-0418.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0419",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 419,
+   "question": "KeyboardInterrupt arriving inside finally blocks, signal safety",
+   "gold": [
+    "peps/pep-0419.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0420",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 420,
+   "question": "packages without __init__.py spread over multiple directories",
+   "gold": [
+    "peps/pep-0420.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0421",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 421,
+   "question": "attribute describing the running interpreter name and cache tag",
+   "gold": [
+    "peps/pep-0421.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0423",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 423,
+   "question": "how to name distributions and top-level modules on the package index",
+   "gold": [
+    "peps/pep-0423.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0424",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 424,
+   "question": "estimating how many items an iterator will yield to preallocate",
+   "gold": [
+    "peps/pep-0424.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0425",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 425,
+   "question": "wheel filename tags like cp39-abi3-manylinux",
+   "gold": [
+    "peps/pep-0425.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0426",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 426,
+   "question": "JSON-based package metadata redesign that was withdrawn",
+   "gold": [
+    "peps/pep-0426.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0427",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 427,
+   "question": "zip-based .whl archive for prebuilt installable distributions",
+   "gold": [
+    "peps/pep-0427.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0428",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 428,
+   "question": "Path classes replacing os.path string manipulation",
+   "gold": [
+    "peps/pep-0428.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0429",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 429,
+   "question": "planned dates and milestones for the 3.4 version",
+   "gold": [
+    "peps/pep-0429.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0430",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 430,
+   "question": "docs.python.org should show 3.x pages by default",
+   "gold": [
+    "peps/pep-0430.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0431",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 431,
+   "question": "better tz database handling in datetime",
+   "gold": [
+    "peps/pep-0431.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0432",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 432,
+   "question": "interpreter initialization phases and embedding configuration",
+   "gold": [
+    "peps/pep-0432.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0433",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 433,
+   "question": "close-on-exec flag for fds, simpler way to set it",
+   "gold": [
+    "peps/pep-0433.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0434",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 434,
+   "question": "allow features to the bundled editor in maintenance versions",
+   "gold": [
+    "peps/pep-0434.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0435",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 435,
+   "question": "enum module for named constants",
+   "gold": [
+    "peps/pep-0435.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0436",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 436,
+   "question": "preprocessor generating C argument parsing code for builtins",
+   "gold": [
+    "peps/pep-0436.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0438",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 438,
+   "question": "package files should be uploaded to the index instead of external links",
+   "gold": [
+    "peps/pep-0438.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0439",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 439,
+   "question": "installer automatically fetched on first use, getpip idea",
+   "gold": [
+    "peps/pep-0439.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0440",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 440,
+   "question": "version numbering scheme and specifiers like >=1.0,<2",
+   "gold": [
+    "peps/pep-0440.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0441",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 441,
+   "question": "zipapp module for running .pyz archives as programs",
+   "gold": [
+    "peps/pep-0441.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0442",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 442,
+   "question": "__del__ methods in reference cycles collected by gc",
+   "gold": [
+    "peps/pep-0442.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0443",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 443,
+   "question": "functools.singledispatch to overload by argument type",
+   "gold": [
+    "peps/pep-0443.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0444",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 444,
+   "question": "successor to WSGI for py3 http servers and apps",
+   "gold": [
+    "peps/pep-0444.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0445",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 445,
+   "question": "PyMem_SetAllocator hooks to replace malloc in the interpreter",
+   "gold": [
+    "peps/pep-0445.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0446",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 446,
+   "question": "fds not passed to child processes by default, os.set_inheritable",
+   "gold": [
+    "peps/pep-0446.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0447",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 447,
+   "question": "metaclass hook to customize attribute lookup in class dicts",
+   "gold": [
+    "peps/pep-0447.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0448",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 448,
+   "question": "multiple * and ** in calls and in list and dict displays",
+   "gold": [
+    "peps/pep-0448.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0449",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 449,
+   "question": "drop last.pypi.python.org DNS based mirror lookup",
+   "gold": [
+    "peps/pep-0449.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0450",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 450,
+   "question": "mean, median and stdev functions in a builtin library",
+   "gold": [
+    "peps/pep-0450.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0451",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 451,
+   "question": "importlib spec object describing how a module is loaded",
+   "gold": [
+    "peps/pep-0451.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0452",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 452,
+   "question": "updated hashlib-style interface for digest algorithms",
+   "gold": [
+    "peps/pep-0452.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0453",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 453,
+   "question": "ensurepip bundles the installer with the interpreter",
+   "gold": [
+    "peps/pep-0453.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0454",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 454,
+   "question": "trace where memory blocks were allocated to debug leaks",
+   "gold": [
+    "peps/pep-0454.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0455",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 455,
+   "question": "TransformDict mapping with case-insensitive keys",
+   "gold": [
+    "peps/pep-0455.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0456",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 456,
+   "question": "SipHash for str hashing against denial of service",
+   "gold": [
+    "peps/pep-0456.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0457",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 457,
+   "question": "slash in function signatures for arguments that can't be passed by keyword",
+   "gold": [
+    "peps/pep-0457.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0458",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 458,
+   "question": "TUF-based signing of index metadata for package security",
+   "gold": [
+    "peps/pep-0458.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0459",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 459,
+   "question": "extension fields in JSON package metadata",
+   "gold": [
+    "peps/pep-0459.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0460",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 460,
+   "question": "b'...' % formatting for byte strings, alternative proposal",
+   "gold": [
+    "peps/pep-0460.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0461",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 461,
+   "question": "printf-style interpolation for binary data",
+   "gold": [
+    "peps/pep-0461.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0462",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 462,
+   "question": "bots and tooling for patch review and merging",
+   "gold": [
+    "peps/pep-0462.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0463",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 463,
+   "question": "inline except expression like value = d[k] except KeyError: default",
+   "gold": [
+    "peps/pep-0463.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0464",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 464,
+   "question": "drop serverkey signature verification for mirrors",
+   "gold": [
+    "peps/pep-0464.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0465",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 465,
+   "question": "@ operator for matmul with numpy arrays",
+   "gold": [
+    "peps/pep-0465.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0466",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 466,
+   "question": "backport ssl improvements to the 2.7 line",
+   "gold": [
+    "peps/pep-0466.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0467",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 467,
+   "question": "bytes.fromsize and bytes.iterbytes, small API changes",
+   "gold": [
+    "peps/pep-0467.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0468",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 468,
+   "question": "keyword arguments keep the order they were passed in",
+   "gold": [
+    "peps/pep-0468.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0469",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 469,
+   "question": "porting iteritems and iterkeys loops to py3",
+   "gold": [
+    "peps/pep-0469.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0470",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 470,
+   "question": "projects must host files on the index, no off-site links",
+   "gold": [
+    "peps/pep-0470.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0471",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 471,
+   "question": "directory listing with cached file type to speed up os.walk",
+   "gold": [
+    "peps/pep-0471.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0473",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 473,
+   "question": "attributes like key and name on KeyError and AttributeError",
+   "gold": [
+    "peps/pep-0473.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0474",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 474,
+   "question": "self-hosted code review and repository service for projects",
+   "gold": [
+    "peps/pep-0474.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0475",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 475,
+   "question": "automatically retry interrupted syscalls",
+   "gold": [
+    "peps/pep-0475.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0476",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 476,
+   "question": "HTTPS clients check TLS certificates by default",
+   "gold": [
+    "peps/pep-0476.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0477",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 477,
+   "question": "bundle the pip installer into 2.7 maintenance versions",
+   "gold": [
+    "peps/pep-0477.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0478",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 478,
+   "question": "planned dates and milestones for the 3.5 version",
+   "gold": [
+    "peps/pep-0478.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0479",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 479,
+   "question": "StopIteration raised in a generator becomes RuntimeError",
+   "gold": [
+    "peps/pep-0479.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0480",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 480,
+   "question": "developer-signed packages so a hacked index can't serve malware",
+   "gold": [
+    "peps/pep-0480.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0481",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 481,
+   "question": "moving core repo hosting and code review to new tools",
+   "gold": [
+    "peps/pep-0481.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0482",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 482,
+   "question": "survey of annotation systems in other languages",
+   "gold": [
+    "peps/pep-0482.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0484",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 484,
+   "question": "typing module annotations for static checkers like mypy",
+   "gold": [
+    "peps/pep-0484.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0485",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 485,
+   "question": "math.isclose for comparing floats with a tolerance",
+   "gold": [
+    "peps/pep-0485.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0486",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 486,
+   "question": "py.exe should use the active venv",
+   "gold": [
+    "peps/pep-0486.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0488",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 488,
+   "question": "optimized bytecode gets opt- tags in .pyc names",
+   "gold": [
+    "peps/pep-0488.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0489",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 489,
+   "question": "PyModuleDef_Init and Py_mod_exec slots for C modules",
+   "gold": [
+    "peps/pep-0489.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0490",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 490,
+   "question": "set __context__ automatically when raising in C code",
+   "gold": [
+    "peps/pep-0490.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0491",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 491,
+   "question": "next revision of the .whl format, never finished",
+   "gold": [
+    "peps/pep-0491.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0492",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 492,
+   "question": "async def native coroutine functions for asyncio",
+   "gold": [
+    "peps/pep-0492.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0493",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 493,
+   "question": "let redistributors toggle cert checking in 2.7",
+   "gold": [
+    "peps/pep-0493.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0494",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 494,
+   "question": "planned dates and milestones for the 3.6 version",
+   "gold": [
+    "peps/pep-0494.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0495",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 495,
+   "question": "fold attribute for the repeated hour at DST transitions",
+   "gold": [
+    "peps/pep-0495.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0496",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 496,
+   "question": "conditions like python_version in dependency specs",
+   "gold": [
+    "peps/pep-0496.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0497",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 497,
+   "question": "rejected idea for letting code keep old semantics after a breaking change",
+   "gold": [
+    "peps/pep-0497.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0498",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 498,
+   "question": "f prefix for formatted string literals with embedded expressions",
+   "gold": [
+    "peps/pep-0498.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0499",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 499,
+   "question": "running with -m should register the module under its own name too",
+   "gold": [
+    "peps/pep-0499.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0500",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 500,
+   "question": "let timezone objects override datetime arithmetic",
+   "gold": [
+    "peps/pep-0500.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0501",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 501,
+   "question": "i-strings for deferred interpolation into templates",
+   "gold": [
+    "peps/pep-0501.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0502",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 502,
+   "question": "background and debate on f-string design",
+   "gold": [
+    "peps/pep-0502.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0503",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 503,
+   "question": "the /simple/ HTML index pip uses to find packages",
+   "gold": [
+    "peps/pep-0503.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0504",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 504,
+   "question": "random module seeded from os.urandom by default",
+   "gold": [
+    "peps/pep-0504.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0505",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 505,
+   "question": "?? and ?. operators for null coalescing",
+   "gold": [
+    "peps/pep-0505.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0506",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 506,
+   "question": "cryptographically strong tokens and passwords module",
+   "gold": [
+    "peps/pep-0506.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0507",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 507,
+   "question": "alternative idea to host the core repository on gitlab",
+   "gold": [
+    "peps/pep-0507.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0508",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 508,
+   "question": "requirement string grammar with extras and markers",
+   "gold": [
+    "peps/pep-0508.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0509",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 509,
+   "question": "ma_version counter to detect dictionary mutations for caching",
+   "gold": [
+    "peps/pep-0509.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0510",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 510,
+   "question": "FAT optimizer specialized bytecode with runtime checks",
+   "gold": [
+    "peps/pep-0510.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0511",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 511,
+   "question": "hook to rewrite AST and bytecode before execution, optimizer plugins",
+   "gold": [
+    "peps/pep-0511.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0512",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 512,
+   "question": "move the core repo off mercurial hosting",
+   "gold": [
+    "peps/pep-0512.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0513",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 513,
+   "question": "manylinux1 binary wheels that run on most distros, built on old CentOS",
+   "gold": [
+    "peps/pep-0513.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0514",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 514,
+   "question": "how installers record interpreter locations in the registry",
+   "gold": [
+    "peps/pep-0514.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0515",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 515,
+   "question": "1_000_000 digit grouping in code",
+   "gold": [
+    "peps/pep-0515.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0516",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 516,
+   "question": "interface letting pip call any build backend",
+   "gold": [
+    "peps/pep-0516.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0517",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 517,
+   "question": "pyproject build backend hooks like build_wheel",
+   "gold": [
+    "peps/pep-0517.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0518",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 518,
+   "question": "pyproject.toml [build-system] requires table",
+   "gold": [
+    "peps/pep-0518.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0519",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 519,
+   "question": "os.fspath and __fspath__ for pathlike objects",
+   "gold": [
+    "peps/pep-0519.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0520",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 520,
+   "question": "remember the sequence in which names appear in a class body",
+   "gold": [
+    "peps/pep-0520.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0521",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 521,
+   "question": "generators that suspend inside a context manager leak state",
+   "gold": [
+    "peps/pep-0521.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0522",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 522,
+   "question": "os.urandom raising when entropy is not ready yet",
+   "gold": [
+    "peps/pep-0522.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0523",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 523,
+   "question": "pluggable eval function for JIT tools like Pyjion",
+   "gold": [
+    "peps/pep-0523.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0524",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 524,
+   "question": "wait for entropy at boot when getting random bytes on linux",
+   "gold": [
+    "peps/pep-0524.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0525",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 525,
+   "question": "yield inside async def functions",
+   "gold": [
+    "peps/pep-0525.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0526",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 526,
+   "question": "x: int annotations for local and class names",
+   "gold": [
+    "peps/pep-0526.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0527",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 527,
+   "question": "drop egg and other rarely uploaded formats on the index",
+   "gold": [
+    "peps/pep-0527.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0528",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 528,
+   "question": "cmd terminal printing unicode properly on windows",
+   "gold": [
+    "peps/pep-0528.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0529",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 529,
+   "question": "use utf-8 for file names on windows instead of mbcs",
+   "gold": [
+    "peps/pep-0529.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0530",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 530,
+   "question": "async for and await inside list, set and dict building expressions",
+   "gold": [
+    "peps/pep-0530.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0531",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 531,
+   "question": "?then and ?else for checking None values",
+   "gold": [
+    "peps/pep-0531.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0532",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 532,
+   "question": "short-circuiting if-else expressions customizable through dunder methods",
+   "gold": [
+    "peps/pep-0532.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0533",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 533,
+   "question": "__iterclose__ so for loops close iterators immediately",
+   "gold": [
+    "peps/pep-0533.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0534",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 534,
+   "question": "better message when tkinter or sqlite3 isn't built",
+   "gold": [
+    "peps/pep-0534.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0535",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 535,
+   "question": "a < b < c with numpy arrays returning elementwise results",
+   "gold": [
+    "peps/pep-0535.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0536",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 536,
+   "question": "allow nested quotes and backslashes inside f-string braces",
+   "gold": [
+    "peps/pep-0536.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0537",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 537,
+   "question": "planned dates and milestones for the 3.7 version",
+   "gold": [
+    "peps/pep-0537.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0538",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 538,
+   "question": "switch POSIX locale to C.UTF-8 on startup",
+   "gold": [
+    "peps/pep-0538.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0539",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 539,
+   "question": "Py_tss_t replacing the old TLS functions",
+   "gold": [
+    "peps/pep-0539.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0540",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 540,
+   "question": "-X utf8 flag to ignore the locale encoding",
+   "gold": [
+    "peps/pep-0540.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0541",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 541,
+   "question": "rules for reclaiming abandoned project names on the index",
+   "gold": [
+    "peps/pep-0541.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0542",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 542,
+   "question": "def obj.method(): defining methods outside the class",
+   "gold": [
+    "peps/pep-0542.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0544",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 544,
+   "question": "typing.Protocol for duck typing checks",
+   "gold": [
+    "peps/pep-0544.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0545",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 545,
+   "question": "localized versions of docs.python.org in other languages",
+   "gold": [
+    "peps/pep-0545.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0546",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 546,
+   "question": "in-memory TLS objects backported to 2.7",
+   "gold": [
+    "peps/pep-0546.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0547",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 547,
+   "question": "python -m with a compiled C module",
+   "gold": [
+    "peps/pep-0547.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0548",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 548,
+   "question": "break if and continue if conditions",
+   "gold": [
+    "peps/pep-0548.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0549",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 549,
+   "question": "letting individual objects such as modules carry properties",
+   "gold": [
+    "peps/pep-0549.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0550",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 550,
+   "question": "async-aware state that follows tasks, predecessor of contextvars",
+   "gold": [
+    "peps/pep-0550.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0552",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 552,
+   "question": "reproducible .pyc files using source hashes instead of timestamps",
+   "gold": [
+    "peps/pep-0552.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0553",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 553,
+   "question": "builtin function to drop into the debugger instead of import pdb",
+   "gold": [
+    "peps/pep-0553.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0555",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 555,
+   "question": "async-safe alternative to thread-local storage",
+   "gold": [
+    "peps/pep-0555.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0556",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 556,
+   "question": "run gc in a background thread",
+   "gold": [
+    "peps/pep-0556.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0557",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 557,
+   "question": "@dataclass decorator auto generating __init__ and __repr__",
+   "gold": [
+    "peps/pep-0557.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0558",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 558,
+   "question": "behavior of locals() in functions and frame proxies",
+   "gold": [
+    "peps/pep-0558.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0559",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 559,
+   "question": "a do nothing function as a builtin",
+   "gold": [
+    "peps/pep-0559.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0560",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 560,
+   "question": "__class_getitem__ and __mro_entries__ for typing speed",
+   "gold": [
+    "peps/pep-0560.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0561",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 561,
+   "question": "py.typed marker and stub-only packages",
+   "gold": [
+    "peps/pep-0561.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0562",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 562,
+   "question": "lazy attributes and deprecations at the top level of a file",
+   "gold": [
+    "peps/pep-0562.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0563",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 563,
+   "question": "from __future__ import annotations storing hints as strings",
+   "gold": [
+    "peps/pep-0563.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0564",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 564,
+   "question": "time.time_ns and friends returning integer clocks",
+   "gold": [
+    "peps/pep-0564.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0565",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 565,
+   "question": "warnings visible by default for code run directly",
+   "gold": [
+    "peps/pep-0565.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0566",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 566,
+   "question": "Description-Content-Type and Provides-Extra fields",
+   "gold": [
+    "peps/pep-0566.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0567",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 567,
+   "question": "contextvars module for async-aware state",
+   "gold": [
+    "peps/pep-0567.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0568",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 568,
+   "question": "contextvars isolation inside generators",
+   "gold": [
+    "peps/pep-0568.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0569",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 569,
+   "question": "planned dates and milestones for the 3.8 version",
+   "gold": [
+    "peps/pep-0569.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0570",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 570,
+   "question": "slash in a def signature to forbid keywords",
+   "gold": [
+    "peps/pep-0570.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0571",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 571,
+   "question": "linux wheel tag based on CentOS 6",
+   "gold": [
+    "peps/pep-0571.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0572",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 572,
+   "question": "walrus operator := naming a value inside an expression",
+   "gold": [
+    "peps/pep-0572.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0573",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 573,
+   "question": "C methods finding their module object, PyType_GetModule",
+   "gold": [
+    "peps/pep-0573.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0574",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 574,
+   "question": "zero-copy buffers for large serialized objects",
+   "gold": [
+    "peps/pep-0574.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0575",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 575,
+   "question": "base_function class for builtins and python functions",
+   "gold": [
+    "peps/pep-0575.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0576",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 576,
+   "question": "builtin and method descriptors behaving like python functions",
+   "gold": [
+    "peps/pep-0576.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0577",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 577,
+   "question": "+= inside an expression like the walrus",
+   "gold": [
+    "peps/pep-0577.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0579",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 579,
+   "question": "overview of issues with builtin function types in C",
+   "gold": [
+    "peps/pep-0579.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0580",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 580,
+   "question": "generic fast calling for any callable type",
+   "gold": [
+    "peps/pep-0580.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0581",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 581,
+   "question": "move bug tracking off bpo",
+   "gold": [
+    "peps/pep-0581.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0582",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 582,
+   "question": "__pypackages__ folder next to the project",
+   "gold": [
+    "peps/pep-0582.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0583",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 583,
+   "question": "what threads may see of shared variables, data races",
+   "gold": [
+    "peps/pep-0583.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0584",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 584,
+   "question": "merge dictionaries with | and |=",
+   "gold": [
+    "peps/pep-0584.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0585",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 585,
+   "question": "list[int] instead of typing.List",
+   "gold": [
+    "peps/pep-0585.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0586",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 586,
+   "question": "typing hint restricting a value to exact constants like 'r' or 'w'",
+   "gold": [
+    "peps/pep-0586.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0587",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 587,
+   "question": "PyConfig structure for embedding interpreter startup",
+   "gold": [
+    "peps/pep-0587.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0588",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 588,
+   "question": "steps to move bpo tickets to the new tracker",
+   "gold": [
+    "peps/pep-0588.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0589",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 589,
+   "question": "annotating dicts whose keys and value types are predetermined",
+   "gold": [
+    "peps/pep-0589.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0590",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 590,
+   "question": "faster calling convention passing args as a C array",
+   "gold": [
+    "peps/pep-0590.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0591",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 591,
+   "question": "Final and @final to forbid reassignment or subclassing",
+   "gold": [
+    "peps/pep-0591.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0592",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 592,
+   "question": "marking releases on the index as pulled so resolvers skip them",
+   "gold": [
+    "peps/pep-0592.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0593",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 593,
+   "question": "Annotated[T, x] to attach metadata to hints",
+   "gold": [
+    "peps/pep-0593.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0594",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 594,
+   "question": "drop obsolete stdlib modules like cgi and telnetlib",
+   "gold": [
+    "peps/pep-0594.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0595",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 595,
+   "question": "upgrade bpo instead of moving to github",
+   "gold": [
+    "peps/pep-0595.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0596",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 596,
+   "question": "planned dates and milestones for the 3.9 version",
+   "gold": [
+    "peps/pep-0596.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0597",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 597,
+   "question": "warn when open() is called without an encoding argument",
+   "gold": [
+    "peps/pep-0597.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0598",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 598,
+   "question": "allowing features in minor point versions",
+   "gold": [
+    "peps/pep-0598.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0599",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 599,
+   "question": "CentOS 7 based linux wheel tag",
+   "gold": [
+    "peps/pep-0599.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0601",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 601,
+   "question": "disallow control flow exiting a cleanup clause",
+   "gold": [
+    "peps/pep-0601.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0602",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 602,
+   "question": "yearly versions every October",
+   "gold": [
+    "peps/pep-0602.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0603",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 603,
+   "question": "immutable mapping alternative to dict for the collections module",
+   "gold": [
+    "peps/pep-0603.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0604",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 604,
+   "question": "int | str syntax instead of typing.Union in hints",
+   "gold": [
+    "peps/pep-0604.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0605",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 605,
+   "question": "continuous beta channel for features",
+   "gold": [
+    "peps/pep-0605.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0606",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 606,
+   "question": "sys setting to emulate older interpreter behavior for compat",
+   "gold": [
+    "peps/pep-0606.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0607",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 607,
+   "question": "summary of proposals for faster releases",
+   "gold": [
+    "peps/pep-0607.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0608",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 608,
+   "question": "ship an interpreter only once key third-party libraries support it",
+   "gold": [
+    "peps/pep-0608.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0609",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 609,
+   "question": "how PyPA, the group behind pip and setuptools, makes decisions",
+   "gold": [
+    "peps/pep-0609.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0610",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 610,
+   "question": "direct_url.json noting where a package came from, like a git URL",
+   "gold": [
+    "peps/pep-0610.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0611",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 611,
+   "question": "cap source lines, classes and other counts at a fixed maximum",
+   "gold": [
+    "peps/pep-0611.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0612",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 612,
+   "question": "typing decorators preserving callable signatures",
+   "gold": [
+    "peps/pep-0612.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0613",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 613,
+   "question": "TypeAlias annotation for alias declarations",
+   "gold": [
+    "peps/pep-0613.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0614",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 614,
+   "question": "allow any expression after @",
+   "gold": [
+    "peps/pep-0614.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0615",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 615,
+   "question": "zoneinfo module for the tz database",
+   "gold": [
+    "peps/pep-0615.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0616",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 616,
+   "question": "str.removeprefix and removesuffix methods for trimming text",
+   "gold": [
+    "peps/pep-0616.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0617",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 617,
+   "question": "replace the LL(1) parser with a new grammar engine",
+   "gold": [
+    "peps/pep-0617.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0618",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 618,
+   "question": "strict flag to error on unequal iterable lengths in zip",
+   "gold": [
+    "peps/pep-0618.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0619",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 619,
+   "question": "planned dates and milestones for the 3.10 version",
+   "gold": [
+    "peps/pep-0619.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0620",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 620,
+   "question": "make C API structs opaque",
+   "gold": [
+    "peps/pep-0620.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0621",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 621,
+   "question": "[project] table for name, version and dependencies",
+   "gold": [
+    "peps/pep-0621.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0622",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 622,
+   "question": "match statement with case clauses",
+   "gold": [
+    "peps/pep-0622.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0623",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 623,
+   "question": "drop the wchar_t cache from str objects",
+   "gold": [
+    "peps/pep-0623.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0624",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 624,
+   "question": "remove deprecated PyUnicode_Encode functions",
+   "gold": [
+    "peps/pep-0624.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0625",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 625,
+   "question": "naming convention for .tar.gz source archives",
+   "gold": [
+    "peps/pep-0625.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0626",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 626,
+   "question": "co_lines table for tracing and debuggers",
+   "gold": [
+    "peps/pep-0626.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0627",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 627,
+   "question": "RECORD file and INSTALLER in dist-info",
+   "gold": [
+    "peps/pep-0627.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0628",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 628,
+   "question": "constant for 2 pi in the math module",
+   "gold": [
+    "peps/pep-0628.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0629",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 629,
+   "question": "meta version tag in package index responses",
+   "gold": [
+    "peps/pep-0629.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0630",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 630,
+   "question": "per-interpreter state for C modules",
+   "gold": [
+    "peps/pep-0630.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0631",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 631,
+   "question": "list requirements as strings in the project table",
+   "gold": [
+    "peps/pep-0631.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0632",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 632,
+   "question": "removal of the old setup module in favor of setuptools",
+   "gold": [
+    "peps/pep-0632.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0633",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 633,
+   "question": "dependencies as structured toml tables",
+   "gold": [
+    "peps/pep-0633.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0634",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 634,
+   "question": "formal semantics of the match statement",
+   "gold": [
+    "peps/pep-0634.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0635",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 635,
+   "question": "why add match and case to the language",
+   "gold": [
+    "peps/pep-0635.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0636",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 636,
+   "question": "learning the match statement by example",
+   "gold": [
+    "peps/pep-0636.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0638",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 638,
+   "question": "compile-time AST transformation with macro syntax",
+   "gold": [
+    "peps/pep-0638.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0639",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 639,
+   "question": "SPDX expressions and license files fields for distributions",
+   "gold": [
+    "peps/pep-0639.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0640",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 640,
+   "question": "single underscore or ? as a throwaway name",
+   "gold": [
+    "peps/pep-0640.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0641",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 641,
+   "question": "cp3_10 tags to avoid confusion with 3.1",
+   "gold": [
+    "peps/pep-0641.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0642",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 642,
+   "question": "alternate match syntax with explicit capture markers",
+   "gold": [
+    "peps/pep-0642.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0643",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 643,
+   "question": "PKG-INFO reliable in source tarballs",
+   "gold": [
+    "peps/pep-0643.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0644",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 644,
+   "question": "drop older TLS library versions",
+   "gold": [
+    "peps/pep-0644.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0645",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 645,
+   "question": "question mark shorthand for Optional hints",
+   "gold": [
+    "peps/pep-0645.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0646",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 646,
+   "question": "TypeVarTuple for array shape typing",
+   "gold": [
+    "peps/pep-0646.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0647",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 647,
+   "question": "functions narrowing types in type checkers",
+   "gold": [
+    "peps/pep-0647.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0648",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 648,
+   "question": "pth replacement for running code at interpreter launch",
+   "gold": [
+    "peps/pep-0648.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0649",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 649,
+   "question": "lazy annotations computed on access via __annotate__",
+   "gold": [
+    "peps/pep-0649.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0650",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 650,
+   "question": "pyproject section declaring which tool installs dependencies",
+   "gold": [
+    "peps/pep-0650.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0651",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 651,
+   "question": "avoid a segfault on deep recursion in C",
+   "gold": [
+    "peps/pep-0651.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0652",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 652,
+   "question": "process and manifest for limited API stability",
+   "gold": [
+    "peps/pep-0652.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0653",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 653,
+   "question": "exact rules for how match works",
+   "gold": [
+    "peps/pep-0653.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0654",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 654,
+   "question": "raising multiple errors at once and except* handling",
+   "gold": [
+    "peps/pep-0654.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0655",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 655,
+   "question": "Required and NotRequired for TypedDict keys",
+   "gold": [
+    "peps/pep-0655.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0656",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 656,
+   "question": "wheel tags for Alpine linux",
+   "gold": [
+    "peps/pep-0656.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0657",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 657,
+   "question": "caret markers pointing at the failing expression in a traceback",
+   "gold": [
+    "peps/pep-0657.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0658",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 658,
+   "question": "serve METADATA files so resolvers skip downloading wheels",
+   "gold": [
+    "peps/pep-0658.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0659",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 659,
+   "question": "faster cpython with quickening bytecode",
+   "gold": [
+    "peps/pep-0659.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0660",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 660,
+   "question": "pip install -e via build backend hooks",
+   "gold": [
+    "peps/pep-0660.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0661",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 661,
+   "question": "unique marker objects for missing defaults",
+   "gold": [
+    "peps/pep-0661.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0662",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 662,
+   "question": "development mode installation using proxy packages",
+   "gold": [
+    "peps/pep-0662.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0663",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 663,
+   "question": "consistent printing of enum members",
+   "gold": [
+    "peps/pep-0663.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0664",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 664,
+   "question": "planned dates and milestones for the 3.11 version",
+   "gold": [
+    "peps/pep-0664.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0665",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 665,
+   "question": "lockfile for reproducible installs",
+   "gold": [
+    "peps/pep-0665.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0666",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 666,
+   "question": "forbid mixing tabs and spaces",
+   "gold": [
+    "peps/pep-0666.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0667",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 667,
+   "question": "locals() snapshots and frame.f_locals behavior",
+   "gold": [
+    "peps/pep-0667.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0668",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 668,
+   "question": "stop pip from modifying a distro-owned system interpreter",
+   "gold": [
+    "peps/pep-0668.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0669",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 669,
+   "question": "sys.monitoring for profilers and debuggers",
+   "gold": [
+    "peps/pep-0669.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0670",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 670,
+   "question": "static inline instead of #define in headers",
+   "gold": [
+    "peps/pep-0670.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0671",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 671,
+   "question": "=> syntax for defaults evaluated at call time",
+   "gold": [
+    "peps/pep-0671.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0672",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 672,
+   "question": "homoglyph and bidi attacks in source code",
+   "gold": [
+    "peps/pep-0672.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0673",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 673,
+   "question": "annotate methods that return an instance of their own class",
+   "gold": [
+    "peps/pep-0673.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0674",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 674,
+   "question": "forbid assigning to Py_TYPE() results",
+   "gold": [
+    "peps/pep-0674.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0675",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 675,
+   "question": "type for strings built only from literals against injection",
+   "gold": [
+    "peps/pep-0675.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0676",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 676,
+   "question": "how the proposals website is built and deployed",
+   "gold": [
+    "peps/pep-0676.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0677",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 677,
+   "question": "arrow syntax (int) -> str for function hints",
+   "gold": [
+    "peps/pep-0677.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0678",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 678,
+   "question": "add_note() to attach extra info to errors",
+   "gold": [
+    "peps/pep-0678.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0679",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 679,
+   "question": "allow assert(cond, msg) without the tuple pitfall",
+   "gold": [
+    "peps/pep-0679.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0680",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 680,
+   "question": "read toml config files with a builtin module",
+   "gold": [
+    "peps/pep-0680.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0681",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 681,
+   "question": "dataclass_transform decorator for ORM libraries",
+   "gold": [
+    "peps/pep-0681.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0682",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 682,
+   "question": "z option to drop the negative sign on -0.0",
+   "gold": [
+    "peps/pep-0682.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0683",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 683,
+   "question": "objects whose reference count never changes",
+   "gold": [
+    "peps/pep-0683.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0684",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 684,
+   "question": "subinterpreters each with their own lock",
+   "gold": [
+    "peps/pep-0684.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0685",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 685,
+   "question": "normalize optional dependency names",
+   "gold": [
+    "peps/pep-0685.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0686",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 686,
+   "question": "always use unicode encoding for text files regardless of locale",
+   "gold": [
+    "peps/pep-0686.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0687",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 687,
+   "question": "convert stdlib C extensions to heap types and module state",
+   "gold": [
+    "peps/pep-0687.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0688",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 688,
+   "question": "__buffer__ method for python classes",
+   "gold": [
+    "peps/pep-0688.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0689",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 689,
+   "question": "PyUnstable_ prefix for internals that may change",
+   "gold": [
+    "peps/pep-0689.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0690",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 690,
+   "question": "defer module loading until first use",
+   "gold": [
+    "peps/pep-0690.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0691",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 691,
+   "question": "JSON responses from the package index endpoint",
+   "gold": [
+    "peps/pep-0691.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0692",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 692,
+   "question": "Unpack a typed dict to type **kwargs",
+   "gold": [
+    "peps/pep-0692.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0693",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 693,
+   "question": "planned dates and milestones for the 3.12 version",
+   "gold": [
+    "peps/pep-0693.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0694",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 694,
+   "question": "new publishing protocol for sending distributions to repositories",
+   "gold": [
+    "peps/pep-0694.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0695",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 695,
+   "question": "def f[T](x: T) generics syntax",
+   "gold": [
+    "peps/pep-0695.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0696",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 696,
+   "question": "default values for TypeVar generics",
+   "gold": [
+    "peps/pep-0696.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0697",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 697,
+   "question": "subclass types without knowing their struct layout",
+   "gold": [
+    "peps/pep-0697.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0698",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 698,
+   "question": "@override to flag methods replacing a base class method",
+   "gold": [
+    "peps/pep-0698.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0699",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 699,
+   "question": "drop ma_version_tag from dict objects",
+   "gold": [
+    "peps/pep-0699.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0700",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 700,
+   "question": "versions and size in JSON index responses",
+   "gold": [
+    "peps/pep-0700.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0701",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 701,
+   "question": "f-string parsing in the PEG grammar, nested quotes allowed",
+   "gold": [
+    "peps/pep-0701.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0702",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 702,
+   "question": "@deprecated decorator flagged by type checkers",
+   "gold": [
+    "peps/pep-0702.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0703",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 703,
+   "question": "free-threaded build without the global lock",
+   "gold": [
+    "peps/pep-0703.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0704",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 704,
+   "question": "pip refuses to install outside a venv",
+   "gold": [
+    "peps/pep-0704.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0705",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 705,
+   "question": "ReadOnly keys in typed dicts",
+   "gold": [
+    "peps/pep-0705.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0706",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 706,
+   "question": "safe extraction to block path traversal in tar archives",
+   "gold": [
+    "peps/pep-0706.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0707",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 707,
+   "question": "context managers receive one exception argument",
+   "gold": [
+    "peps/pep-0707.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0708",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 708,
+   "question": "protect against malicious same-name packages on multiple indexes",
+   "gold": [
+    "peps/pep-0708.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0709",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 709,
+   "question": "list comprehension without creating a function frame",
+   "gold": [
+    "peps/pep-0709.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0710",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 710,
+   "question": "record download URL and hashes for each library pip put on disk",
+   "gold": [
+    "peps/pep-0710.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0711",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 711,
+   "question": "prebuilt interpreter archive format similar to wheels",
+   "gold": [
+    "peps/pep-0711.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0712",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 712,
+   "question": "dataclass field conversion function argument",
+   "gold": [
+    "peps/pep-0712.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0713",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 713,
+   "question": "__call__ on a module object so you can invoke it",
+   "gold": [
+    "peps/pep-0713.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0714",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 714,
+   "question": "change the JSON key for core metadata files in the index",
+   "gold": [
+    "peps/pep-0714.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0715",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 715,
+   "question": "stop accepting egg uploads",
+   "gold": [
+    "peps/pep-0715.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0718",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 718,
+   "question": "f[int](x) to specify generic types at call time",
+   "gold": [
+    "peps/pep-0718.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0719",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 719,
+   "question": "planned dates and milestones for the 3.13 version",
+   "gold": [
+    "peps/pep-0719.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0721",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 721,
+   "question": "safe unpacking of source archives during install",
+   "gold": [
+    "peps/pep-0721.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0722",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 722,
+   "question": "requirements declared inside a standalone script",
+   "gold": [
+    "peps/pep-0722.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0723",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 723,
+   "question": "# /// script block with dependencies in a .py file",
+   "gold": [
+    "peps/pep-0723.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0724",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 724,
+   "question": "TypeGuard narrowing in both branches",
+   "gold": [
+    "peps/pep-0724.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-0725",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 725,
+   "question": "declare C libraries and compilers a project needs",
+   "gold": [
+    "peps/pep-0725.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0726",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 726,
+   "question": "intercept assigning and removing attributes on modules",
+   "gold": [
+    "peps/pep-0726.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0727",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 727,
+   "question": "Doc() for describing parameters in hints",
+   "gold": [
+    "peps/pep-0727.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0728",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 728,
+   "question": "allowing additional undeclared keys with a declared value type in a typed dict",
+   "gold": [
+    "peps/pep-0728.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0729",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 729,
+   "question": "typing council to manage the type system spec",
+   "gold": [
+    "peps/pep-0729.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0730",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 730,
+   "question": "official support for iPhone and iPad",
+   "gold": [
+    "peps/pep-0730.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0731",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 731,
+   "question": "group that oversees C interface changes",
+   "gold": [
+    "peps/pep-0731.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0732",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 732,
+   "question": "group responsible for docs style and content",
+   "gold": [
+    "peps/pep-0732.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0733",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 733,
+   "question": "survey of problems with the current extension interface",
+   "gold": [
+    "peps/pep-0733.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0735",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 735,
+   "question": "named sets of development requirements like test and lint",
+   "gold": [
+    "peps/pep-0735.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0736",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 736,
+   "question": "f(x=) to pass a variable of the same name",
+   "gold": [
+    "peps/pep-0736.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0737",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 737,
+   "question": "%T format and PyType_GetFullyQualifiedName",
+   "gold": [
+    "peps/pep-0737.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0738",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 738,
+   "question": "official support for phones and tablets running google's mobile OS",
+   "gold": [
+    "peps/pep-0738.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0739",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 739,
+   "question": "static file describing an interpreter install for cross compilation",
+   "gold": [
+    "peps/pep-0739.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0740",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 740,
+   "question": "upload signed provenance for distributions on the index",
+   "gold": [
+    "peps/pep-0740.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0741",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 741,
+   "question": "PyInitConfig for embedding the interpreter",
+   "gold": [
+    "peps/pep-0741.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0742",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 742,
+   "question": "type narrowing function returning bool",
+   "gold": [
+    "peps/pep-0742.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0743",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 743,
+   "question": "macro to hide deprecated functions in headers",
+   "gold": [
+    "peps/pep-0743.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0744",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 744,
+   "question": "copy-and-patch just-in-time compiler for cpython",
+   "gold": [
+    "peps/pep-0744.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0745",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 745,
+   "question": "planned dates and milestones for the 3.14 version",
+   "gold": [
+    "peps/pep-0745.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0746",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 746,
+   "question": "verify extra objects attached to annotation wrappers are valid",
+   "gold": [
+    "peps/pep-0746.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0747",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 747,
+   "question": "TypeForm to annotate values that are themselves types",
+   "gold": [
+    "peps/pep-0747.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0749",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 749,
+   "question": "details of lazily evaluated annotations and the annotationlib module",
+   "gold": [
+    "peps/pep-0749.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0750",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 750,
+   "question": "t prefix literals that defer interpolation for safe html or sql",
+   "gold": [
+    "peps/pep-0750.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0751",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 751,
+   "question": "pylock.toml standard lockfile format",
+   "gold": [
+    "peps/pep-0751.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0752",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 752,
+   "question": "prefix-based name ownership on the index",
+   "gold": [
+    "peps/pep-0752.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0753",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 753,
+   "question": "standard labels for homepage and source links in metadata",
+   "gold": [
+    "peps/pep-0753.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0754",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 754,
+   "question": "constants for NaN and infinity",
+   "gold": [
+    "peps/pep-0754.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0755",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 755,
+   "question": "rules for granting reserved name prefixes",
+   "gold": [
+    "peps/pep-0755.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0756",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 756,
+   "question": "C functions to expose a str buffer in a given format",
+   "gold": [
+    "peps/pep-0756.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0757",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 757,
+   "question": "PyLong_Export to access int digits from C",
+   "gold": [
+    "peps/pep-0757.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0758",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 758,
+   "question": "except A, B: catching several types without brackets",
+   "gold": [
+    "peps/pep-0758.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0759",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 759,
+   "question": "index points to wheels stored on another server",
+   "gold": [
+    "peps/pep-0759.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0760",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 760,
+   "question": "forbid except: with no exception type",
+   "gold": [
+    "peps/pep-0760.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0761",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 761,
+   "question": "stop signing releases with GPG, use sigstore",
+   "gold": [
+    "peps/pep-0761.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0762",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 762,
+   "question": "new interactive shell with colors and multiline editing",
+   "gold": [
+    "peps/pep-0762.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0763",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 763,
+   "question": "restrict removing released files on the index",
+   "gold": [
+    "peps/pep-0763.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0764",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 764,
+   "question": "anonymous TypedDict syntax with braces",
+   "gold": [
+    "peps/pep-0764.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0765",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 765,
+   "question": "SyntaxWarning for control flow leaving a cleanup clause",
+   "gold": [
+    "peps/pep-0765.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0766",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 766,
+   "question": "index-strategy for choosing between multiple package sources",
+   "gold": [
+    "peps/pep-0766.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0767",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 767,
+   "question": "ReadOnly qualifier for class fields in hints",
+   "gold": [
+    "peps/pep-0767.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0768",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 768,
+   "question": "sys.remote_exec attaching a debugger to a running process",
+   "gold": [
+    "peps/pep-0768.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0769",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 769,
+   "question": "fallback value when item or attribute missing in operator functions",
+   "gold": [
+    "peps/pep-0769.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0770",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 770,
+   "question": "include SBOM files in wheels for supply chain scanners",
+   "gold": [
+    "peps/pep-0770.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0771",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 771,
+   "question": "optional dependencies installed unless excluded",
+   "gold": [
+    "peps/pep-0771.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0773",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 773,
+   "question": "pymanager tool to install interpreters on windows",
+   "gold": [
+    "peps/pep-0773.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0774",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 774,
+   "question": "build the experimental compiler without a clang toolchain",
+   "gold": [
+    "peps/pep-0774.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0775",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 775,
+   "question": "compression library mandatory when compiling the interpreter",
+   "gold": [
+    "peps/pep-0775.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0776",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 776,
+   "question": "running the interpreter in the browser via WebAssembly",
+   "gold": [
+    "peps/pep-0776.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0777",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 777,
+   "question": "future incompatible changes to the binary package format",
+   "gold": [
+    "peps/pep-0777.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0778",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 778,
+   "question": "allow symbolic links inside binary package archives",
+   "gold": [
+    "peps/pep-0778.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0779",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 779,
+   "question": "conditions for the no-GIL build to leave experimental status",
+   "gold": [
+    "peps/pep-0779.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0780",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 780,
+   "question": "markers in requirements to detect free-threading or debug builds",
+   "gold": [
+    "peps/pep-0780.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0781",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 781,
+   "question": "constant available without importing typing",
+   "gold": [
+    "peps/pep-0781.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0782",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 782,
+   "question": "C API to build bytes objects incrementally",
+   "gold": [
+    "peps/pep-0782.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0783",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 783,
+   "question": "wheels for the WebAssembly pyodide platform",
+   "gold": [
+    "peps/pep-0783.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0784",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 784,
+   "question": "zstd compression module in the stdlib",
+   "gold": [
+    "peps/pep-0784.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0785",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 785,
+   "question": "helpers to flatten and inspect grouped errors",
+   "gold": [
+    "peps/pep-0785.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0786",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 786,
+   "question": "zero padding digits via . in format specs for ints",
+   "gold": [
+    "peps/pep-0786.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0787",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 787,
+   "question": "pass template literals to run commands without shell injection",
+   "gold": [
+    "peps/pep-0787.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0788",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 788,
+   "question": "threads calling into the interpreter during shutdown",
+   "gold": [
+    "peps/pep-0788.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0789",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 789,
+   "question": "forbid yield inside async generators holding a cancel scope",
+   "gold": [
+    "peps/pep-0789.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0790",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 790,
+   "question": "planned dates and milestones for the 3.15 version",
+   "gold": [
+    "peps/pep-0790.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0791",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 791,
+   "question": "isqrt, comb and gcd moved to a submodule",
+   "gold": [
+    "peps/pep-0791.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0792",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 792,
+   "question": "mark projects archived or quarantined in the index",
+   "gold": [
+    "peps/pep-0792.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0793",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 793,
+   "question": "new init function for C extension modules",
+   "gold": [
+    "peps/pep-0793.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0794",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 794,
+   "question": "declare which top-level modules a distribution provides",
+   "gold": [
+    "peps/pep-0794.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0797",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 797,
+   "question": "share objects between subinterpreters via proxies",
+   "gold": [
+    "peps/pep-0797.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0798",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 798,
+   "question": "[*x for x in lists] to flatten nested lists",
+   "gold": [
+    "peps/pep-0798.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0799",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 799,
+   "question": "group cProfile and the sampling profiler under one namespace",
+   "gold": [
+    "peps/pep-0799.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0800",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 800,
+   "question": "decorator telling type checkers classes can't be combined",
+   "gold": [
+    "peps/pep-0800.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0802",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 802,
+   "question": "{/} literal for writing a set with no elements",
+   "gold": [
+    "peps/pep-0802.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0803",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 803,
+   "question": "limited API for no-GIL builds",
+   "gold": [
+    "peps/pep-0803.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0804",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 804,
+   "question": "mapping system package names to index names",
+   "gold": [
+    "peps/pep-0804.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0805",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 805,
+   "question": "share data across threads safely, a parallelism proposal",
+   "gold": [
+    "peps/pep-0805.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0806",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 806,
+   "question": "with blocks that are both async and sync",
+   "gold": [
+    "peps/pep-0806.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0807",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 807,
+   "question": "OIDC uploads from CI without tokens",
+   "gold": [
+    "peps/pep-0807.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0808",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 808,
+   "question": "partially dynamic fields in pyproject",
+   "gold": [
+    "peps/pep-0808.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0809",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 809,
+   "question": "new abi4 for long term binary compatibility",
+   "gold": [
+    "peps/pep-0809.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0810",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 810,
+   "question": "lazy import keyword to defer loading",
+   "gold": [
+    "peps/pep-0810.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0811",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 811,
+   "question": "security team members and duties",
+   "gold": [
+    "peps/pep-0811.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0813",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 813,
+   "question": "__pprint__ hook for the pprint module",
+   "gold": [
+    "peps/pep-0813.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0814",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 814,
+   "question": "immutable dict as a builtin",
+   "gold": [
+    "peps/pep-0814.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0815",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 815,
+   "question": "drop signature files from wheel metadata",
+   "gold": [
+    "peps/pep-0815.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0816",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 816,
+   "question": "WebAssembly system interface platform target",
+   "gold": [
+    "peps/pep-0816.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0817",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 817,
+   "question": "selecting builds for GPU or CPU features",
+   "gold": [
+    "peps/pep-0817.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0818",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 818,
+   "question": "JavaScript interop core in the language",
+   "gold": [
+    "peps/pep-0818.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0819",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 819,
+   "question": "store distribution core info as structured data instead of email headers",
+   "gold": [
+    "peps/pep-0819.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0820",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 820,
+   "question": "unified slots for C types and modules",
+   "gold": [
+    "peps/pep-0820.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0821",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 821,
+   "question": "Callable[[Unpack[TD]], R] keyword argument hints",
+   "gold": [
+    "peps/pep-0821.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0822",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 822,
+   "question": "auto-dedented triple-quoted literals with a new prefix",
+   "gold": [
+    "peps/pep-0822.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0823",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 823,
+   "question": "?. and ?[] for safe navigation",
+   "gold": [
+    "peps/pep-0823.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0824",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 824,
+   "question": "?? operator returning a fallback when a value is None",
+   "gold": [
+    "peps/pep-0824.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0825",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 825,
+   "question": "file naming and metadata for variant builds",
+   "gold": [
+    "peps/pep-0825.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0826",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 826,
+   "question": "planned dates and milestones for the 3.16 version",
+   "gold": [
+    "peps/pep-0826.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0827",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 827,
+   "question": "typescript-like computed types in typing",
+   "gold": [
+    "peps/pep-0827.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0828",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 828,
+   "question": "delegating to a subgenerator from inside an async def generator",
+   "gold": [
+    "peps/pep-0828.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0829",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 829,
+   "question": "replacement for .pth files running code at launch",
+   "gold": [
+    "peps/pep-0829.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0830",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 830,
+   "question": "record when exceptions were raised",
+   "gold": [
+    "peps/pep-0830.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0831",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 831,
+   "question": "compile with frame pointers for perf profiling",
+   "gold": [
+    "peps/pep-0831.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0832",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 832,
+   "question": "how tools find the project's .venv folder",
+   "gold": [
+    "peps/pep-0832.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0833",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 833,
+   "question": "no more changes to the HTML index format, JSON only",
+   "gold": [
+    "peps/pep-0833.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0835",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 835,
+   "question": "shorter syntax for attaching metadata to hints",
+   "gold": [
+    "peps/pep-0835.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0836",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 836,
+   "question": "plan to make the experimental compiler production ready",
+   "gold": [
+    "peps/pep-0836.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0837",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 837,
+   "question": "__json__ hook for custom encoding",
+   "gold": [
+    "peps/pep-0837.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0838",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 838,
+   "question": "record the interpreter version in the venv config",
+   "gold": [
+    "peps/pep-0838.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0839",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 839,
+   "question": "C API to build immutable sets and dicts",
+   "gold": [
+    "peps/pep-0839.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0840",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 840,
+   "question": "class body scoping rules for comprehensions",
+   "gold": [
+    "peps/pep-0840.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0841",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 841,
+   "question": "keyword for declaring immutable classes for optimization",
+   "gold": [
+    "peps/pep-0841.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0842",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 842,
+   "question": "__all__ alternative for declaring public API",
+   "gold": [
+    "peps/pep-0842.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0843",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 843,
+   "question": "export keyword to re-export names",
+   "gold": [
+    "peps/pep-0843.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0844",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 844,
+   "question": "decorators to mark names as API or internal",
+   "gold": [
+    "peps/pep-0844.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0845",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 845,
+   "question": "case .RED shorthand for enum values in match",
+   "gold": [
+    "peps/pep-0845.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0846",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 846,
+   "question": "attach docs to the type statement",
+   "gold": [
+    "peps/pep-0846.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0847",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 847,
+   "question": "RFC 9457 errors from the package index",
+   "gold": [
+    "peps/pep-0847.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0848",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 848,
+   "question": "shorter gc pauses by collecting cyclic garbage in small steps",
+   "gold": [
+    "peps/pep-0848.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0849",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 849,
+   "question": "allow more syntax inside annotations",
+   "gold": [
+    "peps/pep-0849.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0850",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 850,
+   "question": "plugins that detect hardware for variant selection",
+   "gold": [
+    "peps/pep-0850.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0851",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 851,
+   "question": "remove an item if present without ValueError",
+   "gold": [
+    "peps/pep-0851.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-0852",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 852,
+   "question": "C functions that can await",
+   "gold": [
+    "peps/pep-0852.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-2026",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 2026,
+   "question": "year-based version numbers like 3.26",
+   "gold": [
+    "peps/pep-2026.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3001",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3001,
+   "question": "process to audit and improve existing library modules",
+   "gold": [
+    "peps/pep-3001.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3002",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3002,
+   "question": "how to propose breaking changes for py3k",
+   "gold": [
+    "peps/pep-3002.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3003",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3003,
+   "question": "freeze on syntax changes after 3.1",
+   "gold": [
+    "peps/pep-3003.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3099",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3099,
+   "question": "ideas rejected for py3k",
+   "gold": [
+    "peps/pep-3099.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3100",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3100,
+   "question": "list of planned py3k cleanups",
+   "gold": [
+    "peps/pep-3100.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3101",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3101,
+   "question": "str.format with {} placeholders",
+   "gold": [
+    "peps/pep-3101.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3102",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3102,
+   "question": "parameters after * must be named",
+   "gold": [
+    "peps/pep-3102.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3103",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3103,
+   "question": "case dispatch syntax proposal, rejected for py3k",
+   "gold": [
+    "peps/pep-3103.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3104",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3104,
+   "question": "nonlocal to rebind enclosing function variables",
+   "gold": [
+    "peps/pep-3104.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3105",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3105,
+   "question": "print statement replaced by a builtin call",
+   "gold": [
+    "peps/pep-3105.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3107",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3107,
+   "question": "arbitrary expressions on parameters and return values",
+   "gold": [
+    "peps/pep-3107.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3108",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3108,
+   "question": "renaming and removing modules for py3k",
+   "gold": [
+    "peps/pep-3108.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3109",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3109,
+   "question": "raise E(arg) instead of raise E, arg",
+   "gold": [
+    "peps/pep-3109.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3110",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3110,
+   "question": "new except E as e syntax for binding the caught error",
+   "gold": [
+    "peps/pep-3110.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3111",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3111,
+   "question": "raw_input renamed to input",
+   "gold": [
+    "peps/pep-3111.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3112",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3112,
+   "question": "b'' prefix for binary data constants in py3k",
+   "gold": [
+    "peps/pep-3112.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3113",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3113,
+   "question": "drop nested tuple arguments like def f((a, b)) in function signatures",
+   "gold": [
+    "peps/pep-3113.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3114",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3114,
+   "question": "__next__ method and next() builtin",
+   "gold": [
+    "peps/pep-3114.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3115",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3115,
+   "question": "metaclass= keyword and __prepare__",
+   "gold": [
+    "peps/pep-3115.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3117",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3117,
+   "question": "unicode symbols after names for types, april fool",
+   "gold": [
+    "peps/pep-3117.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3118",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3118,
+   "question": "memoryview and the new C buffer interface",
+   "gold": [
+    "peps/pep-3118.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3119",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3119,
+   "question": "abc module with isinstance hooks",
+   "gold": [
+    "peps/pep-3119.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3120",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3120,
+   "question": "source files decoded as utf8 without a coding comment",
+   "gold": [
+    "peps/pep-3120.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3121",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3121,
+   "question": "PyModuleDef and PyInit_ functions for C modules",
+   "gold": [
+    "peps/pep-3121.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3122",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3122,
+   "question": "if __name__ == main replacement",
+   "gold": [
+    "peps/pep-3122.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3123",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3123,
+   "question": "fix strict aliasing in object header macros",
+   "gold": [
+    "peps/pep-3123.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3124",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3124,
+   "question": "multiple dispatch with overload decorators",
+   "gold": [
+    "peps/pep-3124.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-3125",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3125,
+   "question": "ban the trailing backslash for joining lines",
+   "gold": [
+    "peps/pep-3125.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3126",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3126,
+   "question": "adjacent literals 'a' 'b' joining",
+   "gold": [
+    "peps/pep-3126.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3127",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3127,
+   "question": "0o octal prefix and 0b binary",
+   "gold": [
+    "peps/pep-3127.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3128",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3128,
+   "question": "B-tree based sequence for faster inserts",
+   "gold": [
+    "peps/pep-3128.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3129",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3129,
+   "question": "using @ wrappers on a type definition, not just on functions",
+   "gold": [
+    "peps/pep-3129.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3130",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3130,
+   "question": "dunder keywords to refer to the enclosing scope object itself",
+   "gold": [
+    "peps/pep-3130.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3131",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3131,
+   "question": "unicode variable names in source",
+   "gold": [
+    "peps/pep-3131.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3132",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3132,
+   "question": "star assignment like a, *rest = items to grab remaining values",
+   "gold": [
+    "peps/pep-3132.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3133",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3133,
+   "question": "role-based interfaces as an alternative to abstract base classes",
+   "gold": [
+    "peps/pep-3133.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3136",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3136,
+   "question": "exit nested loops by label",
+   "gold": [
+    "peps/pep-3136.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3137",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3137,
+   "question": "bytes vs bytearray split",
+   "gold": [
+    "peps/pep-3137.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3138",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3138,
+   "question": "repr of unicode shows non-ascii characters",
+   "gold": [
+    "peps/pep-3138.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3139",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3139,
+   "question": "split sys contents into separate modules",
+   "gold": [
+    "peps/pep-3139.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3140",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3140,
+   "question": "printing a list should use str of elements",
+   "gold": [
+    "peps/pep-3140.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3141",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3141,
+   "question": "numbers module: Number, Real, Integral",
+   "gold": [
+    "peps/pep-3141.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3142",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3142,
+   "question": "stop iterating a comprehension when a condition fails",
+   "gold": [
+    "peps/pep-3142.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3143",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3143,
+   "question": "detach a background service properly from the terminal, python-daemon",
+   "gold": [
+    "peps/pep-3143.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3144",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3144,
+   "question": "ipaddress module for IPv4 and IPv6 networks",
+   "gold": [
+    "peps/pep-3144.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3146",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3146,
+   "question": "LLVM-based JIT fork merged into the main interpreter",
+   "gold": [
+    "peps/pep-3146.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3147",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3147,
+   "question": "__pycache__ folders with tagged bytecode",
+   "gold": [
+    "peps/pep-3147.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3148",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3148,
+   "question": "concurrent.futures thread and process pools",
+   "gold": [
+    "peps/pep-3148.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3149",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3149,
+   "question": "extension filenames with an interpreter tag",
+   "gold": [
+    "peps/pep-3149.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3150",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3150,
+   "question": "where-style clause for temporary names scoped to one expression",
+   "gold": [
+    "peps/pep-3150.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3151",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3151,
+   "question": "FileNotFoundError and OSError merging",
+   "gold": [
+    "peps/pep-3151.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3153",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3153,
+   "question": "early proposal for an async networking framework",
+   "gold": [
+    "peps/pep-3153.md"
+   ],
+   "has_successor": true,
+   "stale": []
+  },
+  {
+   "id": "q1p-3154",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3154,
+   "question": "serialization protocol for big objects and qualified names",
+   "gold": [
+    "peps/pep-3154.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3155",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3155,
+   "question": "dotted path names for nested functions",
+   "gold": [
+    "peps/pep-3155.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3156",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3156,
+   "question": "tulip event loop, coroutines and transports",
+   "gold": [
+    "peps/pep-3156.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-3333",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 3333,
+   "question": "WSGI spec updated for py3 bytes and str handling",
+   "gold": [
+    "peps/pep-3333.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8000",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8000,
+   "question": "list of models proposed after guido stepped down",
+   "gold": [
+    "peps/pep-8000.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8001",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8001,
+   "question": "how core devs chose a new leadership model",
+   "gold": [
+    "peps/pep-8001.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8002",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8002,
+   "question": "how other projects like Rust and Django are run",
+   "gold": [
+    "peps/pep-8002.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8010",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8010,
+   "question": "single BDFL-like technical head for the project",
+   "gold": [
+    "peps/pep-8010.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8011",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8011,
+   "question": "three-person leadership trio running the language",
+   "gold": [
+    "peps/pep-8011.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8012",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8012,
+   "question": "no central authority, consensus model",
+   "gold": [
+    "peps/pep-8012.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8013",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8013,
+   "question": "outside non-core board overseeing the project",
+   "gold": [
+    "peps/pep-8013.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8014",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8014,
+   "question": "elders council model with no single head",
+   "gold": [
+    "peps/pep-8014.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8015",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8015,
+   "question": "teams and a core board",
+   "gold": [
+    "peps/pep-8015.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8016",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8016,
+   "question": "five-member elected leadership board",
+   "gold": [
+    "peps/pep-8016.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8100",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8100,
+   "question": "results of the January 2019 leadership board vote",
+   "gold": [
+    "peps/pep-8100.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8101",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8101,
+   "question": "who was elected to python's governing board for 2020",
+   "gold": [
+    "peps/pep-8101.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8102",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8102,
+   "question": "who was elected to python's governing board for 2021",
+   "gold": [
+    "peps/pep-8102.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8103",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8103,
+   "question": "who was elected to python's governing board for 2022",
+   "gold": [
+    "peps/pep-8103.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8104",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8104,
+   "question": "who was elected to python's governing board for 2023",
+   "gold": [
+    "peps/pep-8104.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8105",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8105,
+   "question": "who was elected to python's governing board for 2024",
+   "gold": [
+    "peps/pep-8105.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8106",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8106,
+   "question": "who was elected to python's governing board for 2025",
+   "gold": [
+    "peps/pep-8106.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  },
+  {
+   "id": "q1p-8107",
+   "set": "q1p",
+   "category": "paraphrase",
+   "pep": 8107,
+   "question": "who was elected to python's governing board for 2026",
+   "gold": [
+    "peps/pep-8107.md"
+   ],
+   "has_successor": false,
+   "stale": []
+  }
+ ]
+}

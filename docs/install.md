@@ -19,38 +19,37 @@ Almost everything LEKS writes goes into one home folder, `~/.leks` unless you pi
 ```bash
 git clone https://github.com/jacobemanuel/leks
 cd leks
-python3 -m pip install -e ".[models,pdf]"
+python3 --version
+python3 -m venv .venv
+. .venv/bin/activate        # on Windows: .venv\Scripts\activate
+python -m pip install -U pip
+python -m pip install -e ".[models,pdf]"
+python -c "import sys; print(sys.executable)"
 ```
 
-**Does:** installs LEKS from the clone with both extras, and puts a `leks` command next to that Python. The `-e` makes the install point at the clone, so leave the folder where it is.
+**Does:** makes a virtual environment in `.venv` inside the clone, installs LEKS into it with both extras, and puts a `leks` command into the venv. The `-e` makes the install point at the clone, so leave the folder where it is. The last line prints the venv's Python. Keep that path: the hosts start `python3` from whatever PATH they get, which is usually another Python, and you'll put this path into the host files later.
 
-**Writes:** the packages into that Python's site-packages and the `leks` script into its `bin` folder. Nothing in your home folder yet.
+**Which Python:** `python3 --version` has to say 3.10 or newer, 3.11 or newer for the `models` extra. Apple's own `python3`, the one from Xcode or its command line tools, is 3.9. Install a newer one from python.org or with Homebrew (`brew install python@3.13`) and make the venv with it, as in `python3.13 -m venv .venv`.
+
+**Why the venv:** Homebrew's Python and recent Linux distributions refuse `pip install` outside one, with `error: externally-managed-environment`, and the venv keeps torch and friends away from your other Python stuff. The pip upgrade matters on an older Python, whose own pip may stop with `editable mode currently requires a setuptools-based build`.
+
+**Writes:** the venv in `.venv` inside the clone, with the packages and the `leks` script. Nothing in your home folder yet.
 
 **Takes:** with the `models` extra, about 180 MB of downloads. On my Mac pip fetched them in 14 s and installed them in 71 s. Without the `models` extra there's little to fetch: LEKS itself has no dependencies, and `pdf` adds only pypdf.
 
-**Worked if:** `leks --help` lists the commands. If your shell can't find `leks`, use `python3 -m leks --help`. That's the same program, and it's the form the hooks use. With the `models` extra in, `python3 -c "import torch, transformers, numpy, huggingface_hub"` prints nothing.
+**Worked if:** `leks --help` lists the commands. The `leks` command is there while the venv is active; in a new terminal run `. .venv/bin/activate` in the clone again, or call `.venv/bin/leks` directly. `python -m leks --help` is the same program, and it's the form the hooks use. setuptools may print a long warning that `leks.ocr` is absent from the `packages` configuration; with `-e` the install reads that folder straight from the clone, so `leks ocr build` still finds its source. With the `models` extra in, `python -c "import torch, transformers, numpy, huggingface_hub"` prints nothing.
 
-Pick your extras:
+Pick your extras, inside the venv:
 
 | Install line | What you get |
 |---|---|
-| `python3 -m pip install -e ".[models,pdf]"` | everything |
-| `python3 -m pip install -e ".[pdf]"` | no models. Notes, documents, code symbols and file names, PDF text included. |
-| `python3 -m pip install -e ".[pdf,test]"` | the test suite, with numpy for the stand-in model backend. Run it with `python3 -m unittest discover -s tests -t .` |
-| `python3 -m pip install -e ".[models]"` | the models. PDFs get read only through the OCR helper on a Mac. |
-| `python3 -m pip install -e .` | no models, and no PDF text unless the OCR helper is built |
+| `python -m pip install -e ".[models,pdf]"` | everything |
+| `python -m pip install -e ".[pdf]"` | no models. Notes, documents, code symbols and file names, PDF text included. |
+| `python -m pip install -e ".[pdf,test]"` | the test suite, with numpy for the stand-in model backend. Run it with `python -m unittest discover -s tests -t .` |
+| `python -m pip install -e ".[models]"` | the models. PDFs get read only through the OCR helper on a Mac. |
+| `python -m pip install -e .` | no models, and no PDF text unless the OCR helper is built |
 
 `models` brings torch, transformers, safetensors, tokenizers, numpy and huggingface_hub. `pdf` brings pypdf.
-
-A virtual environment keeps torch and friends away from your other Python stuff:
-
-```bash
-python3 -m venv ~/.venvs/leks
-~/.venvs/leks/bin/python -m pip install -e ".[models,pdf]"
-~/.venvs/leks/bin/python -c "import sys; print(sys.executable)"
-```
-
-Keep the path the last line prints. The hosts start `python3` from whatever PATH they get, and that may be a different Python. You'll paste this path into the host files later.
 
 ### Try the demo (optional)
 
@@ -250,9 +249,11 @@ cp -n "$T/.claude/skills/leks-search/SKILL.md" .claude/skills/leks-search/
 cp -n "$T/.vscode/mcp.json" "$T/.vscode/settings.json" .vscode/
 cp -n "$T/.github/hooks/leks.json" .github/hooks/
 cp -n "$T/.codex/config.toml" "$T/.codex/hooks.json" .codex/
+P=~/leks/.venv/bin/python    # the path the venv step printed
+for f in .mcp.json .claude/settings.json .vscode/mcp.json .github/hooks/leks.json .codex/config.toml .codex/hooks.json; do sed -i.bak "s#\"python3#\"$P#g" "$f" && rm "$f.bak"; done
 ```
 
-`cp -n` won't overwrite a file you already have. Merge those by hand. For an existing `CLAUDE.md` that's one extra line, `@AGENTS.md`. The template's own `README.md` stays out on purpose: it explains the template, and your project has its own. The template holds more skills than `leks-search`, listed in [skills.md](skills.md); copy the folders you want the same way. Then run `python3 -m leks check` once in the project root: its first run in a folder only records the notes, so from then on the check at the end of a turn reports what that turn changed.
+The loop puts the venv's Python in place of `python3` in every command of those six files, so the hosts run LEKS whatever their PATH holds. `cp -n` won't overwrite a file you already have. Merge those by hand. For an existing `CLAUDE.md` that's one extra line, `@AGENTS.md`. The template's own `README.md` stays out on purpose: it explains the template, and your project has its own. The template holds more skills than `leks-search`, listed in [skills.md](skills.md); copy the folders you want the same way. Then run `"$P" -m leks check` once in the project root: its first run in a folder only records the notes, so from then on the check at the end of a turn reports what that turn changed.
 
 | File | Read by | What it does |
 |---|---|---|
@@ -280,20 +281,20 @@ The template's [README](../examples/project-template/README.md#codex) has the de
 
 **Profile.** The files that start LEKS set `LEKS_PROFILE` to `architect`: `.mcp.json`, `.claude/settings.json`, `.vscode/mcp.json`, `.github/hooks/leks.json` and `.codex/config.toml`. The Codex hooks carry it on their command line instead, as `--profile architect` in `.codex/hooks.json`. Put in a profile from your config, or delete those settings and LEKS takes `default_profile`.
 
-**Interpreter.** Every command in these files starts with `python3`. If that isn't the Python with LEKS in it, put the full path from the venv step in its place, in every file.
+**Interpreter.** Every command in the template starts with `python3`, and the loop above swaps in the venv's Python. Without that swap a host that starts another `python3` stops with `No module named leks`. On Windows put the path in by hand, with forward slashes, like `D:/code/leks/.venv/Scripts/python.exe`. A path with spaces needs quotes around it inside the hook commands.
 
 **One config per project.** Add `LEKS_CONFIG` with an absolute path to the same `env` blocks, and to the `[mcp_servers.leks.env]` table of `.codex/config.toml`. A Codex hook has no `env` of its own, so add `--config` with the same path to each command in `.codex/hooks.json`. In `.vscode/mcp.json` the path may start with `${workspaceFolder}`. More in [hosts.md](hosts.md#config-and-interpreter).
 
 Check it before you open the agent:
 
 ```bash
-LEKS_PROFILE=architect python3 -m leks hook brief
+LEKS_PROFILE=architect "$P" -m leks hook brief
 ```
 
 After a build this prints one line of JSON whose `additionalContext` starts with `Project search is on (leks)`. That's the brief the agent gets at session start, with up to four current state notes and up to six files changed in the last three days, and, when the config sets [freshness](configuration.md#freshness) budgets or a note has a revisit date, up to six notes past their budget and up to six revisit dates that have come. It prints nothing when that profile has no index yet, or when the config or the profile is wrong. `leks status` with the same profile tells you which.
 
 ```bash
-printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"status","arguments":{}}}' | LEKS_PROFILE=architect python3 -m leks serve
+printf '%s\n' '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"status","arguments":{}}}' | LEKS_PROFILE=architect "$P" -m leks serve
 ```
 
 That's the MCP server answering one call by hand. You get one line back, with the same report as `leks status` inside `result.content`. Then open the project in the host and ask the agent to call the `status` tool.
@@ -349,11 +350,10 @@ To update LEKS itself, `git pull` in the clone. With the `-e` install the new co
 
 ```bash
 leks modeld stop
-python3 -m pip uninstall leks
 rm -rf ~/.leks
 ```
 
-The stop asks the helper to exit, if it's running. The uninstall removes LEKS and the `leks` command and leaves the extras alone, so remove torch and friends by name, or delete the venv if you made one. The `rm` deletes the config, the index, the vectors, the model weights, the OCR helper and the run folder.
+The stop asks the helper to exit, if it's running. The `rm` deletes the config, the index, the vectors, the model weights, the OCR helper and the run folder. Then delete the clone: LEKS, torch and the rest live in its `.venv`. If you installed LEKS into another Python, `python -m pip uninstall leks` there removes LEKS and the `leks` command and leaves the extras, so remove torch and friends by name.
 
 A few things live outside `~/.leks`:
 
@@ -370,6 +370,10 @@ One thing stays behind on a Mac: running the models on the GPU leaves a Metal sh
 
 | Message | What to do |
 |---|---|
+| `error: externally-managed-environment` | pip ran outside a venv, on a Python that refuses that (Homebrew, recent Linux). Make the venv as in [Get LEKS](#get-leks) and install inside it. |
+| `File "setup.py" or "setup.cfg" not found` or `editable mode currently requires a setuptools-based build` | An old pip, often on an old Python such as Apple's own 3.9. Make the venv from Python 3.10 or newer and run `python -m pip install -U pip` in it. |
+| `Package 'leks' requires a different Python: 3.9.6 not in '>=3.10'` | The venv was made from a Python older than 3.10. Delete `.venv` and make it again from 3.10 or newer, 3.11 or newer for the models. |
+| `No module named leks` when the agent starts LEKS | The host started a `python3` without LEKS. Swap in the venv's Python as in [Connect](#connect-claude-code-copilot-and-codex). |
 | `leks: no config: run leks init` | There's no config in `$LEKS_HOME` or `~/.leks`. Run `leks init`, or point `LEKS_CONFIG` at your file. |
 | `leks: no config: run leks init (not found: <path>)` | `--config` or `LEKS_CONFIG` names a file that isn't there. LEKS doesn't fall back to the other places. |
 | `leks: unknown profile: <name>` | The profile asked for (`LEKS_PROFILE`, which `--profile` sets, else `default_profile`) isn't in the config. `leks config show` lists them, apart from the built-in `default`. |
@@ -385,4 +389,4 @@ One thing stays behind on a Mac: running the models on the GPU leaves a Metal sh
 | `leks check: more than 100,000 files under <path>, nothing checked. ...` | Add `--root` with your notes folder to the check command in `.claude/settings.json` and `.github/hooks/leks.json`. |
 | `search failed: ...` (or another tool) in the agent | The rest of the message says what to run in a terminal, such as `leks build` or `leks status`. |
 
-When a fix says `pip install -e ".[models]"` or `pip install -e ".[pdf]"`, run it in the clone with the Python that runs LEKS, as in `~/.venvs/leks/bin/python -m pip install -e ".[models]"` for the virtual environment above. LEKS is not on PyPI, so a plain package name there would fetch someone else's package.
+When a fix says `pip install -e ".[models]"` or `pip install -e ".[pdf]"`, run it in the clone with the Python that runs LEKS, as in `.venv/bin/python -m pip install -e ".[models]"` for the venv from [Get LEKS](#get-leks). LEKS is not on PyPI, so a plain package name there would fetch someone else's package.

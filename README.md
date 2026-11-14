@@ -4,9 +4,44 @@
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-3776ab)
 ![License: MIT](https://img.shields.io/badge/license-MIT-2f855a)
 
-[![A knowledge graph in 3D, one note selected and another previewed](media/graph-3d.gif)](https://majewski.studio/assets/work/leks-graph.mp4)
+**Your coding agent misses the note that answers, or quotes a decision you already replaced. LEKS hands it the right passages with file and line, from an index on your own machine**
 
-Local search for coding agents. Your agent asks a question and LEKS hands back the passages that answer it, from your own notes, decisions, PDFs, `.docx` files and code, each with its file and line range so the agent can cite it. The index and the models run on your machine.
+It searches your notes, decisions, PDFs, `.docx` files and code by words and by meaning, puts a replaced note below the one that replaced it, and plugs into Claude Code, GitHub Copilot and Codex over MCP. No API key, no cloud
+
+## At a glance
+
+- **The agent gets more right and costs less.** Three scripted working days of questions and dev tasks in one conversation: 89% of answers right with LEKS vs 75% without (same 100 questions, Holm p 0.0043), all 14 dev tasks passed vs 12 of 14, and the bill came out 15% lower
+- **Next to other local search tools.** 695 held-out questions none of the tools was tuned on: with its models LEKS has the right note in the top 5 for 93.4%, vs 86.5% for qmd query, 83.3% for knowledge-rag and 81.2% for MemPalace, each gap with Holm p 1.2e-6 or lower. On words alone it's 76.3% in about 6 ms ([comparison](docs/comparison.md))
+- **Keeps replaced decisions below their successors.** On the public PEP benchmark LEKS lists the newer PEP above the replaced one for 30 of 41 pairs on words alone and 31 with models, against 2 to 11 for qmd, MemPalace and knowledge-rag, and the replaced PEP points to the newer one ([comparison](docs/comparison.md#43-newer-over-replaced-q2-q2c))
+- **Finds the right note way more often.** 158 held-out questions no tuning had seen, each answered by a note: 85.4% in the top 5 vs 61.4% for LEKS 2.0. 42 of them only 3.0 finds, 4 only 2.0 finds
+- **Holds up on fresh questions.** 120 questions written after 3.0 went live, from documents drawn at random: 83.3% vs 46.7%, 46 questions vs 2, Holm p < 0.0001. Of the 44 extra right answers, 6 come from the 80 questions answered by a note (77.5% vs 70.0%) and 38 from the 40 answered by a PDF page
+- **Reads PDFs.** 95.0% in the top 5 when the answer sits on a PDF page. 2.0 reads none
+- **Works across languages.** The meaning lane matches across languages, so a question in another language than your notes still finds them: on the fresh questions asked in two other languages, 70.0% to 84.2% vs 7.5% to 32.5% for 2.0 ([Languages](#languages))
+- **Scales to a real record.** 7,294 documents (4.6 GB of text, 380,564 passages) in full and 172,775 files (249 GB) by name, as counted on my private record, where 2.0's own test searched 91 wiki pages
+- **Stays local.** The models run in a separate helper process, on macOS in a sandbox with no network
+
+## Quick start
+
+```bash
+git clone https://github.com/jacobemanuel/leks
+cd leks
+python3 --version    # 3.10 or newer, 3.11 or newer for the models
+python3 -m venv .venv && . .venv/bin/activate    # on Windows .venv\Scripts\activate
+python -m pip install -U pip
+python -m pip install -e ".[models,pdf]"
+leks init            # writes a starter config to ~/.leks/config.json
+# put your folders into that config, docs/install.md shows how
+leks models fetch    # downloads the two models once
+leks build           # word, code and file-name index
+leks embed           # meaning vectors
+leks search "what did we decide about the cache"
+```
+
+Apple's own `python3`, the one from Xcode or its command line tools, is 3.9, too old. Get a newer one from python.org or Homebrew and make the venv with it, like `python3.13 -m venv .venv`. Homebrew's Python and newer Linux won't let pip install outside a venv anyway, that's what the venv is for
+
+Then copy [examples/project-template](examples/project-template) into your project and your agent gets the LEKS tools ([Connect an agent](#connect-an-agent)). The template starts `python3`, so swap in the venv's Python, one loop in [docs/install.md](docs/install.md#connect-claude-code-copilot-and-codex) does it. [docs/install.md](docs/install.md) walks through each step
+
+[![A knowledge graph in 3D, one note selected and another previewed](media/graph-3d.gif)](https://majewski.studio/assets/work/leks-graph.mp4)
 
 ## What it is for
 
@@ -17,7 +52,7 @@ LEKS is for projects whose knowledge has outgrown what an agent can read in one 
 - **Keep decisions straight over months.** When a newer note replaces an older one, the older ranks below it and points to it, whether the replacement is written in front matter, in a plain `Status:` line or as a link in the opening lines.
 - **Keep a growing record true.** After an edit LEKS lists the notes to bring in line, and it names notes past a freshness budget or a revisit date and notes that break the edit rules you set.
 - **Search across languages.** A question in one language finds notes written in another.
-- **Spend less per answer.** Per right answer the agent cost 0.72 of what it cost without LEKS, and three scripted working days came to 0.85 of the bill ([Cost](#cost)).
+- **Spend less per answer.** Per right answer the agent cost 28% less than without LEKS, and three scripted working days came out 15% cheaper ([Cost](#cost)).
 
 It fits a solo builder or a small team working with Claude Code, GitHub Copilot or Codex on a project that runs for months, with the index and the models on their own machine. For a handful of short files, plain search in the editor is enough.
 
@@ -26,16 +61,6 @@ It fits a solo builder or a small team working with Claude Code, GitHub Copilot 
 I built LEKS for a real and private record I have worked in every day since February 2026. By my own count it holds 7,294 documents and 172,775 files. The search, agent and cost numbers below come from that record and were measured on 3.0. Version 3.0 searches by words and by meaning, reranks with a small local model, reads PDFs and `.docx` files, and knows when a newer note replaces an older one. Its models won a tournament of 30 model stacks played under rules I fixed and hashed in advance, and the winner then beat 2.0 again on fresh questions written after it went live. The full report with every table is in [docs/report-3.0.md](docs/report-3.0.md).
 
 Version 3.1 keeps the search lanes and models of 3.0 and adds the parts that hold a growing record true. It reads the `Status:` and `Date:` lines under a note's title, lists the notes to bring in line after an edit, names notes past a freshness budget or a revisit date, and holds notes to edit contracts. It also serves Codex next to Claude Code and GitHub Copilot, ships 26 skills and an optional agent team, and comes with a public benchmark on the Python PEPs that anyone can rerun. CI runs the tests on macOS, Linux and Windows with Python 3.10 to 3.13, and with the real models on every push to main and once a week. [What 3.1 adds](#what-31-adds) has the details and the numbers.
-
-## At a glance
-
-- **Finds the right note far more often.** 158 held-out questions that no tuning had seen, each answered by a note: 85.4% in the top 5 against 61.4% for 2.0. 42 of them only 3.0 finds, 4 only 2.0 finds
-- **Holds on fresh questions.** 120 questions written after 3.0 went live, from documents drawn at random: 83.3% against 46.7%, 46 questions against 2, Holm p < 0.0001. Of the 44 extra right answers, 6 come from the 80 questions answered by a note (77.5% against 70.0%) and 38 from the 40 answered by a PDF page
-- **Reads PDFs.** 95.0% in the top 5 when the answer sits on a PDF page. 2.0 reads none
-- **Works across languages.** The meaning lane matches across languages, so a question in another language than the notes still finds them: on the fresh questions asked in two other languages, 70.0% to 84.2% against 7.5% to 32.5% for 2.0 ([Languages](#languages))
-- **Makes the agent better and cheaper.** Three scripted working days of questions and dev tasks in one conversation: 89 of 100 answers right with LEKS against 75 of 100 without (Holm p 0.0043), 14 of 14 tasks passed against 12 of 14, at 0.85 of the bill
-- **Scales to a real record.** 7,294 documents (4.6 GB of text, 380,564 passages) in full and 172,775 files (249 GB) by name, as counted on my private record, where 2.0's own test searched 91 wiki pages
-- **Stays local.** The models run in a separate helper process, on macOS in a sandbox with no network
 
 ## What 3.1 adds
 
@@ -63,6 +88,24 @@ My record is private, so 3.1 comes with a test anyone can rerun: the Python PEPs
 | replaced PEP points to the newer one | none | 25 of 40 | 33 of 40 |
 
 3.1 loses no replacement pair that 3.0 wins, and the pointer gain holds after the Holm correction (p 0.047); the ranking gains alone do not (Holm p 0.19 and 0.0625). On the asked PEP, 3.0 has 5 questions at rank 1 that 3.1 has at rank 2 (p 0.0625). Four of them are PEPs that 3.1 now knows a newer version of: it lists the newer one right above the asked one, which follows with its pointer, as intended. Both versions are about 9 points ahead of bm25 on the asked PEP first. Every interval and test is in [docs/benchmark.md](docs/benchmark.md#8-results).
+
+### Next to other local search tools
+
+On the same PEPs LEKS ran next to qmd 2.8.3, MemPalace 3.12.0, knowledge-rag 5.0.1 and a BM25 baseline, each tool with its own defaults on one Mac. The set that counts is q3: 695 questions a developer might ask, written from each PEP's abstract and frozen, with the analysis plan hashed, before any tool saw them.
+
+| system | models | right PEP in the top 5 | right PEP first | time per question |
+|---|---|---|---|---|
+| LEKS 3.1 with models | 2 | 93.4% | 62.9% | 1.35 s |
+| qmd query | 3 | 86.5% | 35.8% | 14.3 s |
+| knowledge-rag hybrid | 2 | 83.3% | 52.8% | 6.1 s |
+| MemPalace hybrid | 1 | 81.2% | 41.6% | 132 ms |
+| MemPalace default | 1 | 79.7% | 45.9% | 39 ms |
+| LEKS 3.1, words only | none | 76.3% | 44.2% | 5.9 ms |
+| qmd vsearch | 1 | 72.9% | 38.0% | 1.55 s |
+| BM25 | none | 66.2% | 41.3% | not timed |
+| qmd search | none | 16.7% | 13.2% | 7.7 ms |
+
+With its models LEKS is ahead of every other configuration (Holm p 1.2e-6 or lower over the plan's 16 tests), and the closest one, qmd query, takes about ten times as long per question. On words alone LEKS is level with qmd vsearch and MemPalace's default search, as far as 695 questions can tell, and behind the hybrid searches that run models, at a few milliseconds and 63 MB. In a blind check of 20 misses on each side, 2 of LEKS's and 2 of qmd query's had a top hit that answers too, so the one-right-note rule doesn't explain the gap. Times come from the runs on the known questions. The tables, the tests, every run file and the limits are in [docs/comparison.md](docs/comparison.md).
 
 ### How the parts fit
 
@@ -348,6 +391,19 @@ LEKS itself makes no paid calls. What changes is the agent's bill, and that drop
 - **two models, effort from low to max, nine settings:** cheaper per right answer in all nine, ratios 0.45 to 0.85
 - **a small model as the agent:** 0.49 of its own cost per right answer (0.27 to 0.81)
 
+**By search arm.** The 35 questions with sonnet, each arm paired with the same agent on its own file tools ([section 4.9 of the report](docs/report-3.0.md#49-end-to-end-f5), Table 10):
+
+| search | cost per right answer, share of no LEKS | prompt tokens per question | wall time per question |
+|---|---|---|---|
+| none, its own file tools | 1 | 51,711 | 11.7 s |
+| LEKS 3.0, words only | 0.82 (0.64 to 1.05) | 39,613 | 8.2 s |
+| LEKS 3.0 without the reranker | 0.82 (0.63 to 1.03) | 38,790 | 8.0 s |
+| LEKS 3.0 | 0.72 (0.56 to 0.88) | 36,998 | 9.7 s |
+
+Every arm costs less per question. Per right answer, full LEKS 3.0 is the only arm whose whole interval lies below 1.
+
+**3.1.** These costs were measured on 3.0 and carry over to 3.1, which keeps the search lanes and models of 3.0. A rerun on the same private record on 13 November 2026 found that 3.1 puts the right note in the top 5 for exactly the questions 3.0 does, held-out and fresh, with the models and on words alone: none gained, none lost. I have not rerun the agent sessions on 3.1, and Copilot and Codex sessions with LEKS are not measured yet. [docs/costs.md](docs/costs.md) shows how each host bills and how the harness in `bench/hosts` measures a session.
+
 **Resources.** The model helper holds about 6.8 GiB under load, with peaks up to 8.1 GiB, and a search with both models takes 1.4 to 1.7 s at the median. Words, code and file names alone answer in about 40 ms with no model memory.
 
 ## Scope
@@ -356,30 +412,18 @@ LEKS itself makes no paid calls. What changes is the agent's bill, and that drop
 - **Memory.** The model helper wants about 6.8 GiB, with peaks up to 8.1 GiB. On a smaller machine LEKS runs on words, code symbols and file names, and `leks status` says which lanes are on.
 - **Hosts.** Claude Code, GitHub Copilot in VS Code and Codex, through the same template. I measured agent sessions on Claude Code. The Copilot and Codex files follow the documented formats of those hosts and tests check them, and I have not measured a Copilot or Codex session with LEKS.
 - **Answers.** LEKS returns the best passages it has, and the agent decides whether they answer the question.
-- **Evidence.** The search, agent and cost numbers come from my private record and were measured on 3.0. 3.1 changes no lane and no model; its own numbers come from the public benchmark and the tests.
+- **Evidence.** The search, agent and cost numbers come from my private record and were measured on 3.0. 3.1 changes no lane and no model, and a rerun on that record found the right note in the top 5 for the same questions as 3.0 ([Cost](#cost)). Its own numbers come from the public benchmark, the [comparison](docs/comparison.md) and the tests.
 - **Core and extras.** The core is the MCP server and the command line. The hooks, the skills and the agent team are optional, and the core works without them.
 - **What is public.** The code, the tests, the harnesses, the result tables and the statistics. My record, its questions and the agent transcripts stay private, so the record numbers cannot be rerun from outside; the public benchmark can.
 - **Security.** [SECURITY.md](SECURITY.md) says where your data goes and how to report a problem. CI scans for secrets and runs CodeQL, bandit and pip-audit. LEKS has had no external security audit.
 
 ## Install
 
-The step-by-step guide, with what each command does and what lands where on your disk, is [docs/install.md](docs/install.md). The quick version:
-
-```bash
-git clone https://github.com/jacobemanuel/leks
-cd leks
-python3 -m pip install -e ".[models,pdf]"
-leks init            # writes a starter config to ~/.leks/config.json
-# put your folders into that config, docs/install.md shows how
-leks models fetch    # downloads the two models once
-leks build           # word, code and file-name index
-leks embed           # meaning vectors
-leks search "what did we decide about the cache"
-```
+The commands are in [Quick start](#quick-start). The step-by-step guide, with what each command does and what lands where on your disk, is [docs/install.md](docs/install.md).
 
 Without the `models` extra LEKS searches by words, code symbols and file names, and `leks status` says which lanes are on and why. Requires Python 3.10 or newer, and 3.11 or newer for the `models` extra.
 
-The test suite (a stand-in model backend, no downloads) runs with `python3 -m pip install -e ".[pdf,test]"` and `python3 -m unittest discover -s tests -t .`. CI runs it on macOS, Linux and Windows with Python 3.10, 3.11, 3.12 and 3.13 for every push to main and every pull request; [docs/testing.md](docs/testing.md) lists every job, what it proves and what it leaves out.
+The test suite (a stand-in model backend, no downloads) runs in the venv with `python -m pip install -e ".[pdf,test]"` and `python -m unittest discover -s tests -t .`. CI runs it on macOS, Linux and Windows with Python 3.10, 3.11, 3.12 and 3.13 for every push to main and every pull request; [docs/testing.md](docs/testing.md) lists every job, what it proves and what it leaves out.
 
 ## Connect an agent
 
@@ -388,6 +432,8 @@ Copy [examples/project-template](examples/project-template) into your project, a
 - Claude Code reads `.mcp.json`, `.claude/settings.json`, `CLAUDE.md` and the skills in `.claude/skills`
 - GitHub Copilot in VS Code reads `.vscode/mcp.json`, `.github/hooks/leks.json`, `AGENTS.md` and the same skills
 - Codex reads `.codex/config.toml` and `.codex/hooks.json` in a trusted project, `AGENTS.md`, and the skills once you link them into `.agents/skills`. It runs the project's hooks after you have reviewed and trusted them with `/hooks`
+
+Every command in those files starts `python3`. Unless that is the Python with LEKS in it, put the venv's Python in its place; [docs/install.md](docs/install.md#connect-claude-code-copilot-and-codex) has a loop that does it for all six files.
 
 The agent gets the seven tools. Through the hook files it also gets a short brief and an index update at session start, and a notes check after each turn (empty notes, dead `[[links]]`, new notes nothing links to, em dashes unless you switch that off, and the edit contracts you set). Host details, including which model Copilot uses when it hands reading to a subagent, are in [docs/hosts.md](docs/hosts.md). The optional agent team, an orchestrator and nine role agents, is in [examples/agent-team](examples/agent-team) and described in [docs/agents.md](docs/agents.md).
 
@@ -412,6 +458,7 @@ LEKS sends nothing anywhere. The index stays in its home folder. The models are 
 - [Agents](docs/agents.md): an optional agent team for Copilot, Claude Code and Codex, an orchestrator and nine role agents
 - [Report 3.0](docs/report-3.0.md): method and every result
 - [Public benchmark](docs/benchmark.md): a test on the Python PEPs that anyone can rerun, with bm25 and LEKS 3.0 next to this version, and the ideas tested there that did not ship
+- [Comparison](docs/comparison.md): LEKS next to qmd, MemPalace, knowledge-rag and a BM25 baseline on the same notes, with a held-out question set whose analysis was fixed before the runs, and everything needed to recount and rerun it
 - [Costs](docs/costs.md): how Claude Code, Copilot and Codex bill, what was measured and what the cost harness measures
 - [History](docs/history.md): the versions from 1.0 to 3.1 and where each one lives in this repository
 - [Security](SECURITY.md): where your data goes and how to report a problem

@@ -1,0 +1,11 @@
+system,questions_file,questions,median_ms,p95_ms,index_s,peak_rss_mb,version,mode
+bm25,questions.json + questions_q1p.json,1472,,,,63.6,sqlite 3.53.3,fts5
+leks-3.0,questions.json + questions_q1p.json,1472,5.2,11.3,8.4,66.5,3.0.0,words-3.0
+leks-3.1,questions.json + questions_q1p.json,1472,5.9,17.8,7.3,63.2,3.1.0,words
+leks-3.1-models,questions.json + questions_q1p.json,1472,1350.3,1763.9,605.1,1434.0,3.1.0,models
+qmd-search,questions.json + questions_q1p.json,1472,7.7,33.1,3.0,202.2,2.8.3,search
+qmd-vsearch,questions.json + questions_q1p.json,1472,1551.2,7659.2,357.1,3064.5,2.8.3,vsearch
+qmd-query,questions.json + questions_q1p.json,1472,14308.7,20370.0,350.8,4978.3,2.8.3,query
+mempalace-default,questions.json + questions_q1p.json,1472,38.6,39.3,473.5,1222.6,3.12.0,default
+mempalace-hybrid,questions.json + questions_q1p.json,1472,131.9,161.0,472.8,1302.5,3.12.0,hybrid
+knowledge-rag-hybrid,questions.json + questions_q1p.json,1472,6099.5,7412.7,930.9,3188.3,5.0.1,hybrid

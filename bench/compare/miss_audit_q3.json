@@ -1,0 +1,383 @@
+{
+ "rule": "the top hit's title or abstract states what the question asks for (ANALYSIS_q3.md, written before the data)",
+ "draw": "random.Random(20261114).sample(sorted(miss_ids), 20) per system, misses at hit@5 on q3",
+ "misses": {
+  "leks-3.1-models": 46,
+  "qmd-query": 94
+ },
+ "best_other_configuration": "qmd-query (601 of 695 at hit@5)",
+ "judging": "one judge, all 40 items on one sheet with no system names in a shuffled order; the judgments were written before the key that maps items to systems was opened",
+ "judged_at_utc": "2026-11-14 17:38",
+ "result": {
+  "leks-3.1-models": "2 of 20",
+  "qmd-query": "2 of 20"
+ },
+ "items": [
+  {
+   "item": 1,
+   "system": "qmd-query",
+   "question_id": "q3-0735",
+   "question": "Where can I list dev-only requirements in my project config so they never ship with the build?",
+   "gold": "PEP 735, Dependency Groups in pyproject.toml",
+   "top_hit": "PEP 518, Specifying Minimum Build System Requirements for Python Projects",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 2,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0482",
+   "question": "Where can I find background reading on prior work behind optional static typing in Python?",
+   "gold": "PEP 482, Literature Overview for Type Hints",
+   "top_hit": "PEP 544, Protocols: Structural subtyping (static duck typing)",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 3,
+   "system": "qmd-query",
+   "question_id": "q3-0850",
+   "question": "How does an installer decide which build variant of a wheel is compatible with my machine?",
+   "gold": "PEP 850, Wheel Variants: Providers",
+   "top_hit": "PEP 817, Wheel Variants: Beyond Platform Tags",
+   "top_hit_also_answers": "yes",
+   "note": "wheel variants and compatibility tags, the build variant mechanism"
+  },
+  {
+   "item": 4,
+   "system": "qmd-query",
+   "question_id": "q3-0666",
+   "question": "Is there a command line switch that makes Python refuse to run files with tabs in the indentation?",
+   "gold": "PEP 666, Reject Foolish Indentation",
+   "top_hit": "PEP 3103, A Switch/Case Statement",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 5,
+   "system": "qmd-query",
+   "question_id": "q3-8101",
+   "question": "When and how was the group that runs Python elected for 2020?",
+   "gold": "PEP 8101, 2020 Term Steering Council election",
+   "top_hit": "PEP 13, Python Language Governance",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 6,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0280",
+   "question": "What are the options for speeding up lookups of module-level variables in the interpreter?",
+   "gold": "PEP 280, Optimizing access to globals",
+   "top_hit": "PEP 267, Optimized Access to Module Namespaces",
+   "top_hit_also_answers": "yes",
+   "note": "a way to speed module-level name lookups"
+  },
+  {
+   "item": 7,
+   "system": "leks-3.1-models",
+   "question_id": "q3-3117",
+   "question": "Is there a proposal to put type suffixes after variable names, with a way to define new ones?",
+   "gold": "PEP 3117, Postfix type declarations",
+   "top_hit": "PEP 8, Style Guide for Python Code",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 8,
+   "system": "qmd-query",
+   "question_id": "q3-8000",
+   "question": "How was the new leadership model for Python chosen after the creator stepped down?",
+   "gold": "PEP 8000, Python Language Governance Proposal Overview",
+   "top_hit": "PEP 8012, The Community Governance Model",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 9,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0527",
+   "question": "Which kinds of distribution files can still be uploaded to the package index?",
+   "gold": "PEP 527, Removing Un(der)used file types/extensions on PyPI",
+   "top_hit": "PEP 694, Upload 2.0 API for Python Package Indexes",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 10,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0291",
+   "question": "Which parts of the Python 2 stdlib must still run on much older interpreters?",
+   "gold": "PEP 291, Backward Compatibility for the Python 2 Standard Library",
+   "top_hit": "PEP 497, A standard mechanism for backward compatibility",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 11,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0502",
+   "question": "What was the extra reasoning behind the f-string syntax and the other options considered?",
+   "gold": "PEP 502, String Interpolation - Extended Discussion",
+   "top_hit": "PEP 701, Syntactic formalization of f-strings",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 12,
+   "system": "qmd-query",
+   "question_id": "q3-0793",
+   "question": "Is there a simpler way to define a C extension's module without a module definition struct?",
+   "gold": "PEP 793, PyModExport: A new entry point for C extension modules",
+   "top_hit": "PEP 489, Multi-phase extension module initialization",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 13,
+   "system": "qmd-query",
+   "question_id": "q3-0527",
+   "question": "Which kinds of distribution files can still be uploaded to the package index?",
+   "gold": "PEP 527, Removing Un(der)used file types/extensions on PyPI",
+   "top_hit": "PEP 480, Surviving a Compromise of PyPI: End-to-end signing of packages",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 14,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0608",
+   "question": "Could a new interpreter version wait until major third party libraries work with it?",
+   "gold": "PEP 608, Coordinated Python release",
+   "top_hit": "PEP 816, WASI Support",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 15,
+   "system": "qmd-query",
+   "question_id": "q3-0503",
+   "question": "How does a package server list downloadable files in HTML so installers can find them?",
+   "gold": "PEP 503, Simple Repository API",
+   "top_hit": "PEP 381, Mirroring infrastructure for PyPI",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 16,
+   "system": "leks-3.1-models",
+   "question_id": "q3-8102",
+   "question": "When and how was the elected body that runs Python chosen for the year after 2020?",
+   "gold": "PEP 8102, 2021 Term Steering Council election",
+   "top_hit": "PEP 8101, 2020 Term Steering Council election",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 17,
+   "system": "qmd-query",
+   "question_id": "q3-0643",
+   "question": "How can I get the dependencies of an sdist without actually executing its build?",
+   "gold": "PEP 643, Metadata for Package Source Distributions",
+   "top_hit": "PEP 517, A build-system independent format for source trees",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 18,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0375",
+   "question": "What is the planned calendar for alphas, betas and the final build of version 3.1?",
+   "gold": "PEP 375, Python 3.1 Release Schedule",
+   "top_hit": "PEP 2026, Calendar versioning for Python",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 19,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0384",
+   "question": "How do I build a C extension once and have it work across several Python 3 versions?",
+   "gold": "PEP 384, Defining a Stable ABI",
+   "top_hit": "PEP 793, PyModExport: A new entry point for C extension modules",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 20,
+   "system": "qmd-query",
+   "question_id": "q3-0586",
+   "question": "How can I annotate a parameter so it accepts only specific constant values like 4 or a given string?",
+   "gold": "PEP 586, Literal Types",
+   "top_hit": "PEP 649, Deferred Evaluation Of Annotations Using Descriptors",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 21,
+   "system": "qmd-query",
+   "question_id": "q3-0580",
+   "question": "How can extension types implement fast function calls like built-in functions do?",
+   "gold": "PEP 580, The C call protocol",
+   "top_hit": "PEP 827, Type Manipulation",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 22,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0629",
+   "question": "How can a package installer tell which features a given simple index server supports?",
+   "gold": "PEP 629, Versioning PyPI's Simple API",
+   "top_hit": "PEP 807, Index support for Trusted Publishing",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 23,
+   "system": "qmd-query",
+   "question_id": "q3-0229",
+   "question": "How can the interpreter's C extension modules be compiled automatically instead of editing a Setup file by hand?",
+   "gold": "PEP 229, Using Distutils to Build Python",
+   "top_hit": "PEP 803, \\\"abi3t\\\": Stable ABI for Free-Threaded Builds",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 24,
+   "system": "qmd-query",
+   "question_id": "q3-0376",
+   "question": "How do tools record and query which packages are installed on a system in a common format?",
+   "gold": "PEP 376, Database of Installed Python Distributions",
+   "top_hit": "PEP 627, Recording installed projects",
+   "top_hit_also_answers": "yes",
+   "note": "updated standard for recording installed projects (RECORD, INSTALLER in dist-info)"
+  },
+  {
+   "item": 25,
+   "system": "qmd-query",
+   "question_id": "q3-0719",
+   "question": "What are the beta, candidate and final dates for Python 3.13?",
+   "gold": "PEP 719, Python 3.13 Release Schedule",
+   "top_hit": "PEP 739, ``build-details.json`` 1.0 \u2014 a static description file for Python build details",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 26,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0459",
+   "question": "Which optional metadata sections can package descriptions carry beyond the core fields, and how are they versioned?",
+   "gold": "PEP 459, Standard Metadata Extensions for Python Software Packages",
+   "top_hit": "PEP 345, Metadata for Python Software Packages 1.2",
+   "top_hit_also_answers": "yes",
+   "note": "optional fields beyond the core and the metadata version scheme; borderline"
+  },
+  {
+   "item": 27,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0515",
+   "question": "Can I write 1_000_000 in code so big numbers are easier to read?",
+   "gold": "PEP 515, Underscores in Numeric Literals",
+   "top_hit": "PEP 611, The one million limit",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 28,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0585",
+   "question": "Can I write list[int] directly instead of importing List from typing?",
+   "gold": "PEP 585, Type Hinting Generics In Standard Collections",
+   "top_hit": "PEP 677, Callable Type Syntax",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 29,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0643",
+   "question": "How can I get the dependencies of an sdist without actually executing its build?",
+   "gold": "PEP 643, Metadata for Package Source Distributions",
+   "top_hit": "PEP 517, A build-system independent format for source trees",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 30,
+   "system": "qmd-query",
+   "question_id": "q3-0398",
+   "question": "When were the alpha, beta and final releases of Python 3.3 scheduled?",
+   "gold": "PEP 398, Python 3.3 Release Schedule",
+   "top_hit": "PEP 605, A rolling feature release stream for CPython",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 31,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0243",
+   "question": "Is there a way to push my finished package to an online index straight from setup.py?",
+   "gold": "PEP 243, Module Repository Upload Mechanism",
+   "top_hit": "PEP 751, A file format to record Python dependencies for installation reproducibility",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 32,
+   "system": "qmd-query",
+   "question_id": "q3-0329",
+   "question": "Can stdlib code avoid repeated lookups of names like len so it runs faster?",
+   "gold": "PEP 329, Treating Builtins as Constants in the Standard Library",
+   "top_hit": "PEP 844, ``public`` and ``private`` builtins",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 33,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0484",
+   "question": "How do I declare parameter and return types in function signatures for static checkers?",
+   "gold": "PEP 484, Type Hints",
+   "top_hit": "PEP 362, Function Signature Object",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 34,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0405",
+   "question": "How can I get separate per-project site-packages without installing a whole second interpreter, using the standard library?",
+   "gold": "PEP 405, Python Virtual Environments",
+   "top_hit": "PEP 370, Per user site-packages directory",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 35,
+   "system": "qmd-query",
+   "question_id": "q3-0253",
+   "question": "How can I inherit from list or dict in Python, and what does the C side need?",
+   "gold": "PEP 253, Subtyping Built-in Types",
+   "top_hit": "PEP 584, Add Union Operators To dict",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 36,
+   "system": "qmd-query",
+   "question_id": "q3-0499",
+   "question": "Why do I get two copies of a module with separate globals after running it with python -m and importing it again?",
+   "gold": "PEP 499, ``python -m foo`` should also bind ``'foo'`` in ``sys.modules``",
+   "top_hit": "PEP 395, Qualified Names for Modules",
+   "top_hit_also_answers": "no",
+   "note": "abstract names import traps in general, not the double import; no"
+  },
+  {
+   "item": 37,
+   "system": "qmd-query",
+   "question_id": "q3-0629",
+   "question": "How can a package installer tell which features a given simple index server supports?",
+   "gold": "PEP 629, Versioning PyPI's Simple API",
+   "top_hit": "PEP 773, A Python Installation Manager for Windows",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 38,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0343",
+   "question": "How do I make sure cleanup code runs after a block without writing try and finally everywhere?",
+   "gold": "PEP 343, The \\\"with\\\" Statement",
+   "top_hit": "PEP 419, Protecting cleanup statements from interruptions",
+   "top_hit_also_answers": "no"
+  },
+  {
+   "item": 39,
+   "system": "leks-3.1-models",
+   "question_id": "q3-0013",
+   "question": "Who has the last word on where Python is heading, and how do those people get picked?",
+   "gold": "PEP 13, Python Language Governance",
+   "top_hit": "PEP 8015, Organization of the Python community",
+   "top_hit_also_answers": "no",
+   "note": "a proposal not adopted, abstract does not say how members are picked; no"
+  },
+  {
+   "item": 40,
+   "system": "qmd-query",
+   "question_id": "q3-0310",
+   "question": "Is there a shorter syntax than try and finally for taking a lock and always releasing it?",
+   "gold": "PEP 310, Reliable Acquisition/Release Pairs",
+   "top_hit": "PEP 492, Coroutines with async and await syntax",
+   "top_hit_also_answers": "no"
+  }
+ ]
+}

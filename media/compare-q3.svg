@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="560" viewBox="0 0 820 560" role="img" aria-labelledby="title desc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+<title id="title">Held-out questions: right note in the top 5 against time</title>
+<desc id="desc">LEKS 3.1 + models 93.4% at 1350 ms; LEKS 3.1 76.3% at 6 ms; LEKS 3.0 76.3% at 5 ms; qmd search 16.7% at 8 ms; qmd vsearch 72.9% at 1551 ms; qmd query 86.5% at 14309 ms; MemPalace 79.7% at 39 ms; MemPalace hybrid 81.2% at 132 ms; knowledge-rag 83.3% at 6100 ms</desc>
+<rect x="0.5" y="0.5" width="819" height="559" fill="#FFFFFF" stroke="#D0D7DE"/>
+<text x="24.0" y="40.0" font-size="17" fill="#1F2328" font-weight="600" text-anchor="start">Held-out questions: right note in the top 5 against time</text>
+<text x="24.0" y="64.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">695 questions, right note in the top 5 (Wilson 95% interval) against the median time per question, log scale</text>
+<text x="24.0" y="84.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="start">Questions in a developer's own words; times from the 1,472-question runs. BM25 is not timed.</text>
+<line x1="78.0" y1="470.0" x2="640.0" y2="470.0" stroke="#EAEEF2"/>
+<text x="70.0" y="474.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">10%</text>
+<line x1="78.0" y1="431.1" x2="640.0" y2="431.1" stroke="#EAEEF2"/>
+<text x="70.0" y="435.1" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">20%</text>
+<line x1="78.0" y1="392.2" x2="640.0" y2="392.2" stroke="#EAEEF2"/>
+<text x="70.0" y="396.2" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">30%</text>
+<line x1="78.0" y1="353.3" x2="640.0" y2="353.3" stroke="#EAEEF2"/>
+<text x="70.0" y="357.3" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">40%</text>
+<line x1="78.0" y1="314.4" x2="640.0" y2="314.4" stroke="#EAEEF2"/>
+<text x="70.0" y="318.4" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">50%</text>
+<line x1="78.0" y1="275.6" x2="640.0" y2="275.6" stroke="#EAEEF2"/>
+<text x="70.0" y="279.6" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">60%</text>
+<line x1="78.0" y1="236.7" x2="640.0" y2="236.7" stroke="#EAEEF2"/>
+<text x="70.0" y="240.7" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">70%</text>
+<line x1="78.0" y1="197.8" x2="640.0" y2="197.8" stroke="#EAEEF2"/>
+<text x="70.0" y="201.8" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">80%</text>
+<line x1="78.0" y1="158.9" x2="640.0" y2="158.9" stroke="#EAEEF2"/>
+<text x="70.0" y="162.9" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">90%</text>
+<line x1="78.0" y1="120.0" x2="640.0" y2="120.0" stroke="#EAEEF2"/>
+<text x="70.0" y="124.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="end">100%</text>
+<line x1="78.0" y1="470.0" x2="78.0" y2="120.0" stroke="#EAEEF2"/>
+<text x="78.0" y="488.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">1 ms</text>
+<line x1="190.4" y1="470.0" x2="190.4" y2="120.0" stroke="#EAEEF2"/>
+<text x="190.4" y="488.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">10 ms</text>
+<line x1="302.8" y1="470.0" x2="302.8" y2="120.0" stroke="#EAEEF2"/>
+<text x="302.8" y="488.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">100 ms</text>
+<line x1="415.2" y1="470.0" x2="415.2" y2="120.0" stroke="#EAEEF2"/>
+<text x="415.2" y="488.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">1 s</text>
+<line x1="527.6" y1="470.0" x2="527.6" y2="120.0" stroke="#EAEEF2"/>
+<text x="527.6" y="488.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">10 s</text>
+<line x1="640.0" y1="470.0" x2="640.0" y2="120.0" stroke="#EAEEF2"/>
+<text x="640.0" y="488.0" font-size="11" fill="#818B98" font-weight="normal" text-anchor="middle">100 s</text>
+<text x="359.0" y="510.0" font-size="12" fill="#59636E" font-weight="normal" text-anchor="middle">median time per question (one warm process)</text>
+<line x1="429.9" y1="153.9" x2="429.9" y2="139.4" stroke="#0969DA" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="429.9" cy="145.7" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>LEKS 3.1 + models: 93.4% (91.3 to 95.0), median 1350 ms</title></circle>
+<text x="440.9" y="149.7" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">LEKS 3.1 + models 93.4%</text>
+<line x1="545.1" y1="183.3" x2="545.1" y2="163.5" stroke="#6E7781" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="545.1" cy="172.6" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"><title>qmd query: 86.5% (83.7 to 88.8), median 14309 ms</title></circle>
+<text x="556.1" y="176.6" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">qmd query 86.5%</text>
+<line x1="503.5" y1="196.4" x2="503.5" y2="174.8" stroke="#6E7781" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="503.5" cy="184.9" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"><title>knowledge-rag: 83.3% (80.4 to 85.9), median 6100 ms</title></circle>
+<text x="514.5" y="202.9" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">knowledge-rag 83.3%</text>
+<line x1="316.3" y1="205.3" x2="316.3" y2="182.7" stroke="#6E7781" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="316.3" cy="193.3" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"><title>MemPalace hybrid: 81.2% (78.1 to 83.9), median 132 ms</title></circle>
+<text x="327.3" y="197.3" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">MemPalace hybrid 81.2%</text>
+<line x1="256.3" y1="211.1" x2="256.3" y2="187.9" stroke="#6E7781" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="256.3" cy="198.9" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"><title>MemPalace: 79.7% (76.6 to 82.5), median 39 ms</title></circle>
+<text x="267.3" y="216.9" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">MemPalace 79.7%</text>
+<line x1="164.3" y1="225.2" x2="164.3" y2="200.6" stroke="#0969DA" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="164.3" cy="212.3" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>LEKS 3.1: 76.3% (73.0 to 79.3), median 6 ms</title></circle>
+<text x="175.3" y="244.3" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">LEKS 3.1 76.3%</text>
+<line x1="158.8" y1="225.2" x2="158.8" y2="200.6" stroke="#0969DA" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="158.8" cy="212.3" r="6" fill="#0969DA" stroke="#FFFFFF" stroke-width="2"><title>LEKS 3.0: 76.3% (73.0 to 79.3), median 5 ms</title></circle>
+<text x="169.8" y="258.3" font-size="12" fill="#1F2328" font-weight="600" text-anchor="start">LEKS 3.0 76.3%</text>
+<line x1="436.6" y1="238.5" x2="436.6" y2="212.9" stroke="#6E7781" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="436.6" cy="225.2" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"><title>qmd vsearch: 72.9% (69.5 to 76.1), median 1551 ms</title></circle>
+<text x="447.6" y="229.2" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">qmd vsearch 72.9%</text>
+<line x1="177.5" y1="454.0" x2="177.5" y2="432.5" stroke="#6E7781" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+<circle cx="177.5" cy="444.0" r="6" fill="#6E7781" stroke="#FFFFFF" stroke-width="2"><title>qmd search: 16.7% (14.1 to 19.6), median 8 ms</title></circle>
+<text x="188.5" y="448.0" font-size="12" fill="#1F2328" font-weight="normal" text-anchor="start">qmd search 16.7%</text>
+</svg>
