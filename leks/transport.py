@@ -16,6 +16,7 @@ import json
 import os
 import socket
 import stat
+import time
 
 ENV = 'LEKS_MODELD_TRANSPORT'
 HOST = '127.0.0.1'
@@ -25,6 +26,32 @@ MAX_FILE = 4096
 # descriptor passing: the python docs list recvmsg and CMSG_SPACE as unix only
 UNIX_OK = (hasattr(socket, 'AF_UNIX') and hasattr(socket, 'CMSG_SPACE')
            and hasattr(getattr(socket, 'socket', None), 'recvmsg'))
+
+# windows: while another process has the file open (a client reading the endpoint, a virus scanner)
+# a remove or replace fails with PermissionError. that lasts a moment, so it gets tried again
+RETRY_SHARING = os.name == 'nt'
+SHARING_TRIES = 20
+SHARING_PAUSE = 0.05
+
+
+def _sharing_safe(fn, *args):
+    """fn(*args), tried again for about a second while windows says another process has the file open."""
+    tries = SHARING_TRIES if RETRY_SHARING else 1
+    for i in range(tries):
+        try:
+            return fn(*args)
+        except PermissionError:
+            if i + 1 >= tries:
+                raise
+            time.sleep(SHARING_PAUSE)
+
+
+def unlink(path):
+    """Remove a file when it is there. Never raises."""
+    try:
+        _sharing_safe(os.remove, path)
+    except OSError:
+        pass
 
 
 def kind():
@@ -76,14 +103,11 @@ def write_endpoint(sock_path, port, token):
     """Write the endpoint file atomically with mode 0600. Returns its path."""
     path = endpoint_path(sock_path)
     tmp = path + '.tmp'
-    try:
-        os.remove(tmp)
-    except OSError:
-        pass
+    unlink(tmp)
     fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(fd, 'w', encoding='ascii') as f:
         json.dump({'port': int(port), 'token': token, 'pid': os.getpid()}, f)
-    os.replace(tmp, path)
+    _sharing_safe(os.replace, tmp, path)
     return path
 
 
@@ -91,10 +115,7 @@ def drop_endpoint(sock_path, token):
     """Remove the endpoint file, but only while it still holds this token (a later daemon may own it)."""
     ep = read_endpoint(sock_path)
     if ep is not None and ep[1] == token:
-        try:
-            os.remove(endpoint_path(sock_path))
-        except OSError:
-            pass
+        unlink(endpoint_path(sock_path))
 
 
 def present(sock_path, mode=None):

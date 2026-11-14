@@ -194,6 +194,33 @@ class EndpointFileTests(TmpCase):
         self.assertIsNone(transport.read_endpoint(self.sock))
         transport.drop_endpoint(self.sock, TOKEN)        # gone already: nothing raises
 
+    def _busy_once(self, real):
+        # windows refuses the first remove or replace while another process reads the file
+        calls = []
+
+        def fn(*a):
+            calls.append(a)
+            if len(calls) == 1:
+                raise PermissionError(13, 'the file is open in another process')
+            return real(*a)
+        return fn, calls
+
+    def test_drop_waits_out_a_reader(self):
+        transport.write_endpoint(self.sock, 50123, TOKEN)
+        fn, calls = self._busy_once(os.remove)
+        with mock.patch.object(transport, 'RETRY_SHARING', True), mock.patch.object(transport.os, 'remove', fn):
+            transport.drop_endpoint(self.sock, TOKEN)
+        self.assertEqual(len(calls), 2)
+        self.assertFalse(os.path.exists(transport.endpoint_path(self.sock)))
+
+    def test_write_waits_out_a_reader(self):
+        transport.write_endpoint(self.sock, 50123, TOKEN)
+        fn, calls = self._busy_once(os.replace)
+        with mock.patch.object(transport, 'RETRY_SHARING', True), mock.patch.object(transport.os, 'replace', fn):
+            transport.write_endpoint(self.sock, 50124, TOKEN)
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(transport.read_endpoint(self.sock), (50124, TOKEN))
+
     def test_connect_without_endpoint(self):
         with self.assertRaises(FileNotFoundError):
             transport.connect(self.sock, 1.0, 'tcp')
@@ -314,6 +341,24 @@ class ClientOverTcpTests(TmpCase):
         with mock.patch.dict(os.environ, TCP):
             self.assertIsNone(cl.call({'op': 'rerank', 'model': 'rr', 'q': 'q', 'docs': ['a']}, budget=0.5))
         self.assertEqual(woke, [1])
+
+    def test_client_tries_again_after_a_dead_port(self):
+        # an endpoint file a leaving daemon has not removed yet points at a dead port. windows answers that
+        # connect after about two seconds, as a timeout or a reset. that means no daemon: wake one, try again
+        spec = SimpleNamespace(key='rr', op='maxsim')
+        woke = []
+        for err in (socket.timeout('timed out'), ConnectionResetError(10054, 'reset')):
+            with self.subTest(err=type(err).__name__):
+                woke.clear()
+                srv = FakeTcpServer({'scores': [0.5]})
+                cl = modeld_client.Client(self.sock, {}, {'rr': spec}, wake=lambda: woke.append(1) or 'started')
+                with mock.patch.dict(os.environ, TCP), \
+                        mock.patch.object(transport, 'connect', side_effect=[err, (srv.here, TOKEN)]) as conn:
+                    self.assertEqual(cl.rerank('q', ['a']), [0.5])
+                srv.t.join(5)
+                self.assertEqual(woke, [1])
+                # one try on 127.0.0.1 stays short, a daemon that listens answers at once
+                self.assertLessEqual(conn.call_args_list[0][0][1], modeld_client.TCP_TRY)
 
     def test_client_is_ready_without_unix_sockets(self):
         spec = SimpleNamespace(key='rr', op='maxsim')
@@ -505,6 +550,30 @@ class RealTcpDaemonTests(unittest.TestCase):
         cl.bye()
         self.assertEqual(p.wait(timeout=30), 0)
         self.assertFalse(os.path.exists(transport.endpoint_path(self.sock)))
+
+    def test_endpoint_goes_when_the_port_closes(self):
+        # on the way out the daemon waits up to a second for each open connection. the endpoint file has to
+        # be gone before that wait, or a client that finds it tries a dead port
+        p = self.start()
+        self.wait_up(p)
+        port, token = transport.read_endpoint(self.sock)
+        # two idle connections make that wait about two seconds, room enough on a slow runner
+        idle = [socket.create_connection((transport.HOST, port), timeout=10) for _ in range(2)]
+        for c in idle:
+            self.addCleanup(c.close)
+        # answered in order, so the idle connections are in by now
+        self.assertEqual(self.raw({'op': 'ping', 'token': token}), modeld.PING_REPLY)
+        self.assertEqual(self.raw({'op': 'bye', 'token': token}), modeld.PING_REPLY)
+        ep = transport.endpoint_path(self.sock)
+        end = time.time() + 10
+        while time.time() < end and os.path.exists(ep):
+            time.sleep(0.005)
+        self.assertFalse(os.path.exists(ep))
+        # the daemon still waits on the idle connections, so they are open
+        idle[0].settimeout(0.3)
+        with self.assertRaises(socket.timeout):
+            idle[0].recv(1)
+        self.assertEqual(p.wait(timeout=30), 0)
 
     def test_warm_start_brings_it_up(self):
         # the same path a session hook takes: spawn detached (sandboxed on macOS), wait, warm

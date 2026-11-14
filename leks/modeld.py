@@ -296,10 +296,7 @@ def _tcp_daemon_runs(path):
             return True
     except (OSError, ValueError):
         pass
-    try:
-        os.remove(where)
-    except OSError:
-        pass
+    transport.unlink(where)
     return False
 
 
@@ -374,10 +371,8 @@ def main(cfg=None):
         _threads.add(t)
         t.start()
     srv.close()
-    # let a reply that is still being written (the bye answer) go out
-    for t in list(_threads):
-        t.join(1.0)
-    # a later daemon may own the path by now
+    # nothing listens from here on, so the path goes before the wait below: a client that still found it
+    # would try a dead port, and windows takes about two seconds to refuse one. a later daemon may own it by now
     if tcp:
         transport.drop_endpoint(path, _token)
     else:
@@ -386,6 +381,9 @@ def main(cfg=None):
                 os.remove(path)
         except OSError:
             pass
+    # let a reply that is still being written (the bye answer) go out
+    for t in list(_threads):
+        t.join(1.0)
     # a plain exit waits on the gpu stack's teardown, this gives the memory back at once
     os._exit(0)
 

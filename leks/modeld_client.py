@@ -37,6 +37,7 @@ UNIX_OK = transport.UNIX_OK
 # room for 256 descriptors in one message, a cut message disables the client
 ANC = socket.CMSG_SPACE(4 * 256) if UNIX_OK else 0
 BYE_BUDGET = 5.0
+TCP_TRY = 0.5             # one connect to 127.0.0.1: a daemon that listens answers at once
 OPS = ('ping', 'bye', 'embed', 'rerank')
 BACKEND_MODULES = ('torch', 'transformers', 'safetensors')
 DEFAULT_BUDGETS = {'embed': 45.0, 'rerank': 8.0, 'cold_rerank': 30.0, 'cold_after': 600.0,
@@ -143,6 +144,18 @@ def check_reply(req, r, specs):
     except (KeyError, TypeError, ValueError, AttributeError):
         return None
     return None
+
+
+def _nothing_there(e, mode):
+    """True when a connect failed because no daemon is there, which a start fixes.
+
+    unix and tcp: no socket or endpoint file, or nothing listens. tcp also: an endpoint file that a
+    leaving daemon has not removed yet. windows answers a connect to such a dead port only after about
+    two seconds, so it comes back as a timeout or a reset as well as a refusal.
+    """
+    if isinstance(e, (FileNotFoundError, ConnectionRefusedError)):
+        return True
+    return mode == 'tcp' and isinstance(e, (ConnectionError, socket.timeout))
 
 
 def _takes_arg(fn):
@@ -258,23 +271,25 @@ class Client:
         t0 = time.monotonic()
         try_until = min(end, t0 + self.budgets['connect'])
         woke = not (wake and self._wake is not None)
+        cap = TCP_TRY if mode == 'tcp' else 2.0
         while True:
             try:
-                c, token = self._connect(mode, max(0.05, min(2.0, end - time.monotonic())))
-                break
-            except (FileNotFoundError, ConnectionRefusedError):
-                if not woke:
-                    woke = True
-                    if not self._start_daemon():
-                        self._cool()
-                        return None
-                if time.monotonic() >= try_until:
+                c, token = self._connect(mode, max(0.05, min(cap, end - time.monotonic())))
+            except Exception as e:
+                if not _nothing_there(e, mode):
                     self._cool()
                     return None
-                time.sleep(max(0.0, min(0.25, try_until - time.monotonic())))
-            except Exception:
+            else:
+                break
+            if not woke:
+                woke = True
+                if not self._start_daemon():
+                    self._cool()
+                    return None
+            if time.monotonic() >= try_until:
                 self._cool()
                 return None
+            time.sleep(max(0.0, min(0.25, try_until - time.monotonic())))
         buf = bytearray()
         try:
             c.settimeout(max(0.05, end - time.monotonic()))
