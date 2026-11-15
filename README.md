@@ -1,5 +1,7 @@
 <h1 align="center">LEKS</h1>
 
+<p align="center"><sub>Local Engineering Knowledge Search</sub></p>
+
 <p align="center"><b>Local search for coding agents that knows which decision is still current</b></p>
 
 <p align="center">Your notes, decisions, PDFs, Word files and code, indexed on your own machine. Claude Code, GitHub Copilot or Codex ask in plain words and get back the few passages that answer, each with file and line. No API key, no cloud</p>
